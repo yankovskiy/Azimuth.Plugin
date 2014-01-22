@@ -4,13 +4,18 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.os.Bundle;
 
-public class PluginActivity extends SherlockFragmentActivity {
+public class PluginActivity extends SherlockFragmentActivity implements OnMapLongClickListener {
 
     private GoogleMap mMap;
+    private Marker mMarker;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class PluginActivity extends SherlockFragmentActivity {
         }
         
         mMap.setMyLocationEnabled(true);
+        mMap.setOnMapLongClickListener(this);
     }
     
     @Override
@@ -57,6 +63,26 @@ public class PluginActivity extends SherlockFragmentActivity {
         }
         
         return true;
+    }
+
+    @Override
+    public void onMapLongClick(LatLng location) {
+        setMarket(location);
+    }
+
+    /**
+     * Sets marker to the long tap position If marker already exists - remove
+     * old marker and set new marker in new position
+     * @param location location for setting marker
+     */
+    private void setMarket(LatLng location) {
+        // erase old marker if exist
+        if (mMarker != null) {
+            mMap.clear();
+        }
+        
+        // set new marker
+        mMarker = mMap.addMarker(new MarkerOptions().position(location));
     }
 
 }

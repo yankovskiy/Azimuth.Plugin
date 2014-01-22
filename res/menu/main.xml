@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/item_map_normal" android:title="Normal" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_terrain" android:title="Terrain" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_hybrid" android:title="Hybrid" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_satellite" android:title="Satellite" android:showAsAction="never"></item>
+    <item android:id="@+id/item_map_normal" android:title="@string/mapType_map" android:showAsAction="never"></item>
+    <item android:id="@+id/item_map_terrain" android:title="@string/mapType_terrain" android:showAsAction="never"></item>
+    <item android:id="@+id/item_map_hybrid" android:title="@string/mapType_hybrid" android:showAsAction="never"></item>
+    <item android:id="@+id/item_map_satellite" android:title="@string/mapType_satellite" android:showAsAction="never"></item>
 </menu>

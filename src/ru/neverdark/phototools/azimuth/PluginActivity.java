@@ -1,5 +1,11 @@
 package ru.neverdark.phototools.azimuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import ru.neverdark.phototools.azimuth.model.SunCalculator;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -11,6 +17,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements OnMapLongClickListener {
 
@@ -68,6 +75,19 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
     @Override
     public void onMapLongClick(LatLng location) {
         setMarket(location);
+        
+        Calendar date = Calendar.getInstance();
+        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        
+        
+        
+        SunCalculator sunCalc = new SunCalculator();
+        SunCalculator.CalculationResult result = sunCalc.getPosition(date, location);
+        
+        
+        Toast.makeText(this, format.format(date.getTime()), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, String.valueOf(result.getAltitude()), Toast.LENGTH_LONG).show();
     }
 
     /**

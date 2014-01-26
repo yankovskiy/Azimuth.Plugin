@@ -16,6 +16,10 @@ public class SunCalculator {
         public double getAzimuth() {
             return azimuth;
         }
+        
+        public double getAzimuthInDegres() {
+            return azimuth * 180 / Math.PI;
+        }
     }
     private class DecRa {
         private double dec;

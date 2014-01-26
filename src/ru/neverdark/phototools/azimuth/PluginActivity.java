@@ -77,17 +77,14 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
         setMarket(location);
         
         Calendar date = Calendar.getInstance();
-        
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        
+        LatLng latLng = new LatLng(51.5, -0.1);
         
         
         SunCalculator sunCalc = new SunCalculator();
-        SunCalculator.CalculationResult result = sunCalc.getPosition(date, location);
+        SunCalculator.CalculationResult result = sunCalc.getPosition(date, latLng);
         
         
-        Toast.makeText(this, format.format(date.getTime()), Toast.LENGTH_LONG).show();
-        Toast.makeText(this, String.valueOf(result.getAltitude()), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, String.valueOf(result.getAzimuthInDegres()), Toast.LENGTH_LONG).show();
     }
 
     /**

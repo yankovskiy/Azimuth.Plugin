@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
+import ru.neverdark.phototools.azimuth.utils.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -77,8 +78,11 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
         setMarket(location);
         
         Calendar date = Calendar.getInstance();
-        LatLng latLng = new LatLng(51.5, -0.1);
+        date.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        LatLng latLng = new LatLng(43.121051, 131.890029);
         
+        SimpleDateFormat frm = new SimpleDateFormat("yyyy-MM-dd HH:mmZ");
+        Log.variable("date", frm.format(date.getTime()));
         
         SunCalculator sunCalc = new SunCalculator();
         SunCalculator.CalculationResult result = sunCalc.getPosition(date, latLng);

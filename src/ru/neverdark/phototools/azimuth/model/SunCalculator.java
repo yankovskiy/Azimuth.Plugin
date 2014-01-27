@@ -2,6 +2,8 @@ package ru.neverdark.phototools.azimuth.model;
 
 import java.util.Calendar;
 
+import ru.neverdark.phototools.azimuth.utils.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class SunCalculator {
@@ -79,17 +81,37 @@ public class SunCalculator {
     }
 
     public CalculationResult getPosition(Calendar date, LatLng location) {
+        long start = Log.enter();
+
+        Log.variable("rad", String.valueOf(rad));
+        Log.variable("latitude", String.valueOf(location.latitude));
+        Log.variable("longitude", String.valueOf(location.longitude));
+        
         double lw = rad * -location.longitude;
         double phi = rad * location.latitude;
-        long d = toDays(date);
+        
+        Log.variable("lw", String.valueOf(lw));
+        Log.variable("phi", String.valueOf(phi));
+        
+        double d = toDays(date);
+        Log.variable("d", String.valueOf(d));
 
         DecRa c = getSunCoords(d);
+        Log.variable("c.ra", String.valueOf(c.ra));
+        Log.variable("c.dec", String.valueOf(c.dec));
+        
         double H = getSiderealTime(d, lw) - c.ra;
+        Log.variable("H", String.valueOf(H));
 
         CalculationResult result = new CalculationResult();
         result.azimuth = getAzimuth(H, phi, c.dec);
         result.altitude = getAltitude(H, phi, c.dec);
-
+        
+        Log.variable("azimuth", String.valueOf(result.azimuth));
+        Log.variable("altitude", String.valueOf(result.altitude));
+        
+        Log.exit(start);
+        
         return result;
     }
 
@@ -101,11 +123,11 @@ public class SunCalculator {
         return rad * (280.16 + 360.9856235 * d) - lw;
     }
 
-    private double getSolarMeanAnomaly(long d) {
+    private double getSolarMeanAnomaly(double d) {
         return rad * (357.5291 + 0.98560028 * d);
     }
 
-    private DecRa getSunCoords(long d) {
+    private DecRa getSunCoords(double d) {
         DecRa decRa = new DecRa();
         double M = getSolarMeanAnomaly(d);
         double C = getEquationOfCenter(M);
@@ -125,13 +147,17 @@ public class SunCalculator {
         return Math.tan(d);
     }
 
-    private long toDays(Calendar date) {
-        return (long) (toJulian(date) - J2000);
+    private double toDays(Calendar date) {
+        return toJulian(date) - J2000;
     }
 
     private double toJulian(Calendar date) {
-        return date.getTimeInMillis() / dayMs - 0.5 + J1970;
-        //return date.getTime().getTime() / dayMs - 0.5 + J1970;
+        Log.enter();
+        double first = (double) date.getTimeInMillis() / dayMs;
+        double second = J1970 - 0.5;
+        Log.variable("first", String.valueOf(first));
+        Log.variable("second", String.valueOf(second)); 
+        return first + second;
     }
 
 }

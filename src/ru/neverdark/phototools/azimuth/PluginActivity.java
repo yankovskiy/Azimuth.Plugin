@@ -1,21 +1,29 @@
 package ru.neverdark.phototools.azimuth;
 
 import java.util.Calendar;
+import java.util.TimeZone;
+
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements
-        OnMapLongClickListener {
+        OnMapLongClickListener, OnCameraChangeListener {
 
     private GoogleMap mMap;
     private Marker mMarker;
@@ -46,6 +54,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
+        mMap.setOnCameraChangeListener(this);
 
     }
 
@@ -74,13 +83,36 @@ public class PluginActivity extends SherlockFragmentActivity implements
         setMarket(location);
 
         Calendar date = Calendar.getInstance();
-
+        date.set(2014, 01, 31, 14, 0);
+        date.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+        
         SunCalculator sunCalc = new SunCalculator();
         SunCalculator.CalculationResult result = sunCalc.getPosition(date,
                 location);
-
-        Toast.makeText(this, String.valueOf(result.getAzimuthInDegres()),
+        
+        double size = mMap.getProjection().getVisibleRegion().farLeft.longitude - 
+                mMap.getProjection().getVisibleRegion().nearRight.longitude;
+        size = Math.abs(size);
+        
+        // TODO zoom ограничить 4, если меньше трех выдавать ошибку о невозможности расчета
+        PolylineOptions options = new PolylineOptions();
+        options.add(location);
+        options.add(sunCalc.getDestLatLng(location, result.getAzimuth(), size));
+        options.width(5);
+        options.color(Color.RED);
+        
+        mMap.addPolyline(options);        
+        
+        Toast.makeText(this, String.valueOf(result.getAltitude()),
                 Toast.LENGTH_LONG).show();
+    }
+
+    private double getDistanceByMapZoom() {
+        
+        float zoom = mMap.getCameraPosition().zoom;
+        
+        
+        return 0;
     }
 
     /**
@@ -98,6 +130,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
         // set new marker
         mMarker = mMap.addMarker(new MarkerOptions().position(location));
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition camera) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

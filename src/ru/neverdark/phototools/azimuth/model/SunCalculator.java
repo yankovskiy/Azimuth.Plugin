@@ -104,7 +104,7 @@ public class SunCalculator {
         Log.variable("H", String.valueOf(H));
 
         CalculationResult result = new CalculationResult();
-        result.azimuth = getAzimuth(H, phi, c.dec);
+        result.azimuth = getAzimuth(H, phi, c.dec) + Math.PI;
         result.altitude = getAltitude(H, phi, c.dec);
         
         Log.variable("azimuth", String.valueOf(result.azimuth));
@@ -158,6 +158,20 @@ public class SunCalculator {
         Log.variable("first", String.valueOf(first));
         Log.variable("second", String.valueOf(second)); 
         return first + second;
+    }
+    
+    public LatLng getDestLatLng(LatLng location, double azimuth, double distance) {
+        final double EARTH_RADIUS = 6378.137;
+        
+        
+        
+        double lat2 = location.latitude  + distance * cos(azimuth);
+        double lng2 = location.longitude + distance * sin(azimuth);
+        
+        //lat2 /= Math.PI * 180;
+        //lng2 /= Math.PI * 180;
+        
+        return new LatLng(lat2, lng2);
     }
 
 }

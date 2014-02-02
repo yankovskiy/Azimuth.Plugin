@@ -31,10 +31,8 @@ import android.net.NetworkInfo;
 public class GoogleTimeZone {
     private TimeZone mTimeZone;
     private Context mContext;
-    private int mDay;
-    private int mYear;
-    private int mMonth;
     private LatLng mLocation;
+    private Calendar mCalendar;
 
     public GoogleTimeZone(Context context) {
         mContext = context;
@@ -69,10 +67,10 @@ public class GoogleTimeZone {
      */
     private String readTimeZoneJson() {
         StringBuilder builder = new StringBuilder();
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar.set(mYear, mMonth, mDay);
+        mCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+
         /* Gets desired time as seconds since midnight, January 1, 1970 UTC */
-        Long timestamp = calendar.getTimeInMillis() / 1000;
+        Long timestamp = mCalendar.getTimeInMillis() / 1000;
 
         String url_format = "https://maps.googleapis.com/maps/api/timezone/json?location=%f,%f&timestamp=%d&sensor=false";
         String url = String.format(Locale.US, url_format, mLocation.latitude,
@@ -139,19 +137,11 @@ public class GoogleTimeZone {
     }
 
     /**
-     * Sets date
-     * 
-     * @param year
-     *            year
-     * @param month
-     *            month
-     * @param day
-     *            day of month
+     * Sets calendar
+     * @param calendar calendar for sets
      */
-    public void setDate(int year, int month, int day) {
-        mYear = year;
-        mMonth = month;
-        mDay = day;
+    public void setCalendar(Calendar calendar) {
+        mCalendar = calendar;
     }
 
     /**

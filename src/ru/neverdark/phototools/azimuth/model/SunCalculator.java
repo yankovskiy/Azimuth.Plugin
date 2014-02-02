@@ -160,16 +160,9 @@ public class SunCalculator {
         return first + second;
     }
     
-    public LatLng getDestLatLng(LatLng location, double azimuth, double distance) {
-        final double EARTH_RADIUS = 6378.137;
-        
-        
-        
-        double lat2 = location.latitude  + distance * cos(azimuth);
-        double lng2 = location.longitude + distance * sin(azimuth);
-        
-        //lat2 /= Math.PI * 180;
-        //lng2 /= Math.PI * 180;
+    public static LatLng getDestLatLng(LatLng location, double azimuth, double distance) {
+        double lat2 = location.latitude  + distance * Math.cos(azimuth);
+        double lng2 = location.longitude + distance * Math.sin(azimuth);
         
         return new LatLng(lat2, lng2);
     }

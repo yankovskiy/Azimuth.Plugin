@@ -1,9 +1,15 @@
 package ru.neverdark.phototools.azimuth;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
+import ru.neverdark.phototools.azimuth.controller.AsyncCalculator.OnCalculationResultHandle;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
+import ru.neverdark.phototools.azimuth.model.SunCalculator.CalculationResult;
+import ru.neverdark.phototools.azimuth.utils.Log;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -20,14 +26,20 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements
-        OnMapLongClickListener, OnCameraChangeListener {
+        OnMapLongClickListener, OnCameraChangeListener, OnCalculationResultHandle {
 
     private GoogleMap mMap;
     private Marker mMarker;
-
+    private double mAzimuth;
+    private double mAltitude;
+    private LatLng mLocation;
+    private Calendar mCalendar;
+    private double mOldZoom = -1;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,39 +92,33 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng location) {
-        setMarket(location);
-
-        Calendar date = Calendar.getInstance();
-        date.set(2014, 01, 31, 14, 0);
-        date.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+        mLocation = location;
         
-        SunCalculator sunCalc = new SunCalculator();
-        SunCalculator.CalculationResult result = sunCalc.getPosition(date,
-                location);
+        // TODO: переделать на получение даты и времени от пользователя
+        Calendar date = Calendar.getInstance();
+        date.set(2014, 0, 31, 14, 0);        
+        
+        AsyncCalculator asyncCalc = new AsyncCalculator(this, this);
+        asyncCalc.setLocation(mLocation);
+        asyncCalc.setCalendar(date);
+        asyncCalc.execute();
+        
+    }
+
+    private void drawAzimuth() {
+        setMarket();
         
         double size = mMap.getProjection().getVisibleRegion().farLeft.longitude - 
                 mMap.getProjection().getVisibleRegion().nearRight.longitude;
         size = Math.abs(size);
         
-        // TODO zoom ограничить 4, если меньше трех выдавать ошибку о невозможности расчета
         PolylineOptions options = new PolylineOptions();
-        options.add(location);
-        options.add(sunCalc.getDestLatLng(location, result.getAzimuth(), size));
+        options.add(mLocation);
+        options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
         options.width(5);
         options.color(Color.RED);
         
-        mMap.addPolyline(options);        
-        
-        Toast.makeText(this, String.valueOf(result.getAltitude()),
-                Toast.LENGTH_LONG).show();
-    }
-
-    private double getDistanceByMapZoom() {
-        
-        float zoom = mMap.getCameraPosition().zoom;
-        
-        
-        return 0;
+        mMap.addPolyline(options);
     }
 
     /**
@@ -122,20 +128,37 @@ public class PluginActivity extends SherlockFragmentActivity implements
      * @param location
      *            location for setting marker
      */
-    private void setMarket(LatLng location) {
+    private void setMarket() {
         // erase old marker if exist
         if (mMarker != null) {
             mMap.clear();
         }
 
         // set new marker
-        mMarker = mMap.addMarker(new MarkerOptions().position(location));
+        mMarker = mMap.addMarker(new MarkerOptions().position(mLocation));
     }
 
     @Override
     public void onCameraChange(CameraPosition camera) {
-        // TODO Auto-generated method stub
-        
+        if (mMarker != null) {
+            if (mOldZoom != camera.zoom) {
+                drawAzimuth();
+                mOldZoom = camera.zoom;
+            }
+        }
+    }
+
+    @Override
+    public void onGetResultSuccess(CalculationResult calculationResult) {
+        mAzimuth = calculationResult.getAzimuth();
+        mAltitude = calculationResult.getAltitude();
+        drawAzimuth();
+    }
+
+    @Override
+    public void onGetResultFail() {
+        // TODO: показать диалог выбора временной зоны
+        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
     }
 
 }

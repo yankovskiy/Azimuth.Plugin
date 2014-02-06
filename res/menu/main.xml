@@ -1,6 +1,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/item_map_normal" android:title="@string/mapType_map" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_terrain" android:title="@string/mapType_terrain" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_hybrid" android:title="@string/mapType_hybrid" android:showAsAction="never"></item>
-    <item android:id="@+id/item_map_satellite" android:title="@string/mapType_satellite" android:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/item_map_normal"
+        android:showAsAction="never"
+        android:title="@string/mapType_map">
+    </item>
+    <item
+        android:id="@+id/item_map_terrain"
+        android:showAsAction="never"
+        android:title="@string/mapType_terrain">
+    </item>
+    <item
+        android:id="@+id/item_map_hybrid"
+        android:showAsAction="never"
+        android:title="@string/mapType_hybrid">
+    </item>
+    <item
+        android:id="@+id/item_map_satellite"
+        android:showAsAction="never"
+        android:title="@string/mapType_satellite">
+    </item>
+    <item
+        android:id="@+id/item_dateTime"
+        android:icon="@drawable/ic_action_go_to_today"
+        android:title="@string/mapDateSelection"
+        android:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/item_confirmSelection"
+        android:icon="@drawable/ic_action_done"
+        android:showAsAction="always|withText"
+        android:title="@string/mapConfirmSelection"
+        android:visible="false">
+    </item>
+
 </menu>

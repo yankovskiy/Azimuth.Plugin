@@ -10,4 +10,11 @@
     <string name="mapType_hybrid">Hybrid</string>
     <string name="mapType_satellite">Satellite</string>
     
+    <string name="mapConfirmSelection">Confirm a selection</string>
+    <string name="mapDateSelection">Select a date</string>
+    <string name="mapTimeSelection">Select a time</string>
+    
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    
 </resources>

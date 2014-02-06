@@ -18,15 +18,17 @@ public class SunCalculator {
         public double getAzimuth() {
             return azimuth;
         }
-        
+
         public double getAzimuthInDegres() {
             return azimuth * 180 / Math.PI;
         }
     }
+
     private class DecRa {
         private double dec;
         private double ra;
     }
+
     private static final double rad = Math.PI / 180;
     private static final long dayMs = 1000 * 60 * 60 * 24;
     private static final int J1970 = 2440588;
@@ -86,32 +88,32 @@ public class SunCalculator {
         Log.variable("rad", String.valueOf(rad));
         Log.variable("latitude", String.valueOf(location.latitude));
         Log.variable("longitude", String.valueOf(location.longitude));
-        
+
         double lw = rad * -location.longitude;
         double phi = rad * location.latitude;
-        
+
         Log.variable("lw", String.valueOf(lw));
         Log.variable("phi", String.valueOf(phi));
-        
+
         double d = toDays(date);
         Log.variable("d", String.valueOf(d));
 
         DecRa c = getSunCoords(d);
         Log.variable("c.ra", String.valueOf(c.ra));
         Log.variable("c.dec", String.valueOf(c.dec));
-        
+
         double H = getSiderealTime(d, lw) - c.ra;
         Log.variable("H", String.valueOf(H));
 
         CalculationResult result = new CalculationResult();
         result.azimuth = getAzimuth(H, phi, c.dec) + Math.PI;
         result.altitude = getAltitude(H, phi, c.dec);
-        
+
         Log.variable("azimuth", String.valueOf(result.azimuth));
         Log.variable("altitude", String.valueOf(result.altitude));
-        
+
         Log.exit(start);
-        
+
         return result;
     }
 
@@ -156,14 +158,15 @@ public class SunCalculator {
         double first = (double) date.getTimeInMillis() / dayMs;
         double second = J1970 - 0.5;
         Log.variable("first", String.valueOf(first));
-        Log.variable("second", String.valueOf(second)); 
+        Log.variable("second", String.valueOf(second));
         return first + second;
     }
-    
-    public static LatLng getDestLatLng(LatLng location, double azimuth, double distance) {
-        double lat2 = location.latitude  + distance * Math.cos(azimuth);
+
+    public static LatLng getDestLatLng(LatLng location, double azimuth,
+            double distance) {
+        double lat2 = location.latitude + distance * Math.cos(azimuth);
         double lng2 = location.longitude + distance * Math.sin(azimuth);
-        
+
         return new LatLng(lat2, lng2);
     }
 

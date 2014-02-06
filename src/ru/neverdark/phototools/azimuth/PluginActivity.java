@@ -1,15 +1,10 @@
 package ru.neverdark.phototools.azimuth;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
-
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator.OnCalculationResultHandle;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.model.SunCalculator.CalculationResult;
-import ru.neverdark.phototools.azimuth.utils.Log;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -19,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,7 +24,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements
@@ -44,6 +37,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private LatLng mLocation;
     private Calendar mCalendar;
     private double mOldZoom = -1;
+
+    private MenuItem mMenuItemDone;
+
     private static final String MAP_TYPE = "mapType";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
@@ -77,6 +73,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.main, menu);
+        mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
         return true;
     }
 
@@ -124,9 +121,25 @@ public class PluginActivity extends SherlockFragmentActivity implements
         case R.id.item_map_satellite:
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             break;
+        case R.id.item_confirmSelection:
+            confirmSelection();
+            break;
+        case R.id.item_dateTime:
+            chooseDateTime();
+            break;
         }
 
         return true;
+    }
+
+    private void chooseDateTime() {
+        DateTimeDialog dialog = new DateTimeDialog();
+        dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
+    }
+
+    private void confirmSelection() {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -175,6 +188,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
         // set new marker
         mMarker = mMap.addMarker(new MarkerOptions().position(mLocation));
+        mMenuItemDone.setVisible(true);
     }
 
     @Override

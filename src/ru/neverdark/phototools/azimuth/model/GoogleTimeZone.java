@@ -138,7 +138,9 @@ public class GoogleTimeZone {
 
     /**
      * Sets calendar
-     * @param calendar calendar for sets
+     * 
+     * @param calendar
+     *            calendar for sets
      */
     public void setCalendar(Calendar calendar) {
         mCalendar = calendar;

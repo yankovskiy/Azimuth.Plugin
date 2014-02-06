@@ -20,8 +20,10 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
     public interface OnCalculationResultHandle {
         public void onGetResultSuccess(
                 SunCalculator.CalculationResult calculationResult);
+
         public void onGetResultFail();
     }
+
     private ProgressDialog mDialog;
     private Context mContext;
     private TimeZone mTimeZone;
@@ -54,21 +56,17 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         int day = mCalendar.get(Calendar.DAY_OF_MONTH);
         int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = mCalendar.get(Calendar.MINUTE);
-        
+
         mGoogleTimeZone.setCalendar(mCalendar);
         mGoogleTimeZone.setLocation(mLocaiton);
-        
+
         int requestStatus = mGoogleTimeZone.requestTimeZone();
 
         if (requestStatus == Constants.STATUS_SUCCESS) {
             mTimeZone = mGoogleTimeZone.getTimeZone();
             Calendar calendar = Calendar.getInstance(mTimeZone);
-            calendar.set(year, 
-                    month, 
-                    day,
-                    hour,
-                    minute);
-            
+            calendar.set(year, month, day, hour, minute);
+
             SunCalculator sunCalc = new SunCalculator();
             mCalcResult = sunCalc.getPosition(calendar, mLocaiton);
         }
@@ -79,7 +77,7 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         mDialog.dismiss();
-        
+
         if (result == Constants.STATUS_SUCCESS) {
             mCallback.onGetResultSuccess(mCalcResult);
         } else {

@@ -67,10 +67,17 @@ public class GoogleTimeZone {
      */
     private String readTimeZoneJson() {
         StringBuilder builder = new StringBuilder();
-        mCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+        int year = mCalendar.get(Calendar.YEAR);
+        int month = mCalendar.get(Calendar.MONTH);
+        int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        int minute = mCalendar.get(Calendar.MINUTE);
 
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.set(year, month, day, hour, minute);
+        
         /* Gets desired time as seconds since midnight, January 1, 1970 UTC */
-        Long timestamp = mCalendar.getTimeInMillis() / 1000;
+        Long timestamp = calendar.getTimeInMillis() / 1000;
 
         String url_format = "https://maps.googleapis.com/maps/api/timezone/json?location=%f,%f&timestamp=%d&sensor=false";
         String url = String.format(Locale.US, url_format, mLocation.latitude,

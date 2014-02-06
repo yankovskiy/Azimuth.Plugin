@@ -1,6 +1,8 @@
 package ru.neverdark.phototools.azimuth;
 
 import java.util.Calendar;
+
+import ru.neverdark.phototools.azimuth.DateTimeDialog.OnConfirmDateTimeListener;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator.OnCalculationResultHandle;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
@@ -28,7 +30,7 @@ import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener,
-        OnCalculationResultHandle {
+        OnCalculationResultHandle, OnConfirmDateTimeListener {
 
     private GoogleMap mMap;
     private Marker mMarker;
@@ -46,35 +48,32 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private static final String CAMERA_ZOOM = "zoom";
     private static final String IS_SAVED = "isSaved";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.plugin_activity);
-
-        initMap();
+    private void chooseDateTime() {
+        DateTimeDialog dialog = new DateTimeDialog();
+        dialog.setCalendar(mCalendar);
+        dialog.setCallBack(this);
+        dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
     }
 
-    @Override
-    public void onStop() {
-        super.onPause();
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-        editor.putInt(MAP_TYPE, mMap.getMapType());
-        editor.putFloat(CAMERA_ZOOM, mMap.getCameraPosition().zoom);
-        editor.putFloat(LATITUDE,
-                (float) mMap.getCameraPosition().target.latitude);
-        editor.putFloat(LONGITUDE,
-                (float) mMap.getCameraPosition().target.longitude);
-        editor.putBoolean(IS_SAVED, true);
-        editor.commit();
+    private void confirmSelection() {
+        // TODO Auto-generated method stub
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.main, menu);
-        mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
-        return true;
+    private void drawAzimuth() {
+        setMarket();
+
+        double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
+                - mMap.getProjection().getVisibleRegion().nearRight.longitude;
+        size = Math.abs(size);
+
+        PolylineOptions options = new PolylineOptions();
+        options.add(mLocation);
+        options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
+        options.width(5);
+        options.color(Color.RED);
+
+        mMap.addPolyline(options);
     }
 
     /**
@@ -107,6 +106,60 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
+    public void onCameraChange(CameraPosition camera) {
+        if (mMarker != null) {
+            if (mOldZoom != camera.zoom) {
+                drawAzimuth();
+                mOldZoom = camera.zoom;
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.plugin_activity);
+
+        initMap();
+        mCalendar = Calendar.getInstance();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getSupportMenuInflater().inflate(R.menu.main, menu);
+        mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
+        return true;
+    }
+
+    @Override
+    public void onGetResultFail() {
+        // TODO: показать диалог выбора временной зоны
+        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGetResultSuccess(CalculationResult calculationResult) {
+        mAzimuth = calculationResult.getAzimuth();
+        mAltitude = calculationResult.getAltitude();
+        drawAzimuth();
+    }
+
+    @Override
+    public void onMapLongClick(LatLng location) {
+        mLocation = location;
+        calculate();
+
+    }
+
+    private void calculate() {
+        AsyncCalculator asyncCalc = new AsyncCalculator(this, this);
+        asyncCalc.setLocation(mLocation);
+        asyncCalc.setCalendar(mCalendar);
+        asyncCalc.execute();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.item_map_normal:
@@ -132,45 +185,19 @@ public class PluginActivity extends SherlockFragmentActivity implements
         return true;
     }
 
-    private void chooseDateTime() {
-        DateTimeDialog dialog = new DateTimeDialog();
-        dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
-    }
-
-    private void confirmSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
-    public void onMapLongClick(LatLng location) {
-        mLocation = location;
-
-        // TODO: переделать на получение даты и времени от пользователя
-        Calendar date = Calendar.getInstance();
-        date.set(2014, 0, 31, 14, 0);
-
-        AsyncCalculator asyncCalc = new AsyncCalculator(this, this);
-        asyncCalc.setLocation(mLocation);
-        asyncCalc.setCalendar(date);
-        asyncCalc.execute();
-
-    }
-
-    private void drawAzimuth() {
-        setMarket();
-
-        double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
-                - mMap.getProjection().getVisibleRegion().nearRight.longitude;
-        size = Math.abs(size);
-
-        PolylineOptions options = new PolylineOptions();
-        options.add(mLocation);
-        options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
-        options.width(5);
-        options.color(Color.RED);
-
-        mMap.addPolyline(options);
+    public void onStop() {
+        super.onPause();
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        Editor editor = prefs.edit();
+        editor.putInt(MAP_TYPE, mMap.getMapType());
+        editor.putFloat(CAMERA_ZOOM, mMap.getCameraPosition().zoom);
+        editor.putFloat(LATITUDE,
+                (float) mMap.getCameraPosition().target.latitude);
+        editor.putFloat(LONGITUDE,
+                (float) mMap.getCameraPosition().target.longitude);
+        editor.putBoolean(IS_SAVED, true);
+        editor.commit();
     }
 
     /**
@@ -192,26 +219,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
-    public void onCameraChange(CameraPosition camera) {
-        if (mMarker != null) {
-            if (mOldZoom != camera.zoom) {
-                drawAzimuth();
-                mOldZoom = camera.zoom;
-            }
+    public void onConfirmDateTimeHandler(Calendar calendar) {
+        mCalendar = calendar;
+        
+        if (mLocation != null) {
+            calculate();
         }
-    }
-
-    @Override
-    public void onGetResultSuccess(CalculationResult calculationResult) {
-        mAzimuth = calculationResult.getAzimuth();
-        mAltitude = calculationResult.getAltitude();
-        drawAzimuth();
-    }
-
-    @Override
-    public void onGetResultFail() {
-        // TODO: показать диалог выбора временной зоны
-        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
     }
 
 }

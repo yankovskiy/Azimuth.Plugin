@@ -20,16 +20,17 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class DateTimeDialog extends SherlockDialogFragment {
 
-    public interface OnConfirmListener {
-        public void onConfirmHandler(Calendar calendar);
+    public interface OnConfirmDateTimeListener {
+        public void onConfirmDateTimeHandler(Calendar calendar);
     }
 
-    private OnConfirmListener mCallback;
+    private OnConfirmDateTimeListener mCallback;
 
     private View mView;
     private TimePicker mTimePicker;
     private DatePicker mDatePicker;
     private TabHost mTabHost;
+    private Calendar mCalendar;
 
     public final static String DIALOG_TAG = "dateTimeDialog";
 
@@ -53,15 +54,27 @@ public class DateTimeDialog extends SherlockDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.enter();
+        
         bindObjectToResources();
         buildTabs();
         
         hideCalendar();
+        initDateTime();
         
         createDialog();
         setOnClickListener();
 
         return mAlertDialog.create();
+    }
+
+    private void initDateTime() {
+        mTimePicker.setCurrentHour(mCalendar.get(Calendar.HOUR_OF_DAY));
+        mTimePicker.setCurrentMinute(mCalendar.get(Calendar.MINUTE));
+        
+        mDatePicker.updateDate(mCalendar.get(Calendar.YEAR), 
+                mCalendar.get(Calendar.MONTH), 
+                mCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void setOnClickListener() {
@@ -71,8 +84,16 @@ public class DateTimeDialog extends SherlockDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         // TODO заполнение календаря
+                        
+                        int year = mDatePicker.getYear();
+                        int month = mDatePicker.getMonth();
+                        int day = mDatePicker.getDayOfMonth();
+                        int hour = mTimePicker.getCurrentHour();
+                        int minute = mTimePicker.getCurrentMinute();
+                        
+                        mCalendar.set(year, month, day, hour, minute);
                         try {
-                            mCallback.onConfirmHandler(null);
+                            mCallback.onConfirmDateTimeHandler(mCalendar);
                         } catch (NullPointerException e) {
                             Log.message("No have callback");
                         }
@@ -95,7 +116,7 @@ public class DateTimeDialog extends SherlockDialogFragment {
         mAlertDialog.setTitle(R.string.mapDateSelection);
     }
 
-    public void setCallBack(OnConfirmListener callback) {
+    public void setCallBack(OnConfirmDateTimeListener callback) {
         mCallback = callback;
     }
     
@@ -111,5 +132,10 @@ public class DateTimeDialog extends SherlockDialogFragment {
         tabSpec.setContent(R.id.tabDateChoose);
         tabSpec.setIndicator(getString(R.string.mapDateSelection));
         mTabHost.addTab(tabSpec);
+    }
+    
+    public void setCalendar(Calendar calendar) {
+        Log.enter();
+        mCalendar = calendar;
     }
 }

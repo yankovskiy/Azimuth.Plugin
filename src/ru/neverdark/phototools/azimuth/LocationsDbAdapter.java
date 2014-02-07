@@ -1,6 +1,8 @@
 package ru.neverdark.phototools.azimuth;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import android.content.ContentValues;
@@ -111,11 +113,31 @@ public class LocationsDbAdapter {
     /**
      * @return
      */
-    public Cursor fetchAllLocations() {
+    public List<LocationRecord> fetchAllLocations() {
         String order = KEY_LAST_ACCESS.concat(" DESC");
         String[] columns = { KEY_ROWID, KEY_LOCATION_NAME, KEY_LATITUDE,
                 KEY_LONGITUDE };
-        return mDb.query(TABLE_NAME, columns, null, null, null, null, order);
+        Cursor cursor = mDb.query(TABLE_NAME, columns, null, null, null, null,
+                order);
+
+        List<LocationRecord> list = null;
+        if (cursor.getCount() > 0) {
+            list = new ArrayList<LocationRecord>();
+            
+            while (cursor.moveToNext()) {
+                LocationRecord record = new LocationRecord();
+                record.setId(cursor.getLong(cursor.getColumnIndex(KEY_ROWID)));
+                record.setLocationName(cursor.getString(cursor.getColumnIndex(KEY_LOCATION_NAME)));
+                record.setLatitude(cursor.getDouble(cursor.getColumnIndex(KEY_LATITUDE)));
+                record.setLongitude(cursor.getDouble(cursor.getColumnIndex(KEY_LONGITUDE)));
+                record.setLastAccess(cursor.getLong(cursor.getColumnIndex(KEY_LAST_ACCESS)));
+                record.setMapType(cursor.getInt(cursor.getColumnIndex(KEY_MAP_TYPE)));
+                record.setCameraZoom(cursor.getFloat(cursor.getColumnIndex(KEY_CAMERA_ZOOM)));
+                
+                list.add(record);
+            }
+        }
+        return list;
     }
 
     /**

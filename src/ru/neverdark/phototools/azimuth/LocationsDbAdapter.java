@@ -137,6 +137,8 @@ public class LocationsDbAdapter {
                 list.add(record);
             }
         }
+        cursor.close();
+        
         return list;
     }
 

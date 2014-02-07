@@ -48,14 +48,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private static final String CAMERA_ZOOM = "zoom";
     private static final String IS_SAVED = "isSaved";
 
-    private void chooseDateTime() {
+    private void showDateTimeDialog() {
         DateTimeDialog dialog = new DateTimeDialog();
         dialog.setCalendar(mCalendar);
         dialog.setCallBack(this);
         dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
     }
 
-    private void confirmSelection() {
+    private void showSaveLocationDialog() {
         // TODO Auto-generated method stub
 
     }
@@ -175,10 +175,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             break;
         case R.id.item_confirmSelection:
-            confirmSelection();
+            showSaveLocationDialog();
             break;
         case R.id.item_dateTime:
-            chooseDateTime();
+            showDateTimeDialog();
             break;
         }
 
@@ -208,14 +208,17 @@ public class PluginActivity extends SherlockFragmentActivity implements
      *            location for setting marker
      */
     private void setMarket() {
-        // erase old marker if exist
-        if (mMarker != null) {
-            mMap.clear();
-        }
+        clearMap();
 
         // set new marker
         mMarker = mMap.addMarker(new MarkerOptions().position(mLocation));
         mMenuItemDone.setVisible(true);
+    }
+
+    private void clearMap() {
+        if (mMarker != null) {
+            mMap.clear();
+        }
     }
 
     @Override

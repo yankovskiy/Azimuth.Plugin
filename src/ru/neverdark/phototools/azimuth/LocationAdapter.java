@@ -3,9 +3,11 @@ package ru.neverdark.phototools.azimuth;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.internal.db;
+import ru.neverdark.phototools.azimuth.utils.Log;
 
 import android.content.Context;
+import android.database.SQLException;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,15 +15,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Адаптер для связки UI и БДs
+ * Адаптер для связки UI и БД
  */
 public class LocationAdapter extends ArrayAdapter<LocationRecord> {
+    private static final String EXCEPTION_MESSAGE = "Database is not open";
+    
+    /**
+     * Интерфейс для обработки клика по кнопке "удалить"
+     */
+    public interface OnClickListener {
+        public void onClick();
+    }
 
-    private class RowHolder {
+    private static class RowHolder {
         private TextView mLocationName;
-        private ImageView mLocationChangeButton;
         private ImageView mLocationRemoveButton;
     }
+
+    private OnClickListener mCallback;
     private List<LocationRecord> mObjects;
     private final int mResource;
     private final Context mContext;
@@ -37,9 +48,36 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      *            id ресурса содержащего разметку для одной записи списка
      */
     public LocationAdapter(Context context, int resource) {
-        super(context, resource);
+        this(context, resource, new ArrayList<LocationRecord>());
+    }
+
+    /**
+     * Устанавливает callback - объект реализующий интерфейс для обработки
+     * кликов
+     * 
+     * @param callback
+     *            объект
+     */
+    public void setCallback(OnClickListener callback) {
+        mCallback = callback;
+    }
+
+    /**
+     * Конструктор
+     * 
+     * @param context
+     *            контекст активити
+     * @param resource
+     *            id ресурса содержащего разметку для одной записи списка
+     * @param objects
+     *            список объектов
+     */
+    private LocationAdapter(Context context, int resource,
+            List<LocationRecord> objects) {
+        super(context, resource, objects);
         mContext = context;
         mResource = resource;
+        mObjects = objects;
     }
 
     /**
@@ -90,18 +128,18 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     public boolean deleteLocation(final int position) {
         LocationRecord record = getItem(position);
         long recordId = record.getId();
-        boolean deleteSuccessful = false;
+        boolean deleteStatus = false;
 
         if (mDbAdapter.isOpen()) {
             remove(record);
-            deleteSuccessful = mDbAdapter.deleteLocation(recordId);
+            deleteStatus = mDbAdapter.deleteLocation(recordId);
         } else {
-            // TODO бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
 
         notifyDataSetChanged();
 
-        return deleteSuccessful;
+        return deleteStatus;
     }
 
     /**
@@ -120,15 +158,48 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         RowHolder holder = null;
-        
-        // TODO реализовать функционал
+
         if (row == null) {
-
+            LayoutInflater inflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(mResource, parent, false);
+            holder = new RowHolder();
+            holder.mLocationRemoveButton = (ImageView) row
+                    .findViewById(R.id.locationRow_image_remove);
+            holder.mLocationName = (TextView) row
+                    .findViewById(R.id.locationRow_label);
+            row.setTag(holder);
         } else {
-
+            holder = (RowHolder) row.getTag();
         }
 
+        LocationRecord record = mObjects.get(position);
+        holder.mLocationName.setText(record.getLocationName());
+        
+        setClickListener(holder);
+
         return row;
+    }
+
+    /**
+     * Устанавливает обработчик клика по кнопке "удалить"
+     * 
+     * @param holder
+     *            запись - строчка
+     */
+    private void setClickListener(RowHolder holder) {
+        holder.mLocationRemoveButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    mCallback.onClick();
+                } catch (NullPointerException e) {
+                    Log.message("Callback not seted");
+                }
+            }
+
+        });
     }
 
     /**
@@ -143,7 +214,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         if (mDbAdapter.isOpen()) {
             exist = mDbAdapter.isLocationExists(locationName);
         } else {
-            // TODO бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
 
         return exist;
@@ -156,7 +227,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         if (mDbAdapter.isOpen()) {
             mObjects = mDbAdapter.fetchAllLocations();
         } else {
-            // TODO бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
     }
 
@@ -182,7 +253,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
             mObjects.clear();
             mObjects = mDbAdapter.fetchAllLocations();
         } else {
-            // TODO бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
 
         notifyDataSetChanged();
@@ -213,7 +284,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
             mObjects.clear();
             mObjects = mDbAdapter.fetchAllLocations();
         } else {
-            // TODO бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
 
         notifyDataSetChanged();

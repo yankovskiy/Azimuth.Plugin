@@ -17,7 +17,7 @@ import android.os.AsyncTask;
 
 public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
-    public interface OnCalculationResultHandle {
+    public interface OnCalculationResultListener {
         public void onGetResultSuccess(
                 SunCalculator.CalculationResult calculationResult);
 
@@ -33,9 +33,9 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     private GoogleTimeZone mGoogleTimeZone;;
 
-    private OnCalculationResultHandle mCallback;
+    private OnCalculationResultListener mCallback;
 
-    public AsyncCalculator(Context context, OnCalculationResultHandle callback) {
+    public AsyncCalculator(Context context, OnCalculationResultListener callback) {
         mContext = context;
         mGoogleTimeZone = new GoogleTimeZone(context);
         mCallback = callback;

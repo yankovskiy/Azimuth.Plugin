@@ -18,13 +18,11 @@ import android.widget.TextView;
  * Адаптер для связки UI и БД
  */
 public class LocationAdapter extends ArrayAdapter<LocationRecord> {
-    private static final String EXCEPTION_MESSAGE = "Database is not open";
-    
     /**
      * Интерфейс для обработки клика по кнопке "удалить"
      */
-    public interface OnClickListener {
-        public void onClick();
+    public interface OnRemoveClickListener {
+        public void onRemoveClickHandler();
     }
 
     private static class RowHolder {
@@ -32,7 +30,9 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         private ImageView mLocationRemoveButton;
     }
 
-    private OnClickListener mCallback;
+    private static final String EXCEPTION_MESSAGE = "Database is not open";
+
+    private OnRemoveClickListener mCallback;
     private List<LocationRecord> mObjects;
     private final int mResource;
     private final Context mContext;
@@ -49,17 +49,6 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      */
     public LocationAdapter(Context context, int resource) {
         this(context, resource, new ArrayList<LocationRecord>());
-    }
-
-    /**
-     * Устанавливает callback - объект реализующий интерфейс для обработки
-     * кликов
-     * 
-     * @param callback
-     *            объект
-     */
-    public void setCallback(OnClickListener callback) {
-        mCallback = callback;
     }
 
     /**
@@ -175,31 +164,10 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
 
         LocationRecord record = mObjects.get(position);
         holder.mLocationName.setText(record.getLocationName());
-        
-        setClickListener(holder);
+
+        setRemoveClickListener(holder);
 
         return row;
-    }
-
-    /**
-     * Устанавливает обработчик клика по кнопке "удалить"
-     * 
-     * @param holder
-     *            запись - строчка
-     */
-    private void setClickListener(RowHolder holder) {
-        holder.mLocationRemoveButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    mCallback.onClick();
-                } catch (NullPointerException e) {
-                    Log.message("Callback not seted");
-                }
-            }
-
-        });
     }
 
     /**
@@ -237,6 +205,39 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     public void openDb() {
         mDbAdapter = new LocationsDbAdapter(mContext);
         mDbAdapter.open();
+    }
+
+    /**
+     * Устанавливает callback - объект реализующий интерфейс для обработки
+     * кликов
+     * 
+     * @param callback
+     *            объект
+     */
+    public void setCallback(OnRemoveClickListener callback) {
+        mCallback = callback;
+    }
+
+    /**
+     * Устанавливает обработчик клика по кнопке "удалить"
+     * 
+     * @param holder
+     *            запись - строчка
+     */
+    private void setRemoveClickListener(RowHolder holder) {
+        holder.mLocationRemoveButton
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            mCallback.onRemoveClickHandler();
+                        } catch (NullPointerException e) {
+                            Log.message("Callback not seted");
+                        }
+                    }
+
+                });
     }
 
     /**

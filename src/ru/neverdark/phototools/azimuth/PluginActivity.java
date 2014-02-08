@@ -2,11 +2,10 @@ package ru.neverdark.phototools.azimuth;
 
 import java.util.Calendar;
 
-import ru.neverdark.phototools.azimuth.DateTimeDialog.OnConfirmDateTimeListener;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
-import ru.neverdark.phototools.azimuth.controller.AsyncCalculator.OnCalculationResultHandle;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
-import ru.neverdark.phototools.azimuth.model.SunCalculator.CalculationResult;
+import ru.neverdark.phototools.azimuth.utils.Log;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -26,11 +25,69 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class PluginActivity extends SherlockFragmentActivity implements
-        OnMapLongClickListener, OnCameraChangeListener,
-        OnCalculationResultHandle, OnConfirmDateTimeListener {
+        OnMapLongClickListener, OnCameraChangeListener {
+
+    private class CalculationResultListener implements
+            AsyncCalculator.OnCalculationResultListener {
+        @Override
+        public void onGetResultFail() {
+            // TODO: показать диалог выбора временной зоны
+            // Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onGetResultSuccess(SunCalculator.CalculationResult calculationResult) {
+            mAzimuth = calculationResult.getAzimuth();
+            mAltitude = calculationResult.getAltitude();
+            drawAzimuth();
+        }
+    }
+
+    private class ConfirmDateTimeListener implements
+            DateTimeDialog.OnConfirmDateTimeListener {
+        @Override
+        public void onConfirmDateTimeHandler(Calendar calendar) {
+            mCalendar = calendar;
+
+            if (mLocation != null) {
+                calculate();
+            }
+        }
+    }
+
+    private class LocationItemClickListener implements
+            ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
+            selectItem(position);
+        }
+    }
+
+    private class RemoveClickListener implements
+            LocationAdapter.OnRemoveClickListener {
+        @Override
+        public void onRemoveClickHandler() {
+            // TODO Auto-generated method stub
+        }
+    }
+
+    private class SaveLocationListener implements
+            SaveLocationDialog.OnSaveLocationListener {
+
+        @Override
+        public void onSaveLocationHandler(SaveLocationDialog.SaveDialogData data) {
+            // TODO Auto-generated method stub
+            
+        }
+    }
 
     private GoogleMap mMap;
     private Marker mMarker;
@@ -39,25 +96,39 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private LatLng mLocation;
     private Calendar mCalendar;
     private double mOldZoom = -1;
+    private DrawerLayout mDrawerLayout;
+    private ListView mLocationList;
+    private LocationAdapter mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mTitle;
+
+    private String mDrawerTitle;
 
     private MenuItem mMenuItemDone;
-
     private static final String MAP_TYPE = "mapType";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String CAMERA_ZOOM = "zoom";
+
     private static final String IS_SAVED = "isSaved";
 
-    private void showDateTimeDialog() {
-        DateTimeDialog dialog = new DateTimeDialog();
-        dialog.setCalendar(mCalendar);
-        dialog.setCallBack(this);
-        dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
+    private void bindObjectToResource() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLocationList = (ListView) findViewById(R.id.location_list);
     }
 
-    private void showSaveLocationDialog() {
-        // TODO Auto-generated method stub
+    private void calculate() {
+        AsyncCalculator asyncCalc = new AsyncCalculator(this,
+                new CalculationResultListener());
+        asyncCalc.setLocation(mLocation);
+        asyncCalc.setCalendar(mCalendar);
+        asyncCalc.execute();
+    }
 
+    private void clearMap() {
+        if (mMarker != null) {
+            mMap.clear();
+        }
     }
 
     private void drawAzimuth() {
@@ -119,8 +190,32 @@ public class PluginActivity extends SherlockFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plugin_activity);
+        bindObjectToResource();
 
         initMap();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.open_drawer,
+                R.string.close_drawer) {
+            @Override
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(mTitle);
+                supportInvalidateOptionsMenu(); // creates call to
+                                                // onPrepareOptionsMenu()
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(mDrawerTitle);
+                supportInvalidateOptionsMenu(); // creates call to
+                                                // onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         mCalendar = Calendar.getInstance();
     }
 
@@ -133,30 +228,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
-    public void onGetResultFail() {
-        // TODO: показать диалог выбора временной зоны
-        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onGetResultSuccess(CalculationResult calculationResult) {
-        mAzimuth = calculationResult.getAzimuth();
-        mAltitude = calculationResult.getAltitude();
-        drawAzimuth();
-    }
-
-    @Override
     public void onMapLongClick(LatLng location) {
         mLocation = location;
         calculate();
-
-    }
-
-    private void calculate() {
-        AsyncCalculator asyncCalc = new AsyncCalculator(this, this);
-        asyncCalc.setLocation(mLocation);
-        asyncCalc.setCalendar(mCalendar);
-        asyncCalc.execute();
     }
 
     @Override
@@ -186,6 +260,19 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
+    public void onResume() {
+        Log.enter();
+        super.onResume();
+        mAdapter = new LocationAdapter(this, R.layout.location_row);
+        mAdapter.setCallback(new RemoveClickListener());
+        mAdapter.openDb();
+        mAdapter.loadData();
+
+        mLocationList.setAdapter(mAdapter);
+        mLocationList.setOnItemClickListener(new LocationItemClickListener());
+    }
+
+    @Override
     public void onStop() {
         super.onPause();
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
@@ -198,6 +285,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 (float) mMap.getCameraPosition().target.longitude);
         editor.putBoolean(IS_SAVED, true);
         editor.commit();
+
+        mAdapter.closeDb();
+        mAdapter.clear();
+        mAdapter = null;
+    }
+
+    public void selectItem(int position) {
+        // TODO Auto-generated method stub
+
     }
 
     /**
@@ -215,19 +311,17 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mMenuItemDone.setVisible(true);
     }
 
-    private void clearMap() {
-        if (mMarker != null) {
-            mMap.clear();
-        }
+    private void showDateTimeDialog() {
+        DateTimeDialog dialog = new DateTimeDialog();
+        dialog.setCalendar(mCalendar);
+        dialog.setCallBack(new ConfirmDateTimeListener());
+        dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
     }
 
-    @Override
-    public void onConfirmDateTimeHandler(Calendar calendar) {
-        mCalendar = calendar;
-        
-        if (mLocation != null) {
-            calculate();
-        }
+    private void showSaveLocationDialog() {
+        SaveLocationDialog dialog = new SaveLocationDialog();
+        dialog.setCallback(new SaveLocationListener());
+        dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);
     }
 
 }

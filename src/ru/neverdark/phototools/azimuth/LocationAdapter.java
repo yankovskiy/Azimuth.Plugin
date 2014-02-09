@@ -61,7 +61,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @param objects
      *            список объектов
      */
-    private LocationAdapter(Context context, int resource,
+    public LocationAdapter(Context context, int resource,
             List<LocationRecord> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -73,6 +73,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * Закрывает соединиение с базой данных
      */
     public void closeDb() {
+        Log.enter();
         if (mDbAdapter != null) {
             mDbAdapter.close();
             mDbAdapter = null;
@@ -95,6 +96,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      */
     public void createLocation(String locationName, double latitude,
             double longitude, int mapType, float cameraZoom) {
+        Log.enter();
         if (mDbAdapter.isOpen()) {
             mDbAdapter.createLocation(locationName, latitude, longitude,
                     mapType, cameraZoom);
@@ -115,6 +117,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @return true в случае успешного удаления записи
      */
     public boolean deleteLocation(final int position) {
+        Log.enter();
         LocationRecord record = getItem(position);
         long recordId = record.getId();
         boolean deleteStatus = false;
@@ -138,13 +141,15 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      *            позиция элемента в списке
      * @return id записи в базе
      */
-    private long getIdByPosition(final int position) {
+    public long getIdByPosition(final int position) {
+        Log.enter();
         LocationRecord record = getItem(position);
         return record.getId();
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        Log.enter();
         View row = convertView;
         RowHolder holder = null;
 
@@ -178,6 +183,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @return true если местоположение существует
      */
     public boolean isLocationExists(String locationName) {
+        Log.enter();
         boolean exist = false;
         if (mDbAdapter.isOpen()) {
             exist = mDbAdapter.isLocationExists(locationName);
@@ -192,17 +198,20 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * Загружает данные с базы данных
      */
     public void loadData() {
+        Log.enter();
         if (mDbAdapter.isOpen()) {
             mObjects = mDbAdapter.fetchAllLocations();
         } else {
             throw new SQLException(EXCEPTION_MESSAGE);
         }
+        notifyDataSetChanged();
     }
 
     /**
      * Открывает соединение с базой данных
      */
     public void openDb() {
+        Log.enter();
         mDbAdapter = new LocationsDbAdapter(mContext);
         mDbAdapter.open();
     }
@@ -247,6 +256,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      *            позиция выбранного элемента в списке
      */
     public void updateLastAccessTime(final int position) {
+        Log.enter();
         long recordId = getIdByPosition(position);
 
         if (mDbAdapter.isOpen()) {
@@ -263,8 +273,8 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     /**
      * Изменяет сохраненное место в базе данных
      * 
-     * @param position
-     *            позиция записи в списке
+     * @param recordId
+     *            id записи в базе
      * @param locationName
      *            название местоположения
      * @param latitude
@@ -276,10 +286,10 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @param cameraZoom
      *            зум камеры
      */
-    public void updateLocation(final int position, String locationName,
+    public void updateLocation(final long recordId, String locationName,
             double latitude, double longitude, int mapType, float cameraZoom) {
+        Log.enter();
         if (mDbAdapter.isOpen()) {
-            long recordId = getIdByPosition(position);
             mDbAdapter.updateLocation(recordId, locationName, latitude,
                     longitude, mapType, cameraZoom);
             mObjects.clear();

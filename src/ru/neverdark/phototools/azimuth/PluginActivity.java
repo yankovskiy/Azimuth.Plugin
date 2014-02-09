@@ -1,6 +1,8 @@
 package ru.neverdark.phototools.azimuth;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
@@ -9,6 +11,7 @@ import ru.neverdark.phototools.azimuth.utils.Log;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -23,12 +26,14 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class PluginActivity extends SherlockFragmentActivity implements
@@ -43,7 +48,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
         }
 
         @Override
-        public void onGetResultSuccess(SunCalculator.CalculationResult calculationResult) {
+        public void onGetResultSuccess(
+                SunCalculator.CalculationResult calculationResult) {
             mAzimuth = calculationResult.getAzimuth();
             mAltitude = calculationResult.getAltitude();
             drawAzimuth();
@@ -81,11 +87,27 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
     private class SaveLocationListener implements
             SaveLocationDialog.OnSaveLocationListener {
-
         @Override
         public void onSaveLocationHandler(SaveLocationDialog.SaveDialogData data) {
-            // TODO Auto-generated method stub
-            
+            final int actionType = data.getActionType();
+            switch (actionType) {
+            case SaveLocationDialog.ACTION_TYPE_NEW:
+                mAdapter.createLocation(data.getLocationRecord()
+                        .getLocationName(), data.getLocationRecord()
+                        .getLatitude(),
+                        data.getLocationRecord().getLongitude(), data
+                                .getLocationRecord().getMapType(), data
+                                .getLocationRecord().getCameraZoom());
+                break;
+            case SaveLocationDialog.ACTION_TYPE_EDIT:
+                mAdapter.updateLocation(data.getLocationRecord().getId(), data
+                        .getLocationRecord().getLocationName(), data
+                        .getLocationRecord().getLatitude(), data
+                        .getLocationRecord().getLongitude(), data
+                        .getLocationRecord().getMapType(), data
+                        .getLocationRecord().getCameraZoom());
+                break;
+            }
         }
     }
 
@@ -100,9 +122,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private ListView mLocationList;
     private LocationAdapter mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mTitle;
+    private String mTitle = "1";
+    private final SaveLocationDialog.SaveDialogData mSaveDialogData;
 
-    private String mDrawerTitle;
+    private String mDrawerTitle = "2";
 
     private MenuItem mMenuItemDone;
     private static final String MAP_TYPE = "mapType";
@@ -115,6 +138,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private void bindObjectToResource() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLocationList = (ListView) findViewById(R.id.location_list);
+    }
+
+    public PluginActivity() {
+        mSaveDialogData = new SaveLocationDialog.SaveDialogData();
+        mSaveDialogData.setLocationRecord(new LocationRecord());
     }
 
     private void calculate() {
@@ -204,19 +232,25 @@ public class PluginActivity extends SherlockFragmentActivity implements
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
                 supportInvalidateOptionsMenu(); // creates call to
-                                                // onPrepareOptionsMenu()
+                // onPrepareOptionsMenu()
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
                 supportInvalidateOptionsMenu(); // creates call to
-                                                // onPrepareOptionsMenu()
+                // onPrepareOptionsMenu()
             }
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mCalendar = Calendar.getInstance();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -228,7 +262,20 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onMapLongClick(LatLng location) {
+        if (mLocation == null) {
+            mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_NEW);
+        } else {
+            mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
+        }
+
         mLocation = location;
         calculate();
     }
@@ -236,6 +283,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case android.R.id.home:
+            if (mDrawerLayout.isDrawerOpen(mLocationList)) {
+                mDrawerLayout.closeDrawer(mLocationList);
+            } else {
+                mDrawerLayout.openDrawer(mLocationList);
+            }
+            break;
         case R.id.item_map_normal:
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             break;
@@ -264,11 +318,31 @@ public class PluginActivity extends SherlockFragmentActivity implements
         Log.enter();
         super.onResume();
         mAdapter = new LocationAdapter(this, R.layout.location_row);
+        
+        
+        // start test
+        /*
+        LocationRecord loc1 = new LocationRecord();
+        loc1.setId(1);
+        loc1.setLastAccess(0);
+        loc1.setCameraZoom(0);
+        loc1.setLatitude(0);
+        loc1.setLongitude(0);
+        loc1.setMapType(1);
+        loc1.setLocationName("1");
+        List<LocationRecord> list = new ArrayList<LocationRecord>();
+        list.add(loc1);
+        LocationAdapter adapter = new LocationAdapter(this, R.layout.location_row, list);
+        mLocationList.setAdapter(adapter);
+        */
+        // end test
+        
         mAdapter.setCallback(new RemoveClickListener());
         mAdapter.openDb();
         mAdapter.loadData();
 
         mLocationList.setAdapter(mAdapter);
+        
         mLocationList.setOnItemClickListener(new LocationItemClickListener());
     }
 
@@ -292,8 +366,21 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     public void selectItem(int position) {
-        // TODO Auto-generated method stub
+        LocationRecord record = mAdapter.getItem(position);
+        mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
+        mSaveDialogData.setLocationRecord(record);
+        mLocation = new LatLng(record.getLatitude(), record.getLongitude());
 
+        // move camera to saved position
+        CameraPosition currentPosition = new CameraPosition.Builder()
+                .target(mLocation).zoom(record.getCameraZoom()).build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
+
+        // sets saved zoom
+        mMap.setMapType(record.getMapType());
+
+        // calculate azimuth
+        calculate();
     }
 
     /**
@@ -319,8 +406,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     private void showSaveLocationDialog() {
-        SaveLocationDialog dialog = new SaveLocationDialog();
+        mSaveDialogData.getLocationRecord().setLatitude(mLocation.latitude);
+        mSaveDialogData.getLocationRecord().setLongitude(mLocation.longitude);
+        mSaveDialogData.getLocationRecord().setMapType(mMap.getMapType());
+        mSaveDialogData.getLocationRecord().setCameraZoom(
+                mMap.getCameraPosition().zoom);
+
+        SaveLocationDialog dialog = SaveLocationDialog.getInstance(this);
         dialog.setCallback(new SaveLocationListener());
+        dialog.setSaveDialogData(mSaveDialogData);
         dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);
     }
 

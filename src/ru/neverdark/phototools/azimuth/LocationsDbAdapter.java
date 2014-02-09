@@ -115,24 +115,32 @@ public class LocationsDbAdapter {
      */
     public List<LocationRecord> fetchAllLocations() {
         String order = KEY_LAST_ACCESS.concat(" DESC");
-        String[] columns = { KEY_ROWID, KEY_LOCATION_NAME, KEY_LATITUDE,
-                KEY_LONGITUDE };
-        Cursor cursor = mDb.query(TABLE_NAME, columns, null, null, null, null,
+
+        Cursor cursor = mDb.query(TABLE_NAME, null, null, null, null, null,
                 order);
 
         List<LocationRecord> list = null;
         if (cursor.getCount() > 0) {
             list = new ArrayList<LocationRecord>();
             
+            int idColumn = cursor.getColumnIndex(KEY_ROWID);
+            int locationNameColumn = cursor.getColumnIndex(KEY_LOCATION_NAME);
+            int latitudeColumn = cursor.getColumnIndex(KEY_LATITUDE);
+            int longitudeColumn = cursor.getColumnIndex(KEY_LONGITUDE);
+            int lastAccessColumn = cursor.getColumnIndex(KEY_LAST_ACCESS);
+            int mapTypeColumn = cursor.getColumnIndex(KEY_MAP_TYPE);
+            int cameraZoomColumn = cursor.getColumnIndex(KEY_CAMERA_ZOOM);
+
+            
             while (cursor.moveToNext()) {
                 LocationRecord record = new LocationRecord();
-                record.setId(cursor.getLong(cursor.getColumnIndex(KEY_ROWID)));
-                record.setLocationName(cursor.getString(cursor.getColumnIndex(KEY_LOCATION_NAME)));
-                record.setLatitude(cursor.getDouble(cursor.getColumnIndex(KEY_LATITUDE)));
-                record.setLongitude(cursor.getDouble(cursor.getColumnIndex(KEY_LONGITUDE)));
-                record.setLastAccess(cursor.getLong(cursor.getColumnIndex(KEY_LAST_ACCESS)));
-                record.setMapType(cursor.getInt(cursor.getColumnIndex(KEY_MAP_TYPE)));
-                record.setCameraZoom(cursor.getFloat(cursor.getColumnIndex(KEY_CAMERA_ZOOM)));
+                record.setId(cursor.getLong(idColumn));
+                record.setLocationName(cursor.getString(locationNameColumn));
+                record.setLatitude(cursor.getDouble(latitudeColumn));
+                record.setLongitude(cursor.getDouble(longitudeColumn));
+                record.setLastAccess(cursor.getLong(lastAccessColumn));
+                record.setMapType(cursor.getInt(mapTypeColumn));
+                record.setCameraZoom(cursor.getFloat(cameraZoomColumn));
                 
                 list.add(record);
             }

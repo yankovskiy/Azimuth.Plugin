@@ -20,4 +20,8 @@
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
     
+    <string name="saveLocationDialog_locationName">Location name</string>
+    <string name="saveLocationDialog_title">Save location</string>
+    <string name="saveLocationDialog_message">Enter a location name</string>
+    
 </resources>

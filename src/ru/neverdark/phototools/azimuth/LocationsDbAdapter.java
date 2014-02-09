@@ -1,6 +1,5 @@
 package ru.neverdark.phototools.azimuth;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -111,17 +110,16 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @return
+     * 
      */
-    public List<LocationRecord> fetchAllLocations() {
+    public void fetchAllLocations(List<LocationRecord> list) {
         String order = KEY_LAST_ACCESS.concat(" DESC");
 
         Cursor cursor = mDb.query(TABLE_NAME, null, null, null, null, null,
                 order);
 
-        List<LocationRecord> list = null;
         if (cursor.getCount() > 0) {
-            list = new ArrayList<LocationRecord>();
+            list.clear();
             
             int idColumn = cursor.getColumnIndex(KEY_ROWID);
             int locationNameColumn = cursor.getColumnIndex(KEY_LOCATION_NAME);
@@ -146,8 +144,6 @@ public class LocationsDbAdapter {
             }
         }
         cursor.close();
-        
-        return list;
     }
 
     /**

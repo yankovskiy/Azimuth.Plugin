@@ -17,4 +17,6 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <color name="uva_color">#33b5e5</color>
+    <color name="default_color">#111</color>
 </resources>

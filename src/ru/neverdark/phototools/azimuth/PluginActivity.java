@@ -379,6 +379,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
         // sets saved zoom
         mMap.setMapType(record.getMapType());
 
+        mLocationList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mLocationList);
         // calculate azimuth
         calculate();
     }

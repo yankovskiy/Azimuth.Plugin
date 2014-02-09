@@ -61,7 +61,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @param objects
      *            список объектов
      */
-    public LocationAdapter(Context context, int resource,
+    private LocationAdapter(Context context, int resource,
             List<LocationRecord> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -100,8 +100,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         if (mDbAdapter.isOpen()) {
             mDbAdapter.createLocation(locationName, latitude, longitude,
                     mapType, cameraZoom);
-            mObjects.clear();
-            mObjects = mDbAdapter.fetchAllLocations();
+            mDbAdapter.fetchAllLocations(mObjects);
         } else {
             // бросить исключение
         }
@@ -200,7 +199,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     public void loadData() {
         Log.enter();
         if (mDbAdapter.isOpen()) {
-            mObjects = mDbAdapter.fetchAllLocations();
+            mDbAdapter.fetchAllLocations(mObjects);
         } else {
             throw new SQLException(EXCEPTION_MESSAGE);
         }
@@ -261,8 +260,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
 
         if (mDbAdapter.isOpen()) {
             mDbAdapter.udateLastAccessTime(recordId);
-            mObjects.clear();
-            mObjects = mDbAdapter.fetchAllLocations();
+            mDbAdapter.fetchAllLocations(mObjects);
         } else {
             throw new SQLException(EXCEPTION_MESSAGE);
         }
@@ -292,8 +290,8 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         if (mDbAdapter.isOpen()) {
             mDbAdapter.updateLocation(recordId, locationName, latitude,
                     longitude, mapType, cameraZoom);
-            mObjects.clear();
-            mObjects = mDbAdapter.fetchAllLocations();
+            
+            mDbAdapter.fetchAllLocations(mObjects);
         } else {
             throw new SQLException(EXCEPTION_MESSAGE);
         }

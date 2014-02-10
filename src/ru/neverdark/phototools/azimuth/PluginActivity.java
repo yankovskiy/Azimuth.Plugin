@@ -92,12 +92,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
             final int actionType = data.getActionType();
             switch (actionType) {
             case SaveLocationDialog.ACTION_TYPE_NEW:
-                mAdapter.createLocation(data.getLocationRecord()
+                long id = mAdapter.createLocation(data.getLocationRecord()
                         .getLocationName(), data.getLocationRecord()
                         .getLatitude(),
                         data.getLocationRecord().getLongitude(), data
                                 .getLocationRecord().getMapType(), data
                                 .getLocationRecord().getCameraZoom());
+                mSaveDialogData.getLocationRecord().setId(id);
                 break;
             case SaveLocationDialog.ACTION_TYPE_EDIT:
                 mAdapter.updateLocation(data.getLocationRecord().getId(), data
@@ -108,6 +109,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
                         .getLocationRecord().getCameraZoom());
                 break;
             }
+            mLocationList.setItemChecked(0, true);
         }
     }
 
@@ -231,15 +233,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
             @Override
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
-                supportInvalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
-                supportInvalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
             }
         };
 
@@ -318,31 +316,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
         Log.enter();
         super.onResume();
         mAdapter = new LocationAdapter(this, R.layout.location_row);
-        
-        
-        // start test
-        /*
-        LocationRecord loc1 = new LocationRecord();
-        loc1.setId(1);
-        loc1.setLastAccess(0);
-        loc1.setCameraZoom(0);
-        loc1.setLatitude(0);
-        loc1.setLongitude(0);
-        loc1.setMapType(1);
-        loc1.setLocationName("1");
-        List<LocationRecord> list = new ArrayList<LocationRecord>();
-        list.add(loc1);
-        LocationAdapter adapter = new LocationAdapter(this, R.layout.location_row, list);
-        mLocationList.setAdapter(adapter);
-        */
-        // end test
-        
+
         mAdapter.setCallback(new RemoveClickListener());
         mAdapter.openDb();
         mAdapter.loadData();
 
         mLocationList.setAdapter(mAdapter);
-        
+
         mLocationList.setOnItemClickListener(new LocationItemClickListener());
     }
 

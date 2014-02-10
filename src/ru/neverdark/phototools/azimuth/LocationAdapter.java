@@ -93,12 +93,14 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      *            тип карты
      * @param cameraZoom
      *            зум камеры
+     * @return id добавленной записи
      */
-    public void createLocation(String locationName, double latitude,
+    public long createLocation(String locationName, double latitude,
             double longitude, int mapType, float cameraZoom) {
         Log.enter();
+        long id = 0;
         if (mDbAdapter.isOpen()) {
-            mDbAdapter.createLocation(locationName, latitude, longitude,
+            id = mDbAdapter.createLocation(locationName, latitude, longitude,
                     mapType, cameraZoom);
             mDbAdapter.fetchAllLocations(mObjects);
         } else {
@@ -106,6 +108,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         }
 
         notifyDataSetChanged();
+        return id;
     }
 
     /**
@@ -290,7 +293,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         if (mDbAdapter.isOpen()) {
             mDbAdapter.updateLocation(recordId, locationName, latitude,
                     longitude, mapType, cameraZoom);
-            
+
             mDbAdapter.fetchAllLocations(mObjects);
         } else {
             throw new SQLException(EXCEPTION_MESSAGE);

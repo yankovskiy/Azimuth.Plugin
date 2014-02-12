@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ru.neverdark.phototools.azimuth.DeleteConfirmationDialog.OnDeleteConfirmationListener;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.utils.Log;
@@ -38,6 +39,14 @@ import android.widget.ListView;
 
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener {
+
+    private class DeleteConfirmationListener implements
+            OnDeleteConfirmationListener {
+        @Override
+        public void onDeleteConfirmationHandler(LocationRecord locationRecord) {
+            mAdapter.deleteLocation(locationRecord);
+        }
+    }
 
     private class CalculationResultListener implements
             AsyncCalculator.OnCalculationResultListener {
@@ -80,8 +89,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private class RemoveClickListener implements
             LocationAdapter.OnRemoveClickListener {
         @Override
-        public void onRemoveClickHandler() {
-            // TODO Auto-generated method stub
+        public void onRemoveClickHandler(final int position) {
+            LocationRecord record = mAdapter.getItem(position);
+            DeleteConfirmationDialog dialog = DeleteConfirmationDialog.getInstance(mContext);
+            dialog.setLocationRecord(record);
+            dialog.setCallback(new DeleteConfirmationListener());
+            dialog.show(getSupportFragmentManager(), DeleteConfirmationDialog.DIALOG_TAG);
         }
     }
 
@@ -99,6 +112,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
                                 .getLocationRecord().getMapType(), data
                                 .getLocationRecord().getCameraZoom());
                 mSaveDialogData.getLocationRecord().setId(id);
+                mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
                 break;
             case SaveLocationDialog.ACTION_TYPE_EDIT:
                 mAdapter.updateLocation(data.getLocationRecord().getId(), data
@@ -126,6 +140,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle = "1";
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
+    private Context mContext;
 
     private String mDrawerTitle = "2";
 
@@ -243,6 +258,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mCalendar = Calendar.getInstance();
+        mContext = this;
     }
 
     @Override
@@ -327,7 +343,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
-    public void onStop() {
+    public void onPause() {
         super.onPause();
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
@@ -359,7 +375,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
         // sets saved zoom
         mMap.setMapType(record.getMapType());
 
-        mLocationList.setItemChecked(position, true);
+        mAdapter.updateLastAccessTime(position);
+        mLocationList.setItemChecked(0, true);
         mDrawerLayout.closeDrawer(mLocationList);
         // calculate azimuth
         calculate();
@@ -394,7 +411,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mSaveDialogData.getLocationRecord().setCameraZoom(
                 mMap.getCameraPosition().zoom);
 
-        SaveLocationDialog dialog = SaveLocationDialog.getInstance(this);
+        SaveLocationDialog dialog = SaveLocationDialog.getInstance(mContext);
         dialog.setCallback(new SaveLocationListener());
         dialog.setSaveDialogData(mSaveDialogData);
         dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);

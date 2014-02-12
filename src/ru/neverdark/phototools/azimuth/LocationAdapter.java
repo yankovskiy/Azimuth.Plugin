@@ -22,7 +22,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * Интерфейс для обработки клика по кнопке "удалить"
      */
     public interface OnRemoveClickListener {
-        public void onRemoveClickHandler();
+        public void onRemoveClickHandler(final int position);
     }
 
     private static class RowHolder {
@@ -114,13 +114,13 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     /**
      * Удаляет выбранную запись из локального списка и из базы данных
      * 
-     * @param position
-     *            позиция выбранного элемента в списке
+     * @param record
+     *            объект содержащий запись для удаления
+     * 
      * @return true в случае успешного удаления записи
      */
-    public boolean deleteLocation(final int position) {
+    public boolean deleteLocation(LocationRecord record) {
         Log.enter();
-        LocationRecord record = getItem(position);
         long recordId = record.getId();
         boolean deleteStatus = false;
 
@@ -172,7 +172,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         LocationRecord record = mObjects.get(position);
         holder.mLocationName.setText(record.getLocationName());
 
-        setRemoveClickListener(holder);
+        setRemoveClickListener(holder, position);
 
         return row;
     }
@@ -235,14 +235,14 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
      * @param holder
      *            запись - строчка
      */
-    private void setRemoveClickListener(RowHolder holder) {
+    private void setRemoveClickListener(RowHolder holder, final int position) {
         holder.mLocationRemoveButton
                 .setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
                         try {
-                            mCallback.onRemoveClickHandler();
+                            mCallback.onRemoveClickHandler(position);
                         } catch (NullPointerException e) {
                             Log.message("Callback not seted");
                         }

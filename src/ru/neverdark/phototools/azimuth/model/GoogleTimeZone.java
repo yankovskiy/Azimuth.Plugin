@@ -16,6 +16,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -83,7 +86,11 @@ public class GoogleTimeZone {
         String url = String.format(Locale.US, url_format, mLocation.latitude,
                 mLocation.longitude, timestamp);
 
-        HttpClient client = new DefaultHttpClient();
+        HttpParams params = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(params, 4000); // 4 sec
+        HttpConnectionParams.setSoTimeout(params, 1000); // 1 sec
+        
+        HttpClient client = new DefaultHttpClient(params);
         HttpGet httpGet = new HttpGet(url);
         try {
             HttpResponse response = client.execute(httpGet);
@@ -101,10 +108,10 @@ public class GoogleTimeZone {
             } else {
                 Log.message("Download fail");
             }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // request new address for object
+            // creating new object is a faster then setLength(0)
+            builder = new StringBuilder();
         }
         return builder.toString();
     }

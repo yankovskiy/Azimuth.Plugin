@@ -115,6 +115,10 @@ public class SaveLocationDialog extends SherlockDialogFragment {
         createDialog();
         setOnClickListener();
         
+        if (mData != null && mData.getActionType() == ACTION_TYPE_EDIT) {
+            mEditTextLocationName.setText(mData.getLocationRecord().getLocationName());
+        }
+        
         return mAlertDialog.create();
     }
 

@@ -24,4 +24,7 @@
     <string name="saveLocationDialog_title">Save location</string>
     <string name="saveLocationDialog_message">Enter a location name</string>
     
+    <string name="deleteConfirmationDialog_title">Delete confirmation</string>
+    <string name="deleteConfirmationDialog_message">Do you really wish remove the record \"%s\"?</string>
+    
 </resources>

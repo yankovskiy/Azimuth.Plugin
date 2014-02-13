@@ -92,6 +92,8 @@ public class GoogleTimeZone {
         
         HttpClient client = new DefaultHttpClient(params);
         HttpGet httpGet = new HttpGet(url);
+        httpGet.setParams(params);
+        
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();

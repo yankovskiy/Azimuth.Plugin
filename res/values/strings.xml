@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PhotoTools-Azimuth</string>
+    <string name="app_name">Azimuth plugin</string>
     <string name="progress_dialog_title">Calculatation</string>
     <string name="progress_dialog_message">Calculation in progress. Please wait</string>
 
@@ -26,6 +26,8 @@
     
     <string name="deleteConfirmationDialog_title">Delete confirmation</string>
     <string name="deleteConfirmationDialog_message">Do you really wish remove the record \"%s\"?</string>
+    
+    <string name="drawer_title">Select saved location</string>
     
     <string name="settings">Settings</string> 
     

@@ -1,9 +1,6 @@
 package ru.neverdark.phototools.azimuth;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
 import ru.neverdark.phototools.azimuth.DeleteConfirmationDialog.OnDeleteConfirmationListener;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
@@ -34,7 +31,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class PluginActivity extends SherlockFragmentActivity implements
@@ -124,6 +120,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 break;
             }
             mLocationList.setItemChecked(0, true);
+            setTitle(data.getLocationRecord().getLocationName());
         }
     }
 
@@ -138,13 +135,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private ListView mLocationList;
     private LocationAdapter mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mTitle = "1";
+    private CharSequence mTitle;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
     private Context mContext;
+    private boolean mIsMenuItemDoneVisible;
 
-    private String mDrawerTitle = "2";
+    private CharSequence mDrawerTitle;
 
     private MenuItem mMenuItemDone;
+    private MenuItem mMenuItemDateTime;
     private static final String MAP_TYPE = "mapType";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
@@ -160,6 +159,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     public PluginActivity() {
         mSaveDialogData = new SaveLocationDialog.SaveDialogData();
         mSaveDialogData.setLocationRecord(new LocationRecord());
+        mIsMenuItemDoneVisible = false;
     }
 
     private void calculate() {
@@ -242,16 +242,21 @@ public class PluginActivity extends SherlockFragmentActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        mTitle = getTitle();
+        mDrawerTitle = getString(R.string.drawer_title);
+        
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.open_drawer,
                 R.string.close_drawer) {
             @Override
             public void onDrawerClosed(View view) {
+                supportInvalidateOptionsMenu();
                 getSupportActionBar().setTitle(mTitle);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
+                supportInvalidateOptionsMenu();
                 getSupportActionBar().setTitle(mDrawerTitle);
             }
         };
@@ -268,10 +273,20 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLocationList);
+        mMenuItemDateTime.setVisible(!drawerOpen);
+        mMenuItemDone.setVisible(!drawerOpen && mIsMenuItemDoneVisible);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.main, menu);
         mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
+        mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         return true;
     }
 
@@ -378,8 +393,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mAdapter.updateLastAccessTime(position);
         mLocationList.setItemChecked(0, true);
         mDrawerLayout.closeDrawer(mLocationList);
+        setTitle(record.getLocationName());
         // calculate azimuth
         calculate();
+    }
+    
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
     }
 
     /**
@@ -395,6 +417,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         // set new marker
         mMarker = mMap.addMarker(new MarkerOptions().position(mLocation));
         mMenuItemDone.setVisible(true);
+        mIsMenuItemDoneVisible = true;
     }
 
     private void showDateTimeDialog() {

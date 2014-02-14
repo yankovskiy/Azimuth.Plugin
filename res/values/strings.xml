@@ -29,13 +29,14 @@
     
     <string name="drawer_title">Select saved location</string>
     
-    <string name="settings">Settings</string> 
-    
     <string name="settings_24HourMode_title">24 hour mode</string>
     <string name="settings_24HourMode_message">Sets 24 hour mode</string>
     
     <string name="settings_internetTimeZone_title">Internet time zone</string>
     <string name="settings_internetTimeZone_message">Gets a timezone from internet servers</string>
     
-    <string name="menu_item_TimeZone">Time zone</string>
+    <string name="menu_item_timeZone">Time zone</string>
+    <string name="menu_item_rate">Rate</string>
+    <string name="menu_item_feedback">Feedback</string>
+    <string name="menu_item_settings">Settings</string> 
 </resources>

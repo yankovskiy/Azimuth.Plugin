@@ -21,10 +21,30 @@
         android:title="@string/mapType_satellite">
     </item>
     <item
+        android:id="@+id/item_timeZone"
+        android:showAsAction="never"
+        android:title="@string/menu_item_timeZone">
+    </item>
+    <item
+        android:id="@+id/item_settings"
+        android:showAsAction="never"
+        android:title="@string/menu_item_settings">
+    </item>
+    <item
+        android:id="@+id/item_rate"
+        android:showAsAction="never"
+        android:title="@string/menu_item_rate">
+    </item>
+    <item
+        android:id="@+id/item_feedback"
+        android:showAsAction="never"
+        android:title="@string/menu_item_feedback">
+    </item>
+    <item
         android:id="@+id/item_dateTime"
         android:icon="@drawable/ic_action_go_to_today"
-        android:title="@string/mapDateSelection"
-        android:showAsAction="always">
+        android:showAsAction="always"
+        android:title="@string/mapDateSelection">
     </item>
     <item
         android:id="@+id/item_confirmSelection"

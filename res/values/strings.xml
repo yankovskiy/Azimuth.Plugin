@@ -27,4 +27,13 @@
     <string name="deleteConfirmationDialog_title">Delete confirmation</string>
     <string name="deleteConfirmationDialog_message">Do you really wish remove the record \"%s\"?</string>
     
+    <string name="settings">Settings</string> 
+    
+    <string name="settings_24HourMode_title">24 hour mode</string>
+    <string name="settings_24HourMode_message">Sets 24 hour mode</string>
+    
+    <string name="settings_internetTimeZone_title">Internet time zone</string>
+    <string name="settings_internetTimeZone_message">Gets a timezone from internet servers</string>
+    
+    <string name="menu_item_TimeZone">Time zone</string>
 </resources>

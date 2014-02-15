@@ -68,29 +68,29 @@ public class SaveLocationDialog extends SherlockDialogFragment {
             mLocationRecord = record;
         }
     }
-    public static SaveLocationDialog getInstance(Context context) {
-        SaveLocationDialog dialog = new SaveLocationDialog();
-        dialog.mContext = context;
-        return dialog;
-    }
-    private AlertDialog.Builder mAlertDialog;
-
-    private View mView;
-    private EditText mEditTextLocationName;
-
-    private Context mContext;
-
-    public static final int ACTION_TYPE_NEW = 0;
-
     public static final int ACTION_TYPE_EDIT = 1;
+    public static final int ACTION_TYPE_NEW = 0;
 
     /**
      * 
      */
     public static final String DIALOG_TAG = "saveLocationDialog";
+    public static SaveLocationDialog getInstance(Context context) {
+        SaveLocationDialog dialog = new SaveLocationDialog();
+        dialog.mContext = context;
+        return dialog;
+    }
+
+    private AlertDialog.Builder mAlertDialog;
+
     private OnSaveLocationListener mCallback;
 
+    private Context mContext;
+
     private SaveDialogData mData;
+    private EditText mEditTextLocationName;
+
+    private View mView;
 
     private void bindObjectToResource() {
         mView = View.inflate(mContext, R.layout.save_location_dialog, null);

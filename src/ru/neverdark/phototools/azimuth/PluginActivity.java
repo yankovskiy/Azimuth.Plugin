@@ -1,7 +1,10 @@
 package ru.neverdark.phototools.azimuth;
 
 import java.util.Calendar;
+import java.util.TimeZone;
+
 import ru.neverdark.phototools.azimuth.DeleteConfirmationDialog.OnDeleteConfirmationListener;
+import ru.neverdark.phototools.azimuth.TimeZoneSelectionDialog.OnTimeZoneSelectionListener;
 import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.utils.Log;
@@ -128,37 +131,51 @@ public class PluginActivity extends SherlockFragmentActivity implements
         }
     }
 
-    private GoogleMap mMap;
-    private Marker mMarker;
-    private double mAzimuth;
-    private double mAltitude;
-    private LatLng mLocation;
-    private Calendar mCalendar;
-    private double mOldZoom = -1;
-    private DrawerLayout mDrawerLayout;
-    private ListView mLocationList;
-    private LocationAdapter mAdapter;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mTitle;
-    private final SaveLocationDialog.SaveDialogData mSaveDialogData;
-    private Context mContext;
-    private boolean mIsMenuItemDoneVisible;
+    private class TimeZoneSelectionListener implements
+            OnTimeZoneSelectionListener {
+        @Override
+        public void onTimeZoneSelectionHandler(TimeZone timeZone) {
+            mTimeZone = timeZone;
+            if (mMarker != null) {
+                calculate();
+            }
+        }
+    }
 
-    private CharSequence mDrawerTitle;
-
-    private MenuItem mMenuItemDone;
-    private MenuItem mMenuItemDateTime;
-    private static final String MAP_TYPE = "mapType";
+    private static final String CAMERA_ZOOM = "zoom";
+    private static final String IS_SAVED = "isSaved";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
-    private static final String CAMERA_ZOOM = "zoom";
+    private static final String MAP_TYPE = "mapType";
+    private LocationAdapter mAdapter;
+    private double mAltitude;
+    private double mAzimuth;
+    private Calendar mCalendar;
+    private Context mContext;
+    private DrawerLayout mDrawerLayout;
+    private CharSequence mDrawerTitle;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private boolean mIsMenuItemDoneVisible;
+    private LatLng mLocation;
+    private ListView mLocationList;
 
-    private static final String IS_SAVED = "isSaved";
+    private GoogleMap mMap;
+
+    private Marker mMarker;
+    private MenuItem mMenuItemDateTime;
+    private MenuItem mMenuItemDone;
+    private double mOldZoom = -1;
+    private final SaveLocationDialog.SaveDialogData mSaveDialogData;
+    private TimeZone mTimeZone;
+
+    private CharSequence mTitle;
+    private MenuItem mMenuItemTimeZone;
 
     public PluginActivity() {
         mSaveDialogData = new SaveLocationDialog.SaveDialogData();
         mSaveDialogData.setLocationRecord(new LocationRecord());
         mIsMenuItemDoneVisible = false;
+        mTimeZone = null;
     }
 
     private void bindObjectToResource() {
@@ -167,8 +184,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     private void calculate() {
+        boolean isInternetTimezone = Settings.isInternetTimeZone(mContext);
         AsyncCalculator asyncCalc = new AsyncCalculator(this,
                 new CalculationResultListener());
+        asyncCalc.setIsInternetTimeZone(isInternetTimezone);
+        asyncCalc.setTimeZone(mTimeZone);
         asyncCalc.setLocation(mLocation);
         asyncCalc.setCalendar(mCalendar);
         asyncCalc.execute();
@@ -283,12 +303,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
         getSupportMenuInflater().inflate(R.menu.main, menu);
         mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
+        mMenuItemTimeZone = menu.findItem(R.id.item_timeZone);
         return true;
     }
 
     @Override
     public void onMapLongClick(LatLng location) {
-        if (mLocation == null) {
+        if (mMarker == null) {
             mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_NEW);
         } else {
             mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
@@ -329,6 +350,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
         case R.id.item_settings:
             showSettings();
             break;
+        case R.id.item_timeZone:
+            showTimeZoneSelectionDialog();
+            break;
+        case R.id.item_rate:
+            showRate();
+            break;
+        case R.id.item_feedback:
+            showFeedback();
+            break;
         }
         return true;
     }
@@ -365,6 +395,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLocationList);
         mMenuItemDateTime.setVisible(!drawerOpen);
         mMenuItemDone.setVisible(!drawerOpen && mIsMenuItemDoneVisible);
+        mMenuItemTimeZone.setVisible(!Settings.isInternetTimeZone(mContext));
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -434,6 +465,16 @@ public class PluginActivity extends SherlockFragmentActivity implements
         dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
     }
 
+    private void showFeedback() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void showRate() {
+        // TODO Auto-generated method stub
+
+    }
+
     private void showSaveLocationDialog() {
         mSaveDialogData.getLocationRecord().setLatitude(mLocation.latitude);
         mSaveDialogData.getLocationRecord().setLongitude(mLocation.longitude);
@@ -450,6 +491,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private void showSettings() {
         Intent settings = new Intent(this, SettingsActivity.class);
         startActivity(settings);
+    }
+
+    private void showTimeZoneSelectionDialog() {
+        TimeZoneSelectionDialog dialog = TimeZoneSelectionDialog
+                .getInstance(mContext);
+        dialog.setCallback(new TimeZoneSelectionListener());
+        dialog.show(getSupportFragmentManager(),
+                TimeZoneSelectionDialog.DIALOG_TAG);
     }
 
 }

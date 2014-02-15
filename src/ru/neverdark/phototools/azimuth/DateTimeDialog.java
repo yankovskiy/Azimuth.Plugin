@@ -109,12 +109,11 @@ public class DateTimeDialog extends SherlockDialogFragment {
         Log.enter();
 
         bindObjectToResources();
-        buildTabs();
-
+        set24HourMode(Settings.is24HourMode(mContext));
         hideCalendar();
         initDateTime();
-
-        set24HourMode(Settings.is24HourMode(mContext));
+        
+        buildTabs();
 
         createDialog();
         setOnClickListener();

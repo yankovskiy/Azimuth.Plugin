@@ -1,6 +1,5 @@
 package ru.neverdark.phototools.azimuth.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -10,7 +9,6 @@ import ru.neverdark.phototools.azimuth.R;
 import ru.neverdark.phototools.azimuth.model.GoogleTimeZone;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.utils.Constants;
-import ru.neverdark.phototools.azimuth.utils.Log;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -24,21 +22,21 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
                 SunCalculator.CalculationResult calculationResult);
     }
 
-    private ProgressDialog mDialog;
-    private Context mContext;
-    private TimeZone mTimeZone;
+    private SunCalculator.CalculationResult mCalcResult;
     private Calendar mCalendar;
-    private LatLng mLocaiton;
-    SunCalculator.CalculationResult mCalcResult;
-
-    private GoogleTimeZone mGoogleTimeZone;;
-
     private OnCalculationResultListener mCallback;
+    private Context mContext;
+    private ProgressDialog mDialog;
+    private GoogleTimeZone mGoogleTimeZone;
+    private boolean mIsIternetTimeZone;;
+    private LatLng mLocaiton;
+    private TimeZone mTimeZone;
 
     public AsyncCalculator(Context context, OnCalculationResultListener callback) {
         mContext = context;
         mGoogleTimeZone = new GoogleTimeZone(context);
         mCallback = callback;
+        mIsIternetTimeZone = false;
     }
 
     private void createDialog() {
@@ -57,13 +55,23 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = mCalendar.get(Calendar.MINUTE);
 
-        mGoogleTimeZone.setCalendar(mCalendar);
-        mGoogleTimeZone.setLocation(mLocaiton);
+        int requestStatus = Constants.STATUS_FAIL;
 
-        int requestStatus = mGoogleTimeZone.requestTimeZone();
+        if (mIsIternetTimeZone) {
+            mGoogleTimeZone.setCalendar(mCalendar);
+            mGoogleTimeZone.setLocation(mLocaiton);
+
+            requestStatus = mGoogleTimeZone.requestTimeZone();
+            if (requestStatus == Constants.STATUS_SUCCESS) {
+                mTimeZone = mGoogleTimeZone.getTimeZone();
+            }
+        } else {
+            if (mTimeZone != null) {
+                requestStatus = Constants.STATUS_SUCCESS;
+            }
+        }
 
         if (requestStatus == Constants.STATUS_SUCCESS) {
-            mTimeZone = mGoogleTimeZone.getTimeZone();
             Calendar calendar = Calendar.getInstance(mTimeZone);
             calendar.set(year, month, day, hour, minute);
 
@@ -94,8 +102,16 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         mCalendar = calendar;
     }
 
+    public void setIsInternetTimeZone(boolean isInternetTimezone) {
+        mIsIternetTimeZone = isInternetTimezone;
+    }
+
     public void setLocation(LatLng location) {
         mLocaiton = location;
+    }
+
+    public void setTimeZone(TimeZone timeZone) {
+        mTimeZone = timeZone;
     }
 
 }

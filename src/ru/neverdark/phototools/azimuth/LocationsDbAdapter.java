@@ -120,7 +120,7 @@ public class LocationsDbAdapter {
 
         if (cursor.getCount() > 0) {
             list.clear();
-            
+
             int idColumn = cursor.getColumnIndex(KEY_ROWID);
             int locationNameColumn = cursor.getColumnIndex(KEY_LOCATION_NAME);
             int latitudeColumn = cursor.getColumnIndex(KEY_LATITUDE);
@@ -129,7 +129,6 @@ public class LocationsDbAdapter {
             int mapTypeColumn = cursor.getColumnIndex(KEY_MAP_TYPE);
             int cameraZoomColumn = cursor.getColumnIndex(KEY_CAMERA_ZOOM);
 
-            
             while (cursor.moveToNext()) {
                 LocationRecord record = new LocationRecord();
                 record.setId(cursor.getLong(idColumn));
@@ -139,7 +138,7 @@ public class LocationsDbAdapter {
                 record.setLastAccess(cursor.getLong(lastAccessColumn));
                 record.setMapType(cursor.getInt(mapTypeColumn));
                 record.setCameraZoom(cursor.getFloat(cameraZoomColumn));
-                
+
                 list.add(record);
             }
         }

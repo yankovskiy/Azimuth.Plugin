@@ -18,10 +18,10 @@ import android.os.AsyncTask;
 public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     public interface OnCalculationResultListener {
+        public void onGetResultFail();
+
         public void onGetResultSuccess(
                 SunCalculator.CalculationResult calculationResult);
-
-        public void onGetResultFail();
     }
 
     private ProgressDialog mDialog;

@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
@@ -35,14 +36,6 @@ import android.widget.ListView;
 
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener {
-
-    private class DeleteConfirmationListener implements
-            OnDeleteConfirmationListener {
-        @Override
-        public void onDeleteConfirmationHandler(LocationRecord locationRecord) {
-            mAdapter.deleteLocation(locationRecord);
-        }
-    }
 
     private class CalculationResultListener implements
             AsyncCalculator.OnCalculationResultListener {
@@ -73,6 +66,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
         }
     }
 
+    private class DeleteConfirmationListener implements
+            OnDeleteConfirmationListener {
+        @Override
+        public void onDeleteConfirmationHandler(LocationRecord locationRecord) {
+            mAdapter.deleteLocation(locationRecord);
+        }
+    }
+
     private class LocationItemClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -87,10 +88,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
         @Override
         public void onRemoveClickHandler(final int position) {
             LocationRecord record = mAdapter.getItem(position);
-            DeleteConfirmationDialog dialog = DeleteConfirmationDialog.getInstance(mContext);
+            DeleteConfirmationDialog dialog = DeleteConfirmationDialog
+                    .getInstance(mContext);
             dialog.setLocationRecord(record);
             dialog.setCallback(new DeleteConfirmationListener());
-            dialog.show(getSupportFragmentManager(), DeleteConfirmationDialog.DIALOG_TAG);
+            dialog.show(getSupportFragmentManager(),
+                    DeleteConfirmationDialog.DIALOG_TAG);
         }
     }
 
@@ -108,7 +111,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
                                 .getLocationRecord().getMapType(), data
                                 .getLocationRecord().getCameraZoom());
                 mSaveDialogData.getLocationRecord().setId(id);
-                mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
+                mSaveDialogData
+                        .setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
                 break;
             case SaveLocationDialog.ACTION_TYPE_EDIT:
                 mAdapter.updateLocation(data.getLocationRecord().getId(), data
@@ -151,15 +155,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
     private static final String IS_SAVED = "isSaved";
 
-    private void bindObjectToResource() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLocationList = (ListView) findViewById(R.id.location_list);
-    }
-
     public PluginActivity() {
         mSaveDialogData = new SaveLocationDialog.SaveDialogData();
         mSaveDialogData.setLocationRecord(new LocationRecord());
         mIsMenuItemDoneVisible = false;
+    }
+
+    private void bindObjectToResource() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLocationList = (ListView) findViewById(R.id.location_list);
     }
 
     private void calculate() {
@@ -232,6 +236,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plugin_activity);
@@ -244,7 +255,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
         mTitle = getTitle();
         mDrawerTitle = getString(R.string.drawer_title);
-        
+
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.open_drawer,
                 R.string.close_drawer) {
@@ -267,34 +278,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLocationList);
-        mMenuItemDateTime.setVisible(!drawerOpen);
-        mMenuItemDone.setVisible(!drawerOpen && mIsMenuItemDoneVisible);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.main, menu);
         mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         return true;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -337,24 +326,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
         case R.id.item_dateTime:
             showDateTimeDialog();
             break;
+        case R.id.item_settings:
+            showSettings();
+            break;
         }
-
         return true;
-    }
-
-    @Override
-    public void onResume() {
-        Log.enter();
-        super.onResume();
-        mAdapter = new LocationAdapter(this, R.layout.location_row);
-
-        mAdapter.setCallback(new RemoveClickListener());
-        mAdapter.openDb();
-        mAdapter.loadData();
-
-        mLocationList.setAdapter(mAdapter);
-
-        mLocationList.setOnItemClickListener(new LocationItemClickListener());
     }
 
     @Override
@@ -374,6 +350,37 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mAdapter.closeDb();
         mAdapter.clear();
         mAdapter = null;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content
+        // view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLocationList);
+        mMenuItemDateTime.setVisible(!drawerOpen);
+        mMenuItemDone.setVisible(!drawerOpen && mIsMenuItemDoneVisible);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onResume() {
+        Log.enter();
+        super.onResume();
+        mAdapter = new LocationAdapter(this, R.layout.location_row);
+
+        mAdapter.setCallback(new RemoveClickListener());
+        mAdapter.openDb();
+        mAdapter.loadData();
+
+        mLocationList.setAdapter(mAdapter);
+
+        mLocationList.setOnItemClickListener(new LocationItemClickListener());
     }
 
     public void selectItem(int position) {
@@ -397,12 +404,6 @@ public class PluginActivity extends SherlockFragmentActivity implements
         // calculate azimuth
         calculate();
     }
-    
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
-    }
 
     /**
      * Sets marker to the long tap position If marker already exists - remove
@@ -420,8 +421,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mIsMenuItemDoneVisible = true;
     }
 
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
+    }
+
     private void showDateTimeDialog() {
-        DateTimeDialog dialog = new DateTimeDialog();
+        DateTimeDialog dialog = DateTimeDialog.getInstance(mContext);
         dialog.setCalendar(mCalendar);
         dialog.setCallBack(new ConfirmDateTimeListener());
         dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
@@ -438,6 +445,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
         dialog.setCallback(new SaveLocationListener());
         dialog.setSaveDialogData(mSaveDialogData);
         dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);
+    }
+
+    private void showSettings() {
+        Intent settings = new Intent(this, SettingsActivity.class);
+        startActivity(settings);
     }
 
 }

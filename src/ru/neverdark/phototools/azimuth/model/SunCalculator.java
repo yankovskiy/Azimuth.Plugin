@@ -37,6 +37,14 @@ public class SunCalculator {
 
     private static final double e = rad * 23.4397;
 
+    public static LatLng getDestLatLng(LatLng location, double azimuth,
+            double distance) {
+        double lat2 = location.latitude + distance * Math.cos(azimuth);
+        double lng2 = location.longitude + distance * Math.sin(azimuth);
+
+        return new LatLng(lat2, lng2);
+    }
+
     private double acos(double d) {
         return Math.acos(d);
     }
@@ -160,14 +168,6 @@ public class SunCalculator {
         Log.variable("first", String.valueOf(first));
         Log.variable("second", String.valueOf(second));
         return first + second;
-    }
-
-    public static LatLng getDestLatLng(LatLng location, double azimuth,
-            double distance) {
-        double lat2 = location.latitude + distance * Math.cos(azimuth);
-        double lng2 = location.longitude + distance * Math.sin(azimuth);
-
-        return new LatLng(lat2, lng2);
     }
 
 }

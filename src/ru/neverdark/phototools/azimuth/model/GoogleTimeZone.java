@@ -78,7 +78,7 @@ public class GoogleTimeZone {
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.set(year, month, day, hour, minute);
-        
+
         /* Gets desired time as seconds since midnight, January 1, 1970 UTC */
         Long timestamp = calendar.getTimeInMillis() / 1000;
 
@@ -89,11 +89,11 @@ public class GoogleTimeZone {
         HttpParams params = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(params, 4000); // 4 sec
         HttpConnectionParams.setSoTimeout(params, 1000); // 1 sec
-        
+
         HttpClient client = new DefaultHttpClient(params);
         HttpGet httpGet = new HttpGet(url);
         httpGet.setParams(params);
-        
+
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();

@@ -12,12 +12,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "appdata";
     private final static int DATABASE_VERSION = 1;
     private final static String CREATE_LOCATIONS_QUERY = "create table locations (_id integer primary key autoincrement, location_name text not null, latitude real not null, longitude real not null, last_access integer not null, map_type integer not null, camera_zoom real not null);";
-    
+
     /**
      * @param context
      */
     public DatabaseHelper(Context context) {
-       super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

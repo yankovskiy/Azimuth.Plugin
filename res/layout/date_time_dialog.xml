@@ -28,7 +28,8 @@
                 <LinearLayout
                     android:id="@+id/tabTimeChoose"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal" >
 
                     <TimePicker
                         android:id="@+id/dialog_timePicker"
@@ -39,7 +40,8 @@
                 <LinearLayout
                     android:id="@+id/tabDateChoose"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal" >
 
                     <DatePicker
                         android:id="@+id/dialog_datePicker"

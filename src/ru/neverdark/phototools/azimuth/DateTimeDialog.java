@@ -7,6 +7,7 @@ import ru.neverdark.phototools.azimuth.utils.Log;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
@@ -33,13 +34,20 @@ public class DateTimeDialog extends SherlockDialogFragment {
         public void onConfirmDateTimeHandler(Calendar calendar);
     }
 
-    private OnConfirmDateTimeListener mCallback;
+    public static DateTimeDialog getInstance(Context context) {
+        DateTimeDialog dialog = new DateTimeDialog();
+        dialog.mContext = context;
+        return dialog;
+    }
 
+    private OnConfirmDateTimeListener mCallback;
     private View mView;
     private TimePicker mTimePicker;
     private DatePicker mDatePicker;
     private TabHost mTabHost;
     private Calendar mCalendar;
+
+    private Context mContext;
 
     /**
      * 
@@ -106,10 +114,16 @@ public class DateTimeDialog extends SherlockDialogFragment {
         hideCalendar();
         initDateTime();
 
+        set24HourMode(Settings.is24HourMode(mContext));
+
         createDialog();
         setOnClickListener();
 
         return mAlertDialog.create();
+    }
+
+    private void set24HourMode(boolean is24HourMode) {
+        mTimePicker.setIs24HourView(is24HourMode);
     }
 
     /**

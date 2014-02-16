@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -53,7 +54,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 SunCalculator.CalculationResult calculationResult) {
             mAzimuth = calculationResult.getAzimuth();
             mAltitude = calculationResult.getAltitude();
-            
+
             if (mAltitude < 0) {
                 showErrorDialog(R.string.error_noSun);
             }
@@ -147,12 +148,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     private static final String CAMERA_ZOOM = "zoom";
-
     private static final String IS_SAVED = "isSaved";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String MAP_TYPE = "mapType";
     private static final float MINIMUM_ZOOM_SIZE = 5.0f;
+
     private LocationAdapter mAdapter;
     private double mAltitude;
     private double mAzimuth;
@@ -165,17 +166,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private LatLng mLocation;
     private ListView mLocationList;
     private GoogleMap mMap;
-
     private Marker mMarker;
-
     private MenuItem mMenuItemDateTime;
     private MenuItem mMenuItemDone;
     private MenuItem mMenuItemTimeZone;
     private double mOldZoom = -1;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
     private TimeZone mTimeZone;
-
     private CharSequence mTitle;
+    private String mPackageName;
 
     public PluginActivity() {
         mSaveDialogData = new SaveLocationDialog.SaveDialogData();
@@ -309,6 +308,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mCalendar = Calendar.getInstance();
         mContext = this;
+        mPackageName = mContext.getPackageName();
     }
 
     @Override
@@ -490,13 +490,20 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     private void showFeedback() {
-        // TODO Auto-generated method stub
-
+        Intent mailIntent = new Intent(Intent.ACTION_SEND);
+        mailIntent.setType("plain/text");
+        mailIntent.putExtra(Intent.EXTRA_EMAIL,
+                new String[] { getString(R.string.author_email) });
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        startActivity(Intent.createChooser(mailIntent,
+                getString(R.string.chooseEmailApp)));
     }
 
     private void showRate() {
-        // TODO Auto-generated method stub
-
+        String url = "market://details?id=".concat(mPackageName);
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+        marketIntent.setData(Uri.parse(url));
+        startActivity(marketIntent);
     }
 
     private void showSaveLocationDialog() {

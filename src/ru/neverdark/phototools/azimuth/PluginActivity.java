@@ -325,8 +325,6 @@ public class PluginActivity extends SherlockFragmentActivity implements
     public void onMapLongClick(LatLng location) {
         if (mMarker == null) {
             mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_NEW);
-        } else {
-            mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
         }
 
         mLocation = location;

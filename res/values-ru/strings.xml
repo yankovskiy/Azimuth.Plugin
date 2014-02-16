@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Azimuth plugin</string>
+    <string name="app_title">Азимут</string>
+    
+    <string name="progress_dialog_title">Расчет</string>
+    <string name="progress_dialog_message">Производятся вычисления. Пожалуйста, подождите</string>
+
+    <string name="mapType_map">Карта</string>
+    <string name="mapType_terrain">Ландшафт</string>
+    <string name="mapType_hybrid">Гибрид</string>
+    <string name="mapType_satellite">Спутник</string>
+    
+    <string name="mapConfirmSelection">Подтверждение выбора</string>
+    <string name="mapDateSelection">Выберите дату</string>
+    <string name="mapTimeSelection">Выберите время</string>
+    
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Отмена</string>
+    
+    <string name="open_drawer">Открыть</string>
+    <string name="close_drawer">Закрыть</string>
+    
+    <string name="saveLocationDialog_locationName">Название местоположения</string>
+    <string name="saveLocationDialog_title">Сохранить местоположение</string>
+    <string name="saveLocationDialog_message">Введите название местоположения</string>
+    
+    <string name="deleteConfirmationDialog_title">Подтверждение удаления</string>
+    <string name="deleteConfirmationDialog_message">Вы действительно желаете удалить запись \"%s\"?</string>
+    
+    <string name="drawer_title">Выбор сохраненного местоположения</string>
+    
+    <string name="settings_24HourMode_title">24-часовой режим</string>
+    <string name="settings_24HourMode_message">Установить 24-часовой режим</string>
+    
+    <string name="settings_internetTimeZone_title">Часовой пояс с интернета</string>
+    <string name="settings_internetTimeZone_message">Получать часовой пояс с интернет-серверов</string>
+    
+    <string name="menu_item_timeZone">Часовой пояс</string>
+    <string name="menu_item_rate">Оценить</string>
+    <string name="menu_item_feedback">Обратная связь</string>
+    <string name="menu_item_settings">Настройки</string> 
+    
+    <string name="timeZoneSelectionDialog_title">Выбор часового пояса</string>
+    
+    <string name="errorDialog_title">Ошибка</string>
+    <string name="error_zoomToSmall">Масштаб слишком мал. Пожалуйста, увеличьте</string>
+    <string name="error_timeZoneIsNotDefined">Часовой пояс не определен. Если проблема повторится, проверьте ваше интернет-соединение, 
+        или отключите в настройках получение часового пояса с интернет-серверов и выберите его самостоятельно из меню приложения</string>
+    <string name="error_noSun">Нет Солнца для выбранного времени и местоположения. Попробуйте изменить время/местоположение</string>
+    
+    <string name="author_email">artemyankovskiy@gmail.com</string>
+    <string name="chooseEmailApp">Выберите приложение для отправки email</string>
+</resources>

@@ -4,7 +4,7 @@
     <string name="app_name">Azimuth plugin</string>
     <string name="app_title">Azimuth</string>
     
-    <string name="progress_dialog_title">Calculatation</string>
+    <string name="progress_dialog_title">Calculation</string>
     <string name="progress_dialog_message">Calculation in progress. Please wait</string>
 
     <string name="mapType_map">Map</string>
@@ -24,18 +24,18 @@
     
     <string name="saveLocationDialog_locationName">Location name</string>
     <string name="saveLocationDialog_title">Save location</string>
-    <string name="saveLocationDialog_message">Enter a location name</string>
+    <string name="saveLocationDialog_message">Enter location name</string>
     
     <string name="deleteConfirmationDialog_title">Delete confirmation</string>
     <string name="deleteConfirmationDialog_message">Do you really wish remove the record \"%s\"?</string>
     
-    <string name="drawer_title">Select saved location</string>
+    <string name="drawer_title">Select a saved location</string>
     
     <string name="settings_24HourMode_title">24 hour mode</string>
     <string name="settings_24HourMode_message">Sets 24 hour mode</string>
     
     <string name="settings_internetTimeZone_title">Internet time zone</string>
-    <string name="settings_internetTimeZone_message">Gets a timezone from internet servers</string>
+    <string name="settings_internetTimeZone_message">Gets a time zone from internet-servers</string>
     
     <string name="menu_item_timeZone">Time zone</string>
     <string name="menu_item_rate">Rate</string>

@@ -286,7 +286,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mTitle = getTitle();
+        setTitle(getString(R.string.app_title));
         mDrawerTitle = getString(R.string.drawer_title);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,

@@ -45,4 +45,5 @@
     <string name="errorDialog_title">Error</string>
     <string name="error_zoomToSmall">The zoom is to small. Please increase</string>
     <string name="error_timeZoneIsNotDefined">Time zone is not defined. If the problem persists, check your Internet connection, or disable the settings to obtain the time zone from the Internet and select it by yourself in the application menu</string>
+    <string name="error_noSun">There is no sun at selected time and location. You can change time and/or location</string>
 </resources>

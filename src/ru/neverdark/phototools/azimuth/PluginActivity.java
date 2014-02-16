@@ -45,9 +45,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
             AsyncCalculator.OnCalculationResultListener {
         @Override
         public void onGetResultFail() {
-            ErrorDialog dialog = ErrorDialog.getIntstance(mContext);
-            dialog.setErrorMessage(R.string.error_timeZoneIsNotDefined);
-            dialog.show(getSupportFragmentManager(), ErrorDialog.DIALOG_TAG);
+            showErrorDialog(R.string.error_timeZoneIsNotDefined);
         }
 
         @Override
@@ -55,6 +53,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 SunCalculator.CalculationResult calculationResult) {
             mAzimuth = calculationResult.getAzimuth();
             mAltitude = calculationResult.getAltitude();
+            
+            if (mAltitude < 0) {
+                showErrorDialog(R.string.error_noSun);
+            }
             drawAzimuth();
         }
     }
@@ -145,6 +147,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     private static final String CAMERA_ZOOM = "zoom";
+
     private static final String IS_SAVED = "isSaved";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
@@ -161,17 +164,17 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private boolean mIsMenuItemDoneVisible;
     private LatLng mLocation;
     private ListView mLocationList;
-
     private GoogleMap mMap;
 
     private Marker mMarker;
+
     private MenuItem mMenuItemDateTime;
     private MenuItem mMenuItemDone;
     private MenuItem mMenuItemTimeZone;
     private double mOldZoom = -1;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
-
     private TimeZone mTimeZone;
+
     private CharSequence mTitle;
 
     public PluginActivity() {
@@ -208,17 +211,20 @@ public class PluginActivity extends SherlockFragmentActivity implements
         setMarker();
 
         if (mMap.getCameraPosition().zoom >= MINIMUM_ZOOM_SIZE) {
-            double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
-                    - mMap.getProjection().getVisibleRegion().nearRight.longitude;
-            size = Math.abs(size);
+            if (mAltitude > 0) {
+                double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
+                        - mMap.getProjection().getVisibleRegion().nearRight.longitude;
+                size = Math.abs(size);
 
-            PolylineOptions options = new PolylineOptions();
-            options.add(mLocation);
-            options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
-            options.width(5);
-            options.color(Color.RED);
+                PolylineOptions options = new PolylineOptions();
+                options.add(mLocation);
+                options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth,
+                        size));
+                options.width(5);
+                options.color(Color.RED);
 
-            mMap.addPolyline(options);
+                mMap.addPolyline(options);
+            }
         } else {
             showErrorMessage(R.string.error_zoomToSmall);
         }
@@ -471,6 +477,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
         dialog.setCalendar(mCalendar);
         dialog.setCallBack(new ConfirmDateTimeListener());
         dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
+    }
+
+    private void showErrorDialog(int resourceId) {
+        ErrorDialog dialog = ErrorDialog.getIntstance(mContext);
+        dialog.setErrorMessage(resourceId);
+        dialog.show(getSupportFragmentManager(), ErrorDialog.DIALOG_TAG);
     }
 
     private void showErrorMessage(int resourceId) {

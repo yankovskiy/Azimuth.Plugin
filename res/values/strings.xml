@@ -41,4 +41,8 @@
     <string name="menu_item_settings">Settings</string> 
     
     <string name="timeZoneSelectionDialog_title">Choose a time zone</string>
+    
+    <string name="errorDialog_title">Error</string>
+    <string name="error_zoomToSmall">The zoom is to small. Please increase</string>
+    <string name="error_timeZoneIsNotDefined">Time zone is not defined. If the problem persists, check your Internet connection, or disable the settings to obtain the time zone from the Internet and select it by yourself in the application menu</string>
 </resources>

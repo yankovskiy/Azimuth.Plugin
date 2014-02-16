@@ -36,6 +36,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener {
@@ -44,8 +45,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
             AsyncCalculator.OnCalculationResultListener {
         @Override
         public void onGetResultFail() {
-            // TODO: показать диалог выбора временной зоны
-            // Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+            ErrorDialog dialog = ErrorDialog.getIntstance(mContext);
+            dialog.setErrorMessage(R.string.error_timeZoneIsNotDefined);
+            dialog.show(getSupportFragmentManager(), ErrorDialog.DIALOG_TAG);
         }
 
         @Override
@@ -147,6 +149,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String MAP_TYPE = "mapType";
+    private static final float MINIMUM_ZOOM_SIZE = 5.0f;
     private LocationAdapter mAdapter;
     private double mAltitude;
     private double mAzimuth;
@@ -164,12 +167,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private Marker mMarker;
     private MenuItem mMenuItemDateTime;
     private MenuItem mMenuItemDone;
+    private MenuItem mMenuItemTimeZone;
     private double mOldZoom = -1;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
-    private TimeZone mTimeZone;
 
+    private TimeZone mTimeZone;
     private CharSequence mTitle;
-    private MenuItem mMenuItemTimeZone;
 
     public PluginActivity() {
         mSaveDialogData = new SaveLocationDialog.SaveDialogData();
@@ -197,23 +200,28 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private void clearMap() {
         if (mMarker != null) {
             mMap.clear();
+            mMarker = null;
         }
     }
 
     private void drawAzimuth() {
-        setMarket();
+        setMarker();
 
-        double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
-                - mMap.getProjection().getVisibleRegion().nearRight.longitude;
-        size = Math.abs(size);
+        if (mMap.getCameraPosition().zoom >= MINIMUM_ZOOM_SIZE) {
+            double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
+                    - mMap.getProjection().getVisibleRegion().nearRight.longitude;
+            size = Math.abs(size);
 
-        PolylineOptions options = new PolylineOptions();
-        options.add(mLocation);
-        options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
-        options.width(5);
-        options.color(Color.RED);
+            PolylineOptions options = new PolylineOptions();
+            options.add(mLocation);
+            options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth, size));
+            options.width(5);
+            options.color(Color.RED);
 
-        mMap.addPolyline(options);
+            mMap.addPolyline(options);
+        } else {
+            showErrorMessage(R.string.error_zoomToSmall);
+        }
     }
 
     /**
@@ -414,7 +422,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mLocationList.setOnItemClickListener(new LocationItemClickListener());
     }
 
-    public void selectItem(int position) {
+    private void selectItem(int position) {
         LocationRecord record = mAdapter.getItem(position);
         mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
         mSaveDialogData.setLocationRecord(record);
@@ -443,7 +451,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
      * @param location
      *            location for setting marker
      */
-    private void setMarket() {
+    private void setMarker() {
         clearMap();
 
         // set new marker
@@ -463,6 +471,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
         dialog.setCalendar(mCalendar);
         dialog.setCallBack(new ConfirmDateTimeListener());
         dialog.show(getSupportFragmentManager(), DateTimeDialog.DIALOG_TAG);
+    }
+
+    private void showErrorMessage(int resourceId) {
+        Toast.makeText(mContext, resourceId, Toast.LENGTH_LONG).show();
     }
 
     private void showFeedback() {

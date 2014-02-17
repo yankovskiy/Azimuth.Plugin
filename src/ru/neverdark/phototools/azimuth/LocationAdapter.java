@@ -15,16 +15,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Адаптер для связки UI и БД
+ * Adapter linking UI and database
  */
 public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     /**
-     * Интерфейс для обработки клика по кнопке "удалить"
+     * The interface for processing clicking on the delete button in the list
      */
     public interface OnRemoveClickListener {
+        /**
+         * Handler for processing clicking on the delete button in the list
+         * @param position position clicking record in the list 
+         */
         public void onRemoveClickHandler(final int position);
     }
 
+    /**
+     * Holder contains one row from the list
+     */
     private static class RowHolder {
         private TextView mLocationName;
         private ImageView mLocationRemoveButton;
@@ -40,26 +47,26 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     private LocationsDbAdapter mDbAdapter;
 
     /**
-     * Конструктор
+     * Constructor
      * 
      * @param context
-     *            контекст активити
+     *            application context
      * @param resource
-     *            id ресурса содержащего разметку для одной записи списка
+     *            resource id contains layout for one list record
      */
     public LocationAdapter(Context context, int resource) {
         this(context, resource, new ArrayList<LocationRecord>());
     }
 
     /**
-     * Конструктор
+     * Constructor
      * 
      * @param context
-     *            контекст активити
+     *            application context
      * @param resource
-     *            id ресурса содержащего разметку для одной записи списка
+     *            resource id contains layout for one list record
      * @param objects
-     *            список объектов
+     *            the list of objects
      */
     private LocationAdapter(Context context, int resource,
             List<LocationRecord> objects) {
@@ -70,7 +77,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Закрывает соединиение с базой данных
+     * Closes the database connection
      */
     public void closeDb() {
         Log.enter();
@@ -81,19 +88,19 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Добавляет новое место в базу
+     * Adds a new location in the database
      * 
      * @param locationName
-     *            название местоположения
+     *            location name
      * @param latitude
-     *            широта
+     *            location latitude
      * @param longitude
-     *            долгота
+     *            location longitude
      * @param mapType
-     *            тип карты
+     *            type of map
      * @param cameraZoom
-     *            зум камеры
-     * @return id добавленной записи
+     *            camera zoom
+     * @return added record id
      */
     public long createLocation(String locationName, double latitude,
             double longitude, int mapType, float cameraZoom) {
@@ -104,7 +111,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
                     mapType, cameraZoom);
             mDbAdapter.fetchAllLocations(mObjects);
         } else {
-            // бросить исключение
+            throw new SQLException(EXCEPTION_MESSAGE);
         }
 
         notifyDataSetChanged();
@@ -112,12 +119,12 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Удаляет выбранную запись из локального списка и из базы данных
+     * Deletes the selected record from location list and database
      * 
      * @param record
-     *            объект содержащий запись для удаления
+     *            object containing the record to be deleted
      * 
-     * @return true в случае успешного удаления записи
+     * @return true in the case of successful removal of records
      */
     public boolean deleteLocation(LocationRecord record) {
         Log.enter();
@@ -137,11 +144,11 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Получает Id записи в базе по позиции элемента в списке
+     * Gets Id record in the database on the position of the element in the list
      * 
      * @param position
-     *            позиция элемента в списке
-     * @return id записи в базе
+     *            position of the element in the list
+     * @return id Id record in the databas
      */
     public long getIdByPosition(final int position) {
         Log.enter();
@@ -149,6 +156,9 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         return record.getId();
     }
 
+    /* (non-Javadoc)
+     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.enter();
@@ -178,11 +188,11 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Проверяет существование местоположения с указанным именем
+     * Verifies the existence of the location with the specified name
      * 
      * @param locationName
-     *            название местоположения для проверки
-     * @return true если местоположение существует
+     *            location name for verifies
+     * @return true if location with the specified name exists
      */
     public boolean isLocationExists(String locationName) {
         Log.enter();
@@ -197,7 +207,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Загружает данные с базы данных
+     * Loads data from a database
      */
     public void loadData() {
         Log.enter();
@@ -210,7 +220,7 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Открывает соединение с базой данных
+     * Opens a database connection
      */
     public void openDb() {
         Log.enter();
@@ -219,26 +229,28 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Устанавливает callback - объект реализующий интерфейс для обработки
-     * кликов
+     * Sets callback object object that processing clicking on the delete button in the list
      * 
      * @param callback
-     *            объект
+     *            object that processing clicking on the delete button in the list
      */
     public void setCallback(OnRemoveClickListener callback) {
         mCallback = callback;
     }
 
     /**
-     * Устанавливает обработчик клика по кнопке "удалить"
+     * Sets the click handler for "delete" button
      * 
-     * @param holder
-     *            запись - строчка
+     * @param holder row from the list
+     *            
      */
     private void setRemoveClickListener(RowHolder holder, final int position) {
         holder.mLocationRemoveButton
                 .setOnClickListener(new View.OnClickListener() {
 
+                    /* (non-Javadoc)
+                     * @see android.view.View.OnClickListener#onClick(android.view.View)
+                     */
                     @Override
                     public void onClick(View v) {
                         try {
@@ -252,10 +264,10 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Обновляет время доступа к записи, передвигая новые наверх списка
+     * Updates the access time to record. Move new record to a top of the list
      * 
      * @param position
-     *            позиция выбранного элемента в списке
+     *            position of the selected item in the list
      */
     public void updateLastAccessTime(final int position) {
         Log.enter();
@@ -272,20 +284,20 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Изменяет сохраненное место в базе данных
+     * Changes saved location in the database
      * 
      * @param recordId
-     *            id записи в базе
+     *            record id in the database
      * @param locationName
-     *            название местоположения
+     *            location name
      * @param latitude
-     *            широта
+     *            location latitude
      * @param longitude
-     *            долгота
+     *            location longitude
      * @param mapType
-     *            тип карты
+     *            type of map
      * @param cameraZoom
-     *            зум камеры
+     *            camera zoom
      */
     public void updateLocation(final long recordId, String locationName,
             double latitude, double longitude, int mapType, float cameraZoom) {

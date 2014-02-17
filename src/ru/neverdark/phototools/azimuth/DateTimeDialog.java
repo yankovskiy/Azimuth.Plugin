@@ -20,20 +20,26 @@ import android.widget.TimePicker;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 /**
- *
+ * Dialog for choosing date and time
  */
 public class DateTimeDialog extends SherlockDialogFragment {
 
     /**
-     *
+     * The interface for processing the selected time and date
      */
     public interface OnConfirmDateTimeListener {
         /**
-         * @param calendar
+         * Handler for processing the selected time and date
+         * @param calendar calendar contained selected time and date
          */
         public void onConfirmDateTimeHandler(Calendar calendar);
     }
 
+    /**
+     * Creates new dialog
+     * @param context application context
+     * @return dialog object
+     */
     public static DateTimeDialog getInstance(Context context) {
         DateTimeDialog dialog = new DateTimeDialog();
         dialog.mContext = context;
@@ -50,12 +56,15 @@ public class DateTimeDialog extends SherlockDialogFragment {
     private Context mContext;
 
     /**
-     * 
+     * Dialog name for fragment manager
      */
     public final static String DIALOG_TAG = "dateTimeDialog";
 
     private AlertDialog.Builder mAlertDialog;
 
+    /**
+     * Bind class objects to resources
+     */
     private void bindObjectToResources() {
         mView = View.inflate(getSherlockActivity(), R.layout.date_time_dialog,
                 null);
@@ -65,6 +74,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
         mTabHost = (TabHost) mView.findViewById(android.R.id.tabhost);
     }
 
+    /**
+     * Builds tabs for dialog
+     */
     private void buildTabs() {
         mTabHost.setup();
 
@@ -79,6 +91,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
         mTabHost.addTab(tabSpec);
     }
 
+    /**
+     * Creates alert dialog
+     */
     private void createDialog() {
         mAlertDialog = new AlertDialog.Builder(getSherlockActivity());
         mAlertDialog.setView(mView);
@@ -86,15 +101,18 @@ public class DateTimeDialog extends SherlockDialogFragment {
     }
 
     /**
-     * 
+     * Hides calendar in date selection tabs
      */
     @SuppressLint("NewApi")
-    public void hideCalendar() {
+    private void hideCalendar() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             mDatePicker.setCalendarViewShown(false);
         }
     }
 
+    /**
+     * Inits DatePicker and TimePicker
+     */
     private void initDateTime() {
         mTimePicker.setCurrentHour(mCalendar.get(Calendar.HOUR_OF_DAY));
         mTimePicker.setCurrentMinute(mCalendar.get(Calendar.MINUTE));
@@ -104,6 +122,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
                 mCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.enter();
@@ -121,12 +142,17 @@ public class DateTimeDialog extends SherlockDialogFragment {
         return mAlertDialog.create();
     }
 
+    /**
+     * Sets 24-hour mode for TimePicker
+     * @param is24HourMode true for 24-hour mode
+     */
     private void set24HourMode(boolean is24HourMode) {
         mTimePicker.setIs24HourView(is24HourMode);
     }
 
     /**
-     * @param calendar
+     * Sets calendar for initialization DatePicker and TimePicker in dialog tabs
+     * @param calendar calendar for initialization pickers in dialog tabs
      */
     public void setCalendar(Calendar calendar) {
         Log.enter();
@@ -134,12 +160,16 @@ public class DateTimeDialog extends SherlockDialogFragment {
     }
 
     /**
-     * @param callback
+     * Sets callback object for handling date and time selection
+     * @param callback object for handling date and time selection
      */
     public void setCallBack(OnConfirmDateTimeListener callback) {
         mCallback = callback;
     }
 
+    /**
+     * Sets click listeners for dialog buttons
+     */
     private void setOnClickListener() {
         mAlertDialog.setPositiveButton(R.string.dialog_ok,
                 new OnClickListener() {

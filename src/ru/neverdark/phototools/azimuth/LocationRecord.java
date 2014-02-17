@@ -1,7 +1,7 @@
 package ru.neverdark.phototools.azimuth;
 
 /**
- * Класс содержащий одну запись из таблицы locations
+ * Class contains a single record from the "locations" table
  */
 public class LocationRecord {
     private String mLocationName;
@@ -13,133 +13,133 @@ public class LocationRecord {
     private float mCameraZoom;
 
     /**
-     * Получает значение поля camera_zoom
+     * Gets the value of the field camera_zoom
      * 
-     * @return значение поля camera_zoom
+     * @return value of the field camera_zoom
      */
     public float getCameraZoom() {
         return mCameraZoom;
     }
 
     /**
-     * Получает id записи
+     * Gets the record id
      * 
-     * @return id записи
+     * @return record id
      */
     public long getId() {
         return mId;
     }
 
     /**
-     * Получает значение поля last_access
+     * Gets the value of the field last_access
      * 
-     * @return значение поля last_access
+     * @return value of the field last_access
      */
     public long getLastAccess() {
         return mLastAccess;
     }
 
     /**
-     * Получает значение поля latitude
+     * Gets the value of the field latitude
      * 
-     * @return значение поля latitude
+     * @return value of the field latitude
      */
     public double getLatitude() {
         return mLatitude;
     }
 
     /**
-     * Получает значение поля location_name
+     * Gets the value of the field location_name
      * 
-     * @return значение поля location_name
+     * @return value of the field location_name
      */
     public String getLocationName() {
         return mLocationName;
     }
 
     /**
-     * Получает значение поля longitude
+     * Gets the value of the field longitude
      * 
-     * @return значение поля longitude
+     * @return value of the field longitude
      */
     public double getLongitude() {
         return mLongitude;
     }
 
     /**
-     * Получает значение поля map_type
+     * Gets the value of the field map_type
      * 
-     * @return значение поля map_type
+     * @return value of the field map_type
      */
     public int getMapType() {
         return mMapType;
     }
 
     /**
-     * Сохраняет значение поля camera_zoom
+     * Stores the value of the field camera_zoom
      * 
      * @param cameraZoom
-     *            значение поля camera_zoom
+     *            value of the field camera_zoom
      */
     public void setCameraZoom(float cameraZoom) {
         this.mCameraZoom = cameraZoom;
     }
 
     /**
-     * Сохраняет значение id записи
+     * Stores the record id
      * 
      * @param id
-     *            записи
+     *            record id
      */
     public void setId(long id) {
         this.mId = id;
     }
 
     /**
-     * Сохраняет значение поля last_access
+     * Stores the value of the field last_access
      * 
      * @param lastAccess
-     *            значение поля last_access
+     *            value of the field last_access
      */
     public void setLastAccess(long lastAccess) {
         this.mLastAccess = lastAccess;
     }
 
     /**
-     * Сохраняет значение поля latitude
+     * Stores the value of the field latitude
      * 
      * @param latitude
-     *            значение поля latitude
+     *            value of the field latitude
      */
     public void setLatitude(double latitude) {
         this.mLatitude = latitude;
     }
 
     /**
-     * Сохраняет значение поля location_name
+     * Stores the value of the field location_name
      * 
      * @param locationName
-     *            значение поля location_name
+     *            value of the field location_name
      */
     public void setLocationName(String locationName) {
         this.mLocationName = locationName;
     }
 
     /**
-     * Сохраняет значение поля longitude
+     * Stores the value of the field longitude
      * 
      * @param longitude
-     *            значение поля longitude
+     *            value of the field longitude
      */
     public void setLongitude(double longitude) {
         this.mLongitude = longitude;
     }
 
     /**
-     * Сохраняет значение поля map_type
+     * Stores the value of the field map_type
      * 
      * @param mapType
-     *            значение поля map_type
+     *            value of the field map_type
      */
     public void setMapType(int mapType) {
         this.mMapType = mapType;

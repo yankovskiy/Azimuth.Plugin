@@ -12,7 +12,6 @@
     <string name="mapType_hybrid">Hybrid</string>
     <string name="mapType_satellite">Satellite</string>
     
-    <string name="mapConfirmSelection">Confirm a selection</string>
     <string name="mapDateSelection">Select a date</string>
     <string name="mapTimeSelection">Select a time</string>
     
@@ -35,7 +34,7 @@
     <string name="settings_24HourMode_message">Sets 24 hour mode</string>
     
     <string name="settings_internetTimeZone_title">Internet time zone</string>
-    <string name="settings_internetTimeZone_message">Gets a time zone from internet-servers</string>
+    <string name="settings_internetTimeZone_message">Gets a time zone from Internet-servers</string>
     
     <string name="menu_item_timeZone">Time zone</string>
     <string name="menu_item_rate">Rate</string>

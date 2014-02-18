@@ -12,7 +12,6 @@
     <string name="mapType_hybrid">Гибрид</string>
     <string name="mapType_satellite">Спутник</string>
     
-    <string name="mapConfirmSelection">Подтверждение выбора</string>
     <string name="mapDateSelection">Выберите дату</string>
     <string name="mapTimeSelection">Выберите время</string>
     
@@ -34,8 +33,8 @@
     <string name="settings_24HourMode_title">24-часовой режим</string>
     <string name="settings_24HourMode_message">Установить 24-часовой режим</string>
     
-    <string name="settings_internetTimeZone_title">Часовой пояс с интернета</string>
-    <string name="settings_internetTimeZone_message">Получать часовой пояс с интернет-серверов</string>
+    <string name="settings_internetTimeZone_title">Часовой пояс с Internet</string>
+    <string name="settings_internetTimeZone_message">Получать часовой пояс с Internet-серверов</string>
     
     <string name="menu_item_timeZone">Часовой пояс</string>
     <string name="menu_item_rate">Оценить</string>
@@ -46,8 +45,8 @@
     
     <string name="errorDialog_title">Ошибка</string>
     <string name="error_zoomToSmall">Масштаб слишком мал. Пожалуйста, увеличьте</string>
-    <string name="error_timeZoneIsNotDefined">Часовой пояс не определен. Если проблема повторится, проверьте ваше интернет-соединение, 
-        или отключите в настройках получение часового пояса с интернет-серверов и выберите его самостоятельно из меню приложения</string>
+    <string name="error_timeZoneIsNotDefined">Часовой пояс не определен. Если проблема повторится, проверьте ваше Internet-соединение, 
+        или отключите в настройках получение часового пояса с Internet-серверов и выберите его самостоятельно из меню приложения</string>
     <string name="error_noSun">Нет Солнца для выбранного времени и местоположения. Попробуйте изменить время/местоположение</string>
     
     <string name="author_email">artemyankovskiy@gmail.com</string>

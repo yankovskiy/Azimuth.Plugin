@@ -47,10 +47,10 @@
         android:title="@string/mapDateSelection">
     </item>
     <item
-        android:id="@+id/item_confirmSelection"
-        android:icon="@drawable/ic_action_done"
+        android:id="@+id/item_saveLocation"
+        android:icon="@drawable/ic_action_save"
         android:showAsAction="always|withText"
-        android:title="@string/mapConfirmSelection"
+        android:title="@string/saveLocationDialog_title"
         android:visible="false">
     </item>
 

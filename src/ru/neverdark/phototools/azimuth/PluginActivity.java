@@ -388,7 +388,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.main, menu);
-        mMenuItemDone = menu.findItem(R.id.item_confirmSelection);
+        mMenuItemDone = menu.findItem(R.id.item_saveLocation);
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         mMenuItemTimeZone = menu.findItem(R.id.item_timeZone);
         return true;
@@ -433,7 +433,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         case R.id.item_map_satellite:
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             break;
-        case R.id.item_confirmSelection:
+        case R.id.item_saveLocation:
             showSaveLocationDialog();
             break;
         case R.id.item_dateTime:

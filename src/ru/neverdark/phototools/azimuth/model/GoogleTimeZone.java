@@ -40,7 +40,9 @@ public class GoogleTimeZone {
 
     /**
      * Constructor
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      */
     public GoogleTimeZone(Context context) {
         mContext = context;
@@ -48,6 +50,7 @@ public class GoogleTimeZone {
 
     /**
      * Gets time zone
+     * 
      * @return time zone
      */
     public TimeZone getTimeZone() {

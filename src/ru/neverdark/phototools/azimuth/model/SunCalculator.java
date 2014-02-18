@@ -19,6 +19,7 @@ public class SunCalculator {
 
         /**
          * Gets sun altitude
+         * 
          * @return sun altitude
          */
         public double getAltitude() {
@@ -27,6 +28,7 @@ public class SunCalculator {
 
         /**
          * Gets sun azimuth in radiant
+         * 
          * @return sun azimuth
          */
         public double getAzimuth() {
@@ -35,6 +37,7 @@ public class SunCalculator {
 
         /**
          * Gets sun azimuth in degrees
+         * 
          * @return sun azimuth
          */
         public double getAzimuthInDegrees() {
@@ -57,9 +60,13 @@ public class SunCalculator {
 
     /**
      * Gets second point for drawing azimuth
-     * @param location selected location
-     * @param azimuth sun azimuth
-     * @param distance distance to second point (in degrees)
+     * 
+     * @param location
+     *            selected location
+     * @param azimuth
+     *            sun azimuth
+     * @param distance
+     *            distance to second point (in degrees)
      * @return
      */
     public static LatLng getDestLatLng(LatLng location, double azimuth,
@@ -106,8 +113,11 @@ public class SunCalculator {
 
     /**
      * Gets sun azimuth and altitude for specified date and location
-     * @param date date for calculation
-     * @param location location for calculation
+     * 
+     * @param date
+     *            date for calculation
+     * @param location
+     *            location for calculation
      * @return object contains calculation result
      */
     public CalculationResult getPosition(Calendar date, LatLng location) {

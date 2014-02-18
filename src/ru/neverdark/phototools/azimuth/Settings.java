@@ -10,7 +10,9 @@ import android.preference.PreferenceManager;
 public class Settings {
     /**
      * Checks value for 24-hour mode
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return true for enabled 24-hour mode
      */
     public static boolean is24HourMode(Context context) {
@@ -22,7 +24,9 @@ public class Settings {
 
     /**
      * Checks value for "Internet time zone"
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return true for enabled "Internet time zone"
      */
     public static boolean isInternetTimeZone(Context context) {

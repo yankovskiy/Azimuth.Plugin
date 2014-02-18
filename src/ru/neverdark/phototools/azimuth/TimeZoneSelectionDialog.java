@@ -37,14 +37,20 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
         /**
          * Constructor
-         * @param dialog dialog for closing after time zone selection
+         * 
+         * @param dialog
+         *            dialog for closing after time zone selection
          */
         public ItemClickListener(TimeZoneSelectionDialog dialog) {
             mDialog = dialog;
         }
 
-        /* (non-Javadoc)
-         * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.widget.AdapterView.OnItemClickListener#onItemClick(android
+         * .widget.AdapterView, android.view.View, int, long)
          */
         @Override
         public void onItemClick(AdapterView<?> parent, View itemClicked,
@@ -66,7 +72,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
     public interface OnTimeZoneSelectionListener {
         /**
          * Handler for processing time zone selection
-         * @param timeZone selected time zone
+         * 
+         * @param timeZone
+         *            selected time zone
          */
         public void onTimeZoneSelectionHandler(TimeZone timeZone);
     }
@@ -84,7 +92,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
     /**
      * Crates new dialog
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return dialog object
      */
     public static TimeZoneSelectionDialog getInstance(Context context) {
@@ -229,8 +239,11 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
         return data;
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -243,7 +256,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
     /**
      * Sets callback object for handling time zone selection
-     * @param callback callback object
+     * 
+     * @param callback
+     *            callback object
      */
     public void setCallback(OnTimeZoneSelectionListener callback) {
         mCallback = callback;

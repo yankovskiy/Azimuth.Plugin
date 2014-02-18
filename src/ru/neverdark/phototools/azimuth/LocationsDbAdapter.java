@@ -23,7 +23,7 @@ public class LocationsDbAdapter {
      */
     public final static String KEY_LOCATION_NAME = "location_name";
     /**
-     * Name of field contains the location latitude 
+     * Name of field contains the location latitude
      */
     public final static String KEY_LATITUDE = "latitude";
     /**
@@ -53,7 +53,9 @@ public class LocationsDbAdapter {
 
     /**
      * Constructor
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      */
     public LocationsDbAdapter(Context context) {
         mContext = context;
@@ -68,11 +70,17 @@ public class LocationsDbAdapter {
 
     /**
      * Creates a set of values to add / remove into database
-     * @param locationName location name
-     * @param latitude location latitude
-     * @param longitude location longitude
-     * @param mapType type of map
-     * @param cameraZoom camera zoom
+     * 
+     * @param locationName
+     *            location name
+     * @param latitude
+     *            location latitude
+     * @param longitude
+     *            location longitude
+     * @param mapType
+     *            type of map
+     * @param cameraZoom
+     *            camera zoom
      * @return set of values
      */
     private ContentValues createContentValues(String locationName,
@@ -91,11 +99,17 @@ public class LocationsDbAdapter {
 
     /**
      * Adds a new location in the database
-     * @param locationName location name
-     * @param latitude location latitude
-     * @param longitude location longitude
-     * @param mapType map of type
-     * @param cameraZoom camera zoom
+     * 
+     * @param locationName
+     *            location name
+     * @param latitude
+     *            location latitude
+     * @param longitude
+     *            location longitude
+     * @param mapType
+     *            map of type
+     * @param cameraZoom
+     *            camera zoom
      * @return added record id
      */
     public long createLocation(String locationName, double latitude,
@@ -107,7 +121,9 @@ public class LocationsDbAdapter {
 
     /**
      * Deletes location from database
-     * @param recordId record id for delete
+     * 
+     * @param recordId
+     *            record id for delete
      * @return true in the case of successful removal of records
      */
     public boolean deleteLocation(long recordId) {
@@ -118,7 +134,9 @@ public class LocationsDbAdapter {
 
     /**
      * Gets all locations from database
-     * @param list list to store data from a database
+     * 
+     * @param list
+     *            list to store data from a database
      */
     public void fetchAllLocations(List<LocationRecord> list) {
         String order = KEY_LAST_ACCESS.concat(" DESC");
@@ -155,6 +173,7 @@ public class LocationsDbAdapter {
 
     /**
      * Gets current time stamp in Unix epoch
+     * 
      * @return time stamp
      */
     private long getTimeStamp() {
@@ -165,7 +184,9 @@ public class LocationsDbAdapter {
 
     /**
      * Verifies the existence of the location with the specified name
-     * @param locationName location name for verifies
+     * 
+     * @param locationName
+     *            location name for verifies
      * @return true if location with the specified name exists
      */
     public boolean isLocationExists(String locationName) {
@@ -186,6 +207,7 @@ public class LocationsDbAdapter {
 
     /**
      * Checks database connection is open
+     * 
      * @return true if database connection is open
      */
     public boolean isOpen() {
@@ -194,8 +216,10 @@ public class LocationsDbAdapter {
 
     /**
      * Opens database for read/write
+     * 
      * @return this object
-     * @throws SQLException If an error occurs when opening a database
+     * @throws SQLException
+     *             If an error occurs when opening a database
      */
     public LocationsDbAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mContext);
@@ -205,7 +229,9 @@ public class LocationsDbAdapter {
 
     /**
      * Updates last access time for record
-     * @param recordId record id for update
+     * 
+     * @param recordId
+     *            record id for update
      */
     public void udateLastAccessTime(long recordId) {
         String where = KEY_ROWID.concat(" = ?");
@@ -217,12 +243,19 @@ public class LocationsDbAdapter {
 
     /**
      * Changes saved location in the database
-     * @param recordId record id
-     * @param locationName location name
-     * @param latitude location latitude
-     * @param longitude location longitude
-     * @param mapType type of map
-     * @param cameraZoom camera zoom
+     * 
+     * @param recordId
+     *            record id
+     * @param locationName
+     *            location name
+     * @param latitude
+     *            location latitude
+     * @param longitude
+     *            location longitude
+     * @param mapType
+     *            type of map
+     * @param cameraZoom
+     *            camera zoom
      */
     public void updateLocation(long recordId, String locationName,
             double latitude, double longitude, int mapType, float cameraZoom) {

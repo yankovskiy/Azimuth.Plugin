@@ -3,6 +3,7 @@
 
     <string name="app_name">Azimuth plugin</string>
     <string name="app_title">Azimuth</string>
+    <string name="app_title_free">Azimuth Free</string>
     
     <string name="progress_dialog_title">Calculation</string>
     <string name="progress_dialog_message">Calculation in progress. Please wait</string>
@@ -47,6 +48,7 @@
     <string name="error_zoomToSmall">The zoom is to small. Please increase</string>
     <string name="error_timeZoneIsNotDefined">Time zone is not defined. If the problem persists, check your Internet connection, or disable the settings to obtain the time zone from the Internet and select it by yourself in the application menu</string>
     <string name="error_noSun">There is no sun at selected time and location. You can change time and/or location</string>
+    <string name="error_availableOnlyInPaid">This feature available only in full version</string>
     
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Choose the app for sending of email</string>

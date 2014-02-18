@@ -17,8 +17,12 @@ public class ErrorDialog extends SherlockDialogFragment {
      * Class implements action for "Ok" dialog button
      */
     private class PositeiveClickListener implements OnClickListener {
-        /* (non-Javadoc)
-         * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.content.DialogInterface.OnClickListener#onClick(android.content
+         * .DialogInterface, int)
          */
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -33,7 +37,9 @@ public class ErrorDialog extends SherlockDialogFragment {
 
     /**
      * Creates new dialog
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return dialog object
      */
     public static ErrorDialog getIntstance(Context context) {
@@ -41,6 +47,7 @@ public class ErrorDialog extends SherlockDialogFragment {
         dialog.mContext = context;
         return dialog;
     }
+
     private AlertDialog.Builder mAlertDialog;
     private Context mContext;
     private int mResourceId;
@@ -54,8 +61,11 @@ public class ErrorDialog extends SherlockDialogFragment {
         mAlertDialog.setMessage(mResourceId);
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -75,7 +85,9 @@ public class ErrorDialog extends SherlockDialogFragment {
 
     /**
      * Sets error message for display in the dialog
-     * @param resourceId resource ID containing the text with error
+     * 
+     * @param resourceId
+     *            resource ID containing the text with error
      */
     public void setErrorMessage(int resourceId) {
         mResourceId = resourceId;

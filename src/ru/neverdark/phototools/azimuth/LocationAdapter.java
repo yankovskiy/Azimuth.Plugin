@@ -24,7 +24,9 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     public interface OnRemoveClickListener {
         /**
          * Handler for processing clicking on the delete button in the list
-         * @param position position clicking record in the list 
+         * 
+         * @param position
+         *            position clicking record in the list
          */
         public void onRemoveClickHandler(final int position);
     }
@@ -156,8 +158,11 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
         return record.getId();
     }
 
-    /* (non-Javadoc)
-     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
      */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -229,10 +234,12 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     }
 
     /**
-     * Sets callback object object that processing clicking on the delete button in the list
+     * Sets callback object object that processing clicking on the delete button
+     * in the list
      * 
      * @param callback
-     *            object that processing clicking on the delete button in the list
+     *            object that processing clicking on the delete button in the
+     *            list
      */
     public void setCallback(OnRemoveClickListener callback) {
         mCallback = callback;
@@ -241,15 +248,20 @@ public class LocationAdapter extends ArrayAdapter<LocationRecord> {
     /**
      * Sets the click handler for "delete" button
      * 
-     * @param holder row from the list
-     *            
+     * @param holder
+     *            row from the list
+     * 
      */
     private void setRemoveClickListener(RowHolder holder, final int position) {
         holder.mLocationRemoveButton
                 .setOnClickListener(new View.OnClickListener() {
 
-                    /* (non-Javadoc)
-                     * @see android.view.View.OnClickListener#onClick(android.view.View)
+                    /*
+                     * (non-Javadoc)
+                     * 
+                     * @see
+                     * android.view.View.OnClickListener#onClick(android.view
+                     * .View)
                      */
                     @Override
                     public void onClick(View v) {

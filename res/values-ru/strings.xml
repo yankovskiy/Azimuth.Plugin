@@ -3,6 +3,8 @@
 
     <string name="app_name">Azimuth plugin</string>
     <string name="app_title">Азимут</string>
+    <string name="app_title_free">Азимут Бесплатная</string>
+
     
     <string name="progress_dialog_title">Расчет</string>
     <string name="progress_dialog_message">Производятся вычисления. Пожалуйста, подождите</string>
@@ -48,6 +50,7 @@
     <string name="error_timeZoneIsNotDefined">Часовой пояс не определен. Если проблема повторится, проверьте ваше Internet-соединение, 
         или отключите в настройках получение часового пояса с Internet-серверов и выберите его самостоятельно из меню приложения</string>
     <string name="error_noSun">Нет Солнца для выбранного времени и местоположения. Попробуйте изменить время/местоположение</string>
+    <string name="error_availableOnlyInPaid">Эта функция доступна только в полной версии</string>
     
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>

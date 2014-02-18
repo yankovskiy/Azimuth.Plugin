@@ -8,7 +8,9 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
  * Settings activity
  */
 public class SettingsActivity extends SherlockPreferenceActivity {
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
      */
     @SuppressWarnings("deprecation")

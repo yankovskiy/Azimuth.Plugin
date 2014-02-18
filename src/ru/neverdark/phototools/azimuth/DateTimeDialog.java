@@ -30,14 +30,18 @@ public class DateTimeDialog extends SherlockDialogFragment {
     public interface OnConfirmDateTimeListener {
         /**
          * Handler for processing the selected time and date
-         * @param calendar calendar contained selected time and date
+         * 
+         * @param calendar
+         *            calendar contained selected time and date
          */
         public void onConfirmDateTimeHandler(Calendar calendar);
     }
 
     /**
      * Creates new dialog
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return dialog object
      */
     public static DateTimeDialog getInstance(Context context) {
@@ -122,8 +126,11 @@ public class DateTimeDialog extends SherlockDialogFragment {
                 mCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -133,7 +140,7 @@ public class DateTimeDialog extends SherlockDialogFragment {
         set24HourMode(Settings.is24HourMode(mContext));
         hideCalendar();
         initDateTime();
-        
+
         buildTabs();
 
         createDialog();
@@ -144,7 +151,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
 
     /**
      * Sets 24-hour mode for TimePicker
-     * @param is24HourMode true for 24-hour mode
+     * 
+     * @param is24HourMode
+     *            true for 24-hour mode
      */
     private void set24HourMode(boolean is24HourMode) {
         mTimePicker.setIs24HourView(is24HourMode);
@@ -152,7 +161,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
 
     /**
      * Sets calendar for initialization DatePicker and TimePicker in dialog tabs
-     * @param calendar calendar for initialization pickers in dialog tabs
+     * 
+     * @param calendar
+     *            calendar for initialization pickers in dialog tabs
      */
     public void setCalendar(Calendar calendar) {
         Log.enter();
@@ -161,7 +172,9 @@ public class DateTimeDialog extends SherlockDialogFragment {
 
     /**
      * Sets callback object for handling date and time selection
-     * @param callback object for handling date and time selection
+     * 
+     * @param callback
+     *            object for handling date and time selection
      */
     public void setCallBack(OnConfirmDateTimeListener callback) {
         mCallback = callback;

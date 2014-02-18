@@ -16,22 +16,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Constructor
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      */
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    /* (non-Javadoc)
-     * @see android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite.SQLiteDatabase)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite
+     * .SQLiteDatabase)
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_LOCATIONS_QUERY);
     }
 
-    /* (non-Javadoc)
-     * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite
+     * .SQLiteDatabase, int, int)
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

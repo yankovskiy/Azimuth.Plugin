@@ -19,8 +19,12 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
      * Class implements action for "Cancel" dialog button
      */
     private class NegativeClickListener implements OnClickListener {
-        /* (non-Javadoc)
-         * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.content.DialogInterface.OnClickListener#onClick(android.content
+         * .DialogInterface, int)
          */
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -29,12 +33,14 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
     }
 
     /**
-     * The interface for processing the delete record action 
+     * The interface for processing the delete record action
      */
     public interface OnDeleteConfirmationListener {
         /**
          * Handler for processing delete record action
-         * @param locationRecord the selected record for deletion
+         * 
+         * @param locationRecord
+         *            the selected record for deletion
          */
         public void onDeleteConfirmationHandler(LocationRecord locationRecord);
     }
@@ -43,8 +49,12 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
      * Class implements action for "Ok" dialog button
      */
     private class PositiveClickListener implements OnClickListener {
-        /* (non-Javadoc)
-         * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.content.DialogInterface.OnClickListener#onClick(android.content
+         * .DialogInterface, int)
          */
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -67,7 +77,9 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
 
     /**
      * Creates new dialog
-     * @param context application context
+     * 
+     * @param context
+     *            application context
      * @return dialog object
      */
     public static DeleteConfirmationDialog getInstance(Context context) {
@@ -88,8 +100,11 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
         mAlertDialog.setMessage(message);
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -101,7 +116,9 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
 
     /**
      * Sets callback object for handling delete record action
-     * @param callback object for handling delete record action
+     * 
+     * @param callback
+     *            object for handling delete record action
      */
     public void setCallback(OnDeleteConfirmationListener callback) {
         mCallback = callback;
@@ -119,7 +136,9 @@ public class DeleteConfirmationDialog extends SherlockDialogFragment {
 
     /**
      * Sets selected record for deletion
-     * @param locationRecord selected record for deletion
+     * 
+     * @param locationRecord
+     *            selected record for deletion
      */
     public void setLocationRecord(LocationRecord locationRecord) {
         mLocationRecord = locationRecord;

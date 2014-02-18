@@ -24,15 +24,28 @@ import android.widget.SimpleAdapter;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
+/**
+ * Dialog for time zone selection
+ */
 public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
+    /**
+     * Class implements clicks handler on time zone in the list
+     */
     private class ItemClickListener implements OnItemClickListener {
         TimeZoneSelectionDialog mDialog;
 
+        /**
+         * Constructor
+         * @param dialog dialog for closing after time zone selection
+         */
         public ItemClickListener(TimeZoneSelectionDialog dialog) {
             mDialog = dialog;
         }
 
+        /* (non-Javadoc)
+         * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+         */
         @Override
         public void onItemClick(AdapterView<?> parent, View itemClicked,
                 int position, long id) {
@@ -47,10 +60,20 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
     }
 
+    /**
+     * The interface for processing time zone selection
+     */
     public interface OnTimeZoneSelectionListener {
+        /**
+         * Handler for processing time zone selection
+         * @param timeZone selected time zone
+         */
         public void onTimeZoneSelectionHandler(TimeZone timeZone);
     }
 
+    /**
+     * Dialog name for fragment manager
+     */
     public static final String DIALOG_TAG = "timeZoneSelectionDialog";
     private static final int HOUR = 3600000;
     private static final String KEY_DISPLAYNAME = "name";
@@ -59,6 +82,11 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
     private static final String KEY_OFFSET = "offset";
     private static final String XMLTAG_TIMEZONE = "timezone";
 
+    /**
+     * Crates new dialog
+     * @param context application context
+     * @return dialog object
+     */
     public static TimeZoneSelectionDialog getInstance(Context context) {
         TimeZoneSelectionDialog dialog = new TimeZoneSelectionDialog();
         dialog.mContext = context;
@@ -118,6 +146,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
         data.add(map);
     }
 
+    /**
+     * Binds class objects to resources
+     */
     private void bindObjectToResource() {
         mView = View.inflate(mContext, R.layout.time_zone_selection_dialog,
                 null);
@@ -142,6 +173,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
         return adapter;
     }
 
+    /**
+     * Creates alert dialog
+     */
     private void createDialog() {
         mAlertDialog = new AlertDialog.Builder(mContext);
         mAlertDialog.setView(mView);
@@ -195,6 +229,9 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
         return data;
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         bindObjectToResource();
@@ -204,10 +241,17 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
         return mAlertDialog.create();
     }
 
+    /**
+     * Sets callback object for handling time zone selection
+     * @param callback callback object
+     */
     public void setCallback(OnTimeZoneSelectionListener callback) {
         mCallback = callback;
     }
 
+    /**
+     * Sets click listeners for time zone list
+     */
     private void setOnClickListener() {
         mListView.setOnItemClickListener(new ItemClickListener(this));
     }

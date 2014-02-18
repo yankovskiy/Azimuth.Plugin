@@ -1,7 +1,6 @@
 package ru.neverdark.phototools.azimuth.model;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
@@ -12,7 +11,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -31,18 +29,26 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/**
+ * Class for gets a time zone from the Google
+ */
 public class GoogleTimeZone {
     private TimeZone mTimeZone;
     private Context mContext;
     private LatLng mLocation;
     private Calendar mCalendar;
 
+    /**
+     * Constructor
+     * @param context application context
+     */
     public GoogleTimeZone(Context context) {
         mContext = context;
     }
 
     /**
-     * @return time zone object
+     * Gets time zone
+     * @return time zone
      */
     public TimeZone getTimeZone() {
         return mTimeZone;

@@ -63,7 +63,7 @@ public class DateTimeDialog extends SherlockDialogFragment {
     private AlertDialog.Builder mAlertDialog;
 
     /**
-     * Bind class objects to resources
+     * Binds class objects to resources
      */
     private void bindObjectToResources() {
         mView = View.inflate(getSherlockActivity(), R.layout.date_time_dialog,

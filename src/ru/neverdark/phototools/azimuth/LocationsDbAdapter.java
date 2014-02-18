@@ -11,39 +11,39 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- *
+ * Class provides API for interaction with database
  */
 public class LocationsDbAdapter {
     /**
-     * 
+     * Name of field contains the record id
      */
     public final static String KEY_ROWID = "_id";
     /**
-     * 
+     * Name of field contains the location name
      */
     public final static String KEY_LOCATION_NAME = "location_name";
     /**
-     * 
+     * Name of field contains the location latitude 
      */
     public final static String KEY_LATITUDE = "latitude";
     /**
-     * 
+     * Name of field contains the location longitude
      */
     public final static String KEY_LONGITUDE = "longitude";
     /**
-     * 
+     * Name of field contains the last access time
      */
     public final static String KEY_LAST_ACCESS = "last_access";
     /**
-     * 
+     * Name of field contains the type of map
      */
     public final static String KEY_MAP_TYPE = "map_type";
     /**
-     * 
+     * Name of field contains the camera zoom
      */
     public final static String KEY_CAMERA_ZOOM = "camera_zoom";
     /**
-     * 
+     * Name of the table contains a locations
      */
     private final static String TABLE_NAME = "locations";
 
@@ -51,24 +51,29 @@ public class LocationsDbAdapter {
     private SQLiteDatabase mDb;
     private DatabaseHelper mDbHelper;
 
+    /**
+     * Constructor
+     * @param context application context
+     */
     public LocationsDbAdapter(Context context) {
         mContext = context;
     }
 
     /**
-     * 
+     * Closes the database connection
      */
     public void close() {
         mDbHelper.close();
     }
 
     /**
-     * @param locationName
-     * @param latitude
-     * @param longitude
-     * @param mapType
-     * @param cameraZoom
-     * @return
+     * Creates a set of values to add / remove into database
+     * @param locationName location name
+     * @param latitude location latitude
+     * @param longitude location longitude
+     * @param mapType type of map
+     * @param cameraZoom camera zoom
+     * @return set of values
      */
     private ContentValues createContentValues(String locationName,
             double latitude, double longitude, int mapType, float cameraZoom) {
@@ -85,12 +90,13 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @param locationName
-     * @param latitude
-     * @param longitude
-     * @param mapType
-     * @param cameraZoom
-     * @return
+     * Adds a new location in the database
+     * @param locationName location name
+     * @param latitude location latitude
+     * @param longitude location longitude
+     * @param mapType map of type
+     * @param cameraZoom camera zoom
+     * @return added record id
      */
     public long createLocation(String locationName, double latitude,
             double longitude, int mapType, float cameraZoom) {
@@ -100,8 +106,9 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @param recordId
-     * @return
+     * Deletes location from database
+     * @param recordId record id for delete
+     * @return true in the case of successful removal of records
      */
     public boolean deleteLocation(long recordId) {
         String where = KEY_ROWID.concat(" = ?");
@@ -110,7 +117,8 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * 
+     * Gets all locations from database
+     * @param list list to store data from a database
      */
     public void fetchAllLocations(List<LocationRecord> list) {
         String order = KEY_LAST_ACCESS.concat(" DESC");
@@ -146,7 +154,8 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @return
+     * Gets current time stamp in Unix epoch
+     * @return time stamp
      */
     private long getTimeStamp() {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -155,8 +164,9 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @param locationName
-     * @return
+     * Verifies the existence of the location with the specified name
+     * @param locationName location name for verifies
+     * @return true if location with the specified name exists
      */
     public boolean isLocationExists(String locationName) {
         boolean exists = false;
@@ -175,15 +185,17 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @return
+     * Checks database connection is open
+     * @return true if database connection is open
      */
     public boolean isOpen() {
         return mDb.isOpen();
     }
 
     /**
-     * @return
-     * @throws SQLException
+     * Opens database for read/write
+     * @return this object
+     * @throws SQLException If an error occurs when opening a database
      */
     public LocationsDbAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mContext);
@@ -192,7 +204,8 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @param recordId
+     * Updates last access time for record
+     * @param recordId record id for update
      */
     public void udateLastAccessTime(long recordId) {
         String where = KEY_ROWID.concat(" = ?");
@@ -203,12 +216,13 @@ public class LocationsDbAdapter {
     }
 
     /**
-     * @param recordId
-     * @param locationName
-     * @param latitude
-     * @param longitude
-     * @param mapType
-     * @param cameraZoom
+     * Changes saved location in the database
+     * @param recordId record id
+     * @param locationName location name
+     * @param latitude location latitude
+     * @param longitude location longitude
+     * @param mapType type of map
+     * @param cameraZoom camera zoom
      */
     public void updateLocation(long recordId, String locationName,
             double latitude, double longitude, int mapType, float cameraZoom) {

@@ -13,11 +13,17 @@ import android.widget.EditText;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 /**
- *
+ * Dialog for saving locations
  */
 public class SaveLocationDialog extends SherlockDialogFragment {
 
+    /**
+     * Class implements action for "cancel" dialog button
+     */
     private class NegativeClickListener implements OnClickListener {
+        /* (non-Javadoc)
+         * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+         */
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
@@ -25,16 +31,23 @@ public class SaveLocationDialog extends SherlockDialogFragment {
     }
 
     /**
-     *
+     * The interface for processing the saving location information into database
      */
     public interface OnSaveLocationListener {
         /**
-         * 
+         * Handler for processing the saving location information into database
+         * @param data data for processing and saving
          */
         public void onSaveLocationHandler(SaveDialogData data);
     }
 
+    /**
+     * Class implements action for "ok" dialog button
+     */
     private class PositiveClickListener implements OnClickListener {
+        /* (non-Javadoc)
+         * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+         */
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -48,33 +61,64 @@ public class SaveLocationDialog extends SherlockDialogFragment {
             }
         }
     }
+    
+    /**
+     * Class stores data for action
+     */
     public static class SaveDialogData {
         private int mActionType;
         private LocationRecord mLocationRecord;
 
+        /**
+         * Gets action type
+         * @return action type (ACTION_TYPE_EDIT, ACTION_TYPE_NEW)
+         */
         public int getActionType() {
             return mActionType;
         }
 
+        /**
+         * Gets location record
+         * @return object contains record from a database
+         */
         public LocationRecord getLocationRecord() {
             return mLocationRecord;
         }
 
+        /**
+         * Sets action type
+         * @param actionType action type (ACTION_TYPE_EDIT, ACTION_TYPE_NEW)
+         */
         public void setActionType(int actionType) {
             mActionType = actionType;
         }
 
+        /**
+         * Sets location record
+         * @param record object contains record from database
+         */
         public void setLocationRecord(LocationRecord record) {
             mLocationRecord = record;
         }
     }
+    /**
+     * Action type - editing an existing record
+     */
     public static final int ACTION_TYPE_EDIT = 1;
+    /**
+     * Action type - creating a new record
+     */
     public static final int ACTION_TYPE_NEW = 0;
 
     /**
-     * 
+     * Dialog name for fragment manager
      */
     public static final String DIALOG_TAG = "saveLocationDialog";
+    /**
+     * Creates new dialog
+     * @param context
+     * @return dialog object
+     */
     public static SaveLocationDialog getInstance(Context context) {
         SaveLocationDialog dialog = new SaveLocationDialog();
         dialog.mContext = context;
@@ -92,12 +136,18 @@ public class SaveLocationDialog extends SherlockDialogFragment {
 
     private View mView;
 
+    /**
+     * Binds class object to resource
+     */
     private void bindObjectToResource() {
         mView = View.inflate(mContext, R.layout.save_location_dialog, null);
         mEditTextLocationName = (EditText) mView
                 .findViewById(R.id.saveLocationDialog_locationName);
     }
 
+    /**
+     * Creates alert dialog
+     */
     private void createDialog() {
         mAlertDialog = new AlertDialog.Builder(mContext);
         mAlertDialog.setView(mView);
@@ -105,6 +155,9 @@ public class SaveLocationDialog extends SherlockDialogFragment {
         mAlertDialog.setMessage(R.string.saveLocationDialog_message);
     }
 
+    /* (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         bindObjectToResource();
@@ -119,10 +172,17 @@ public class SaveLocationDialog extends SherlockDialogFragment {
         return mAlertDialog.create();
     }
 
+    /**
+     * Sets callback object for handling process the saving location information into database
+     * @param callback object for handling process
+     */
     public void setCallback(OnSaveLocationListener callback) {
         mCallback = callback;
     }
 
+    /**
+     * Sets click listeners for dialog buttons
+     */
     private void setOnClickListener() {
         mAlertDialog.setPositiveButton(R.string.dialog_ok,
                 new PositiveClickListener());
@@ -130,6 +190,10 @@ public class SaveLocationDialog extends SherlockDialogFragment {
                 new NegativeClickListener());
     }
 
+    /**
+     * Sets data for action
+     * @param data data for action
+     */
     public void setSaveDialogData(SaveDialogData data) {
         mData = data;
     }

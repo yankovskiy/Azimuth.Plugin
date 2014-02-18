@@ -6,20 +6,38 @@ import ru.neverdark.phototools.azimuth.utils.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Class for calculation sun azimuth and sun altitude
+ */
 public class SunCalculator {
+    /**
+     * Class contains calculation result
+     */
     public class CalculationResult {
         private double azimuth;
         private double altitude;
 
+        /**
+         * Gets sun altitude
+         * @return sun altitude
+         */
         public double getAltitude() {
             return altitude;
         }
 
+        /**
+         * Gets sun azimuth in radiant
+         * @return sun azimuth
+         */
         public double getAzimuth() {
             return azimuth;
         }
 
-        public double getAzimuthInDegres() {
+        /**
+         * Gets sun azimuth in degrees
+         * @return sun azimuth
+         */
+        public double getAzimuthInDegrees() {
             return azimuth * 180 / Math.PI;
         }
     }
@@ -37,16 +55,19 @@ public class SunCalculator {
 
     private static final double e = rad * 23.4397;
 
+    /**
+     * Gets second point for drawing azimuth
+     * @param location selected location
+     * @param azimuth sun azimuth
+     * @param distance distance to second point (in degrees)
+     * @return
+     */
     public static LatLng getDestLatLng(LatLng location, double azimuth,
             double distance) {
         double lat2 = location.latitude + distance * Math.cos(azimuth);
         double lng2 = location.longitude + distance * Math.sin(azimuth);
 
         return new LatLng(lat2, lng2);
-    }
-
-    private double acos(double d) {
-        return Math.acos(d);
     }
 
     private double asin(double d) {
@@ -59,13 +80,6 @@ public class SunCalculator {
 
     private double cos(double d) {
         return Math.cos(d);
-    }
-
-    private Calendar fromJulian(double j) {
-        Calendar calendar = Calendar.getInstance();
-        long milliseconds = (long) ((j + 0.5 - J1970) * dayMs);
-        calendar.setTimeInMillis(milliseconds);
-        return calendar;
     }
 
     private double getAltitude(double H, double phi, double dec) {
@@ -90,6 +104,12 @@ public class SunCalculator {
                 * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M));
     }
 
+    /**
+     * Gets sun azimuth and altitude for specified date and location
+     * @param date date for calculation
+     * @param location location for calculation
+     * @return object contains calculation result
+     */
     public CalculationResult getPosition(Calendar date, LatLng location) {
         long start = Log.enter();
 

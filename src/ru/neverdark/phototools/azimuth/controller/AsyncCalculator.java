@@ -13,11 +13,26 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+/**
+ * Class provides an asynchronous computation azimuth
+ */
 public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
+    /**
+     * The interface for calculation handling
+     */
     public interface OnCalculationResultListener {
+        /**
+         * Handler for time zone not detected case
+         */
         public void onGetResultFail();
 
+        /**
+         * Handler for successfully calculation
+         * 
+         * @param calculationResult
+         *            calculation result data
+         */
         public void onGetResultSuccess(
                 SunCalculator.CalculationResult calculationResult);
     }
@@ -32,6 +47,14 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
     private LatLng mLocaiton;
     private TimeZone mTimeZone;
 
+    /**
+     * Constructor
+     * 
+     * @param context
+     *            application context
+     * @param callback
+     *            callback object for processing calculation result
+     */
     public AsyncCalculator(Context context, OnCalculationResultListener callback) {
         mContext = context;
         mGoogleTimeZone = new GoogleTimeZone(context);
@@ -39,6 +62,9 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         mIsIternetTimeZone = false;
     }
 
+    /**
+     * Creates and shows progress dialog
+     */
     private void createDialog() {
         mDialog = new ProgressDialog(mContext);
         mDialog.setCancelable(false);
@@ -47,6 +73,11 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         mDialog.show();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#doInBackground(Params[])
+     */
     @Override
     protected Integer doInBackground(Void... params) {
         int year = mCalendar.get(Calendar.YEAR);
@@ -57,15 +88,17 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
         int requestStatus = Constants.STATUS_FAIL;
 
+        // "Internet time zone" settings enabled
         if (mIsIternetTimeZone) {
             mGoogleTimeZone.setCalendar(mCalendar);
             mGoogleTimeZone.setLocation(mLocaiton);
-
+            // gets time zone from Google servers
             requestStatus = mGoogleTimeZone.requestTimeZone();
             if (requestStatus == Constants.STATUS_SUCCESS) {
                 mTimeZone = mGoogleTimeZone.getTimeZone();
             }
         } else {
+            // if user have selected time zone
             if (mTimeZone != null) {
                 requestStatus = Constants.STATUS_SUCCESS;
             }
@@ -82,6 +115,11 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         return requestStatus;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+     */
     @Override
     protected void onPostExecute(Integer result) {
         mDialog.dismiss();
@@ -93,23 +131,53 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#onPreExecute()
+     */
     @Override
     protected void onPreExecute() {
         createDialog();
     }
 
+    /**
+     * Sets calendar with date for calculation
+     * 
+     * @param calendar
+     *            calendar with date for calculation
+     */
     public void setCalendar(Calendar calendar) {
         mCalendar = calendar;
     }
 
+    /**
+     * Notifies AsyncCalculator to use a time zone from the Internet
+     * 
+     * @param isInternetTimezone
+     *            true for use time zone from the Internet
+     */
     public void setIsInternetTimeZone(boolean isInternetTimezone) {
         mIsIternetTimeZone = isInternetTimezone;
     }
 
+    /**
+     * Sets location for calculation
+     * 
+     * @param location
+     *            location for calculation
+     */
     public void setLocation(LatLng location) {
         mLocaiton = location;
     }
 
+    /**
+     * Sets time zone for calculation. Must be called after notification
+     * AsyncCalculator to don't use a time zone from Internet
+     * 
+     * @param timeZone
+     *            time zone calculation
+     */
     public void setTimeZone(TimeZone timeZone) {
         mTimeZone = timeZone;
     }

@@ -188,6 +188,11 @@ public class DateTimeDialog extends SherlockDialogFragment {
                 new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        /* workaround problem with confirm dialog without switch focus from changed items */
+                        mTimePicker.clearFocus();
+                        mDatePicker.clearFocus();
+                        
+                        
                         dialog.dismiss();
 
                         int year = mDatePicker.getYear();

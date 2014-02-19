@@ -319,7 +319,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 mMap.addPolyline(options);
             }
         } else {
-            showErrorMessage(R.string.error_zoomToSmall);
+            showMessage(R.string.error_zoomToSmall);
         }
     }
 
@@ -562,6 +562,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
         if (Constants.PAID) {
             mDrawerToggle.syncState();
         }
+        
+        if (Settings.isShowTip(mContext)) {
+            showMessage(R.string.startupHint);
+        }
     }
 
     /*
@@ -687,12 +691,12 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     /**
-     * Shows toast with error text
+     * Shows toast with text
      * 
      * @param resourceId
-     *            resource id contains error message
+     *            resource id contains message
      */
-    private void showErrorMessage(int resourceId) {
+    private void showMessage(int resourceId) {
         Toast.makeText(mContext, resourceId, Toast.LENGTH_LONG).show();
     }
 

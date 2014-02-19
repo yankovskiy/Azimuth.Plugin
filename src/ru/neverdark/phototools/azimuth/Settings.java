@@ -35,4 +35,18 @@ public class Settings {
         return sharedPref.getBoolean(context.getString(R.string.pref_timezone),
                 true);
     }
+
+    /**
+     * Checks value for "Show tip"
+     * 
+     * @param context
+     *            application context
+     * @return true for enabled "Show tip"
+     */
+    public static boolean isShowTip(Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(context.getString(R.string.pref_tip),
+                true);
+    }
 }

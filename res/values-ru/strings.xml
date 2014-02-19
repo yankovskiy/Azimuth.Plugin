@@ -38,6 +38,9 @@
     <string name="settings_internetTimeZone_title">Часовой пояс с Internet</string>
     <string name="settings_internetTimeZone_message">Получать часовой пояс с Internet-серверов</string>
     
+    <string name="settings_showTip_title">Показывать совет</string>
+    <string name="settings_showTip_message">Показывать совет при запуске приложения</string>
+    
     <string name="menu_item_timeZone">Часовой пояс</string>
     <string name="menu_item_rate">Оценить</string>
     <string name="menu_item_feedback">Обратная связь</string>
@@ -54,4 +57,6 @@
     
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>
+    
+    <string name="startupHint">Долгое нажатие на карте для выбора места</string>
 </resources>

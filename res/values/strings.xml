@@ -37,6 +37,9 @@
     <string name="settings_internetTimeZone_title">Internet time zone</string>
     <string name="settings_internetTimeZone_message">Gets a time zone from Internet-servers</string>
     
+    <string name="settings_showTip_title">Show tip</string>
+    <string name="settings_showTip_message">Show tip on application startup</string>
+    
     <string name="menu_item_timeZone">Time zone</string>
     <string name="menu_item_rate">Rate</string>
     <string name="menu_item_feedback">Feedback</string>
@@ -52,4 +55,6 @@
     
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Choose the app for sending of email</string>
+    
+    <string name="startupHint">Long tap on map to get new location</string>
 </resources>

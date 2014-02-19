@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <CheckBoxPreference android:title="@string/settings_24HourMode_title" android:summary="@string/settings_24HourMode_message" android:key="@string/pref_24HourMode" android:defaultValue="false"/>
-    <CheckBoxPreference android:key="@string/pref_timezone" android:title="@string/settings_internetTimeZone_title" android:summary="@string/settings_internetTimeZone_message" android:defaultValue="true"/>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/pref_24HourMode"
+        android:summary="@string/settings_24HourMode_message"
+        android:title="@string/settings_24HourMode_title" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_timezone"
+        android:summary="@string/settings_internetTimeZone_message"
+        android:title="@string/settings_internetTimeZone_title" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_tip"
+        android:summary="@string/settings_showTip_message"
+        android:title="@string/settings_showTip_title" />
     
 
 </PreferenceScreen>

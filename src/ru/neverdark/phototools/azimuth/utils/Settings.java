@@ -13,8 +13,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package ru.neverdark.phototools.azimuth;
+package ru.neverdark.phototools.azimuth.utils;
 
+import ru.neverdark.phototools.azimuth.R;
+import ru.neverdark.phototools.azimuth.R.string;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

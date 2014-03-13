@@ -13,9 +13,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package ru.neverdark.phototools.azimuth;
+package ru.neverdark.phototools.azimuth.dialogs;
 
 import java.util.Locale;
+
+import ru.neverdark.phototools.azimuth.R;
+import ru.neverdark.phototools.azimuth.R.string;
+import ru.neverdark.phototools.azimuth.db.LocationRecord;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -13,7 +13,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package ru.neverdark.phototools.azimuth;
+package ru.neverdark.phototools.azimuth.dialogs;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +24,11 @@ import java.util.TimeZone;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import ru.neverdark.phototools.azimuth.R;
+import ru.neverdark.phototools.azimuth.R.id;
+import ru.neverdark.phototools.azimuth.R.layout;
+import ru.neverdark.phototools.azimuth.R.string;
+import ru.neverdark.phototools.azimuth.R.xml;
 import ru.neverdark.phototools.azimuth.utils.Log;
 
 import android.app.AlertDialog;

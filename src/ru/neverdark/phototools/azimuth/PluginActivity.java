@@ -18,12 +18,20 @@ package ru.neverdark.phototools.azimuth;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import ru.neverdark.phototools.azimuth.DeleteConfirmationDialog.OnDeleteConfirmationListener;
-import ru.neverdark.phototools.azimuth.TimeZoneSelectionDialog.OnTimeZoneSelectionListener;
-import ru.neverdark.phototools.azimuth.controller.AsyncCalculator;
+import ru.neverdark.phototools.azimuth.async.AsyncCalculator;
+import ru.neverdark.phototools.azimuth.db.LocationAdapter;
+import ru.neverdark.phototools.azimuth.db.LocationRecord;
+import ru.neverdark.phototools.azimuth.dialogs.DateTimeDialog;
+import ru.neverdark.phototools.azimuth.dialogs.DeleteConfirmationDialog;
+import ru.neverdark.phototools.azimuth.dialogs.ErrorDialog;
+import ru.neverdark.phototools.azimuth.dialogs.SaveLocationDialog;
+import ru.neverdark.phototools.azimuth.dialogs.TimeZoneSelectionDialog;
+import ru.neverdark.phototools.azimuth.dialogs.DeleteConfirmationDialog.OnDeleteConfirmationListener;
+import ru.neverdark.phototools.azimuth.dialogs.TimeZoneSelectionDialog.OnTimeZoneSelectionListener;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.utils.Constants;
 import ru.neverdark.phototools.azimuth.utils.Log;
+import ru.neverdark.phototools.azimuth.utils.Settings;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;

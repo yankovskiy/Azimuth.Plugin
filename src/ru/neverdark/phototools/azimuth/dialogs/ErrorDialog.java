@@ -13,8 +13,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package ru.neverdark.phototools.azimuth;
+package ru.neverdark.phototools.azimuth.dialogs;
 
+import ru.neverdark.phototools.azimuth.R;
+import ru.neverdark.phototools.azimuth.R.string;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -31,7 +33,7 @@ public class ErrorDialog extends SherlockDialogFragment {
     /**
      * Class implements action for "Ok" dialog button
      */
-    private class PositeiveClickListener implements OnClickListener {
+    private class PositiveClickListener implements OnClickListener {
         /*
          * (non-Javadoc)
          * 
@@ -95,7 +97,7 @@ public class ErrorDialog extends SherlockDialogFragment {
      */
     private void setClickListener() {
         mAlertDialog.setPositiveButton(R.string.dialog_ok,
-                new PositeiveClickListener());
+                new PositiveClickListener());
     }
 
     /**

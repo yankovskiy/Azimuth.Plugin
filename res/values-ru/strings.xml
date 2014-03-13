@@ -74,4 +74,7 @@
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>
     
     <string name="startupHint">Долгое нажатие на карте для выбора места</string>
+    
+    <string name="menu_item_search">Поиск</string>
+    <string name="search_hint">Поиск по адресу</string>
 </resources>

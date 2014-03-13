@@ -72,4 +72,7 @@
     <string name="chooseEmailApp">Choose the app for sending of email</string>
     
     <string name="startupHint">Long tap on map to get new location</string>
+    
+    <string name="menu_item_search">Search</string>
+    <string name="search_hint">Search by address</string>
 </resources>

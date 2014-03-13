@@ -58,15 +58,22 @@
     <item
         android:id="@+id/item_dateTime"
         android:icon="@drawable/ic_action_go_to_today"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/mapDateSelection">
     </item>
     <item
         android:id="@+id/item_saveLocation"
         android:icon="@drawable/ic_action_save"
-        android:showAsAction="always|withText"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/saveLocationDialog_title"
         android:visible="false">
+    </item>
+    <item
+        android:id="@+id/item_search"
+        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/menu_item_search">
     </item>
 
 </menu>

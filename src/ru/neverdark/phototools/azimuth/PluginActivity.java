@@ -28,6 +28,8 @@ import ru.neverdark.phototools.azimuth.utils.Log;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
+import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -60,6 +62,24 @@ import android.widget.Toast;
  */
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener {
+
+    /**
+     * Class for handling search query
+     */
+    private class QueryTextListener implements OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            Log.variable("query", query);
+            mMenuItemSearch.collapseActionView();
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+    }
 
     /**
      * Class implements calculation handling
@@ -264,11 +284,13 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private MenuItem mMenuItemDateTime;
     private MenuItem mMenuItemDone;
     private MenuItem mMenuItemTimeZone;
+    private MenuItem mMenuItemSearch;
     private double mOldZoom = -1;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
     private TimeZone mTimeZone;
     private CharSequence mTitle;
     private String mPackageName;
+    private SearchView mSearchView;
 
     /**
      * Constructor
@@ -464,6 +486,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mMenuItemDone = menu.findItem(R.id.item_saveLocation);
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         mMenuItemTimeZone = menu.findItem(R.id.item_timeZone);
+        mMenuItemSearch = menu.findItem(R.id.item_search);
+        mSearchView = new SearchView(mContext);
+        mSearchView.setQueryHint(getString(R.string.search_hint));
+        mSearchView.setOnQueryTextListener(new QueryTextListener());
+        mMenuItemSearch.setActionView(mSearchView);
         return true;
     }
 

@@ -67,7 +67,8 @@ public class ErrorDialog extends SherlockDialogFragment {
 
     private AlertDialog.Builder mAlertDialog;
     private Context mContext;
-    private int mResourceId;
+    private int mResourceId = 0;
+    private String mErrorMessage;
 
     /**
      * Creates alert dialog
@@ -75,7 +76,11 @@ public class ErrorDialog extends SherlockDialogFragment {
     private void createDialog() {
         mAlertDialog = new AlertDialog.Builder(mContext);
         mAlertDialog.setTitle(R.string.errorDialog_title);
-        mAlertDialog.setMessage(mResourceId);
+        if (mResourceId != 0) {
+            mAlertDialog.setMessage(mResourceId);
+        } else {
+            mAlertDialog.setMessage(mErrorMessage);
+        }
     }
 
     /*
@@ -100,6 +105,16 @@ public class ErrorDialog extends SherlockDialogFragment {
                 new PositiveClickListener());
     }
 
+    /**
+     * Sets error message for display in the dialog
+     * 
+     * @param errorMessage
+     *            string contains error message
+     */
+    public void setErrorMessage(String errorMessage) {
+        mErrorMessage = errorMessage;
+    }
+    
     /**
      * Sets error message for display in the dialog
      * 

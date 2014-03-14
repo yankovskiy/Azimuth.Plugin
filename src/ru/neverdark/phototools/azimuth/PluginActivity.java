@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.neverdark.phototools.azimuth.async.AsyncCalculator;
+import ru.neverdark.phototools.azimuth.async.AsyncGeoCoder;
+import ru.neverdark.phototools.azimuth.async.AsyncGeoCoder.OnGeoCoderListener;
 import ru.neverdark.phototools.azimuth.db.LocationAdapter;
 import ru.neverdark.phototools.azimuth.db.LocationRecord;
 import ru.neverdark.phototools.azimuth.dialogs.DateTimeDialog;
@@ -70,24 +72,6 @@ import android.widget.Toast;
  */
 public class PluginActivity extends SherlockFragmentActivity implements
         OnMapLongClickListener, OnCameraChangeListener {
-
-    /**
-     * Class for handling search query
-     */
-    private class QueryTextListener implements OnQueryTextListener {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            Log.variable("query", query);
-            mMenuItemSearch.collapseActionView();
-            return true;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-    }
 
     /**
      * Class implements calculation handling
@@ -161,6 +145,35 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     /**
+     * Class for handling results from GeoCoder
+     */
+    private class GeoCoderListener implements OnGeoCoderListener {
+        @Override
+        public void onGetResultFail() {
+            showErrorDialog(R.string.error_geoCoderNotAvailable);
+        }
+
+        @Override
+        public void onGetResultSuccess(LatLng coordinates, String searchString) {
+            if (coordinates != null) {
+                mLocation = coordinates;
+                float zoom = mMap.getCameraPosition().zoom;
+
+                // move camera to saved position
+                CameraPosition currentPosition = new CameraPosition.Builder()
+                        .target(mLocation).zoom(zoom).build();
+                mMap.moveCamera(CameraUpdateFactory
+                        .newCameraPosition(currentPosition));
+            } else {
+                String errorMessage = String.format(
+                        getString(R.string.error_notFound), searchString);
+                showErrorDialog(errorMessage);
+            }
+        }
+
+    }
+
+    /**
      * Class implements clicks handler for location list
      */
     private class LocationItemClickListener implements
@@ -176,6 +189,25 @@ public class PluginActivity extends SherlockFragmentActivity implements
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             selectItem(position);
+        }
+    }
+
+    /**
+     * Class for handling search query
+     */
+    private class QueryTextListener implements OnQueryTextListener {
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            Log.variable("query", query);
+            mMenuItemSearch.collapseActionView();
+            initSearchProcess(query);
+            return true;
         }
     }
 
@@ -291,14 +323,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private Marker mMarker;
     private MenuItem mMenuItemDateTime;
     private MenuItem mMenuItemDone;
-    private MenuItem mMenuItemTimeZone;
     private MenuItem mMenuItemSearch;
+    private MenuItem mMenuItemTimeZone;
     private double mOldZoom = -1;
+    private String mPackageName;
     private final SaveLocationDialog.SaveDialogData mSaveDialogData;
+    private SearchView mSearchView;
     private TimeZone mTimeZone;
     private CharSequence mTitle;
-    private String mPackageName;
-    private SearchView mSearchView;
 
     /**
      * Constructor
@@ -400,6 +432,19 @@ public class PluginActivity extends SherlockFragmentActivity implements
         }
     }
 
+    /**
+     * Inits process for searching coordinates by address
+     * 
+     * @param query
+     *            address for searching in GeoCoder
+     */
+    public void initSearchProcess(String query) {
+        AsyncGeoCoder geo = new AsyncGeoCoder(mContext);
+        geo.setSearchString(query);
+        geo.setCallback(new GeoCoderListener());
+        geo.execute();
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -474,7 +519,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         } else {
             setTitle(getString(R.string.app_title_free));
         }
-        
+
         mCalendar = Calendar.getInstance();
         mContext = this;
         mPackageName = mContext.getPackageName();
@@ -612,7 +657,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         if (Constants.PAID) {
             mDrawerToggle.syncState();
         }
-        
+
         if (Settings.isShowTip(mContext)) {
             showMessage(R.string.startupHint);
         }
@@ -741,13 +786,15 @@ public class PluginActivity extends SherlockFragmentActivity implements
     }
 
     /**
-     * Shows toast with text
+     * Shows error dialog
      * 
-     * @param resourceId
-     *            resource id contains message
+     * @param errorMessage
+     *            error message
      */
-    private void showMessage(int resourceId) {
-        Toast.makeText(mContext, resourceId, Toast.LENGTH_LONG).show();
+    private void showErrorDialog(String errorMessage) {
+        ErrorDialog dialog = ErrorDialog.getIntstance(mContext);
+        dialog.setErrorMessage(errorMessage);
+        dialog.show(getSupportFragmentManager(), ErrorDialog.DIALOG_TAG);
     }
 
     /**
@@ -761,6 +808,16 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
         startActivity(Intent.createChooser(mailIntent,
                 getString(R.string.chooseEmailApp)));
+    }
+
+    /**
+     * Shows toast with text
+     * 
+     * @param resourceId
+     *            resource id contains message
+     */
+    private void showMessage(int resourceId) {
+        Toast.makeText(mContext, resourceId, Toast.LENGTH_LONG).show();
     }
 
     /**

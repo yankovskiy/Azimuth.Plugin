@@ -69,6 +69,8 @@
         или отключите в настройках получение часового пояса с Internet-серверов и выберите его самостоятельно из меню приложения</string>
     <string name="error_noSun">Нет Солнца для выбранного времени и местоположения. Попробуйте изменить время/местоположение</string>
     <string name="error_availableOnlyInPaid">Эта функция доступна только в полной версии</string>
+    <string name="error_geoCoderNotAvailable">Не удалось определить координаты по заданному адресу. Пожалуйста, проверьте ваше Internet-соединение</string>
+    <string name="error_notFound">Не найдено результатов для адреса \"%s\"</string>
     
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>

@@ -543,10 +543,16 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         mMenuItemTimeZone = menu.findItem(R.id.item_timeZone);
         mMenuItemSearch = menu.findItem(R.id.item_search);
-        mSearchView = new SearchView(mContext);
-        mSearchView.setQueryHint(getString(R.string.search_hint));
-        mSearchView.setOnQueryTextListener(new QueryTextListener());
-        mMenuItemSearch.setActionView(mSearchView);
+        
+        if (Constants.PAID) {
+            mSearchView = new SearchView(mContext);
+            mSearchView.setQueryHint(getString(R.string.search_hint));
+            mSearchView.setOnQueryTextListener(new QueryTextListener());
+            mMenuItemSearch.setActionView(mSearchView);
+        } else {
+            mMenuItemSearch.setActionView(null);
+        }
+        
         return true;
     }
 
@@ -616,6 +622,11 @@ public class PluginActivity extends SherlockFragmentActivity implements
             break;
         case R.id.item_feedback:
             showFeedback();
+            break;
+        case R.id.item_search:
+            if (Constants.PAID == false) {
+                showErrorDialog(R.string.error_availableOnlyInPaid);
+            }
             break;
         }
         return true;

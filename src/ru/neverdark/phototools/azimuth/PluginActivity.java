@@ -156,6 +156,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
         @Override
         public void onGetResultSuccess(LatLng coordinates, String searchString) {
             if (coordinates != null) {
+                clearMap();
+                
                 mLocation = coordinates;
                 float zoom = mMap.getCameraPosition().zoom;
 
@@ -207,6 +209,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
             Log.variable("query", query);
             mMenuItemSearch.collapseActionView();
             initSearchProcess(query);
+            
             return true;
         }
     }

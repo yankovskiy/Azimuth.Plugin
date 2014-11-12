@@ -106,7 +106,7 @@ public class GoogleTimeZone {
         /* Gets desired time as seconds since midnight, January 1, 1970 UTC */
         Long timestamp = calendar.getTimeInMillis() / 1000;
 
-        String url_format = "https://maps.googleapis.com/maps/api/timezone/json?location=%f,%f&timestamp=%d&sensor=false";
+        String url_format = "https://maps.googleapis.com/maps/api/timezone/json?location=%f,%f&timestamp=%d";
         String url = String.format(Locale.US, url_format, mLocation.latitude,
                 mLocation.longitude, timestamp);
 
@@ -162,8 +162,11 @@ public class GoogleTimeZone {
                 try {
                     JSONObject jsonObject = new JSONObject(json);
                     String timeZoneId = jsonObject.getString("timeZoneId");
+                    String rawOffset = jsonObject.getString("rawOffset");
                     Log.variable("timeZoneId", timeZoneId);
+                    Log.variable("rawOffset", rawOffset);
                     mTimeZone = TimeZone.getTimeZone(timeZoneId);
+                    mTimeZone.setRawOffset(Integer.valueOf(rawOffset) * 1000);
                     requestStatus = Constants.STATUS_SUCCESS;
                 } catch (JSONException e) {
                     e.printStackTrace();

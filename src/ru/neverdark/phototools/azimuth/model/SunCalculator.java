@@ -16,15 +16,19 @@
 package ru.neverdark.phototools.azimuth.model;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import ru.neverdark.phototools.azimuth.utils.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.luckycatlabs.sunrisesunset.dto.Location;
 
 /**
  * Class for calculation sun azimuth and sun altitude
  */
 public class SunCalculator {
+    
     /**
      * Class contains calculation result
      */
@@ -160,7 +164,33 @@ public class SunCalculator {
 
         CalculationResult result = new CalculationResult();
         result.azimuth = getAzimuth(H, phi, c.dec) + Math.PI;
-        result.altitude = getAltitude(H, phi, c.dec);
+        
+        //////////
+        // workaround for fix difference between azimuth and photo tools sunset module
+        Location loc = new Location(location.latitude, location.longitude);
+        SunriseSunsetCalculator calc = new SunriseSunsetCalculator(loc, date.getTimeZone());
+        String sunset = calc.getOfficialSunsetForDate(date);
+        String sunrise = calc.getOfficialSunriseForDate(date);
+        String givenDate = String.format(Locale.US, "%02d%02d", date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
+        String[] sunsets = sunset.split(":");
+        String[] sunrises = sunrise.split(":");
+        sunset = sunsets[0].concat(sunsets[1]);
+        sunrise= sunrises[0].concat(sunrises[1]);
+        int sunsetInt = Integer.valueOf(sunset);
+        int sunriseInt = Integer.valueOf(sunrise);
+        int givenDateInt = Integer.valueOf(givenDate);
+        Log.variable("sunsetInt", sunset);
+        Log.variable("sunriseInt", sunrise);
+        Log.variable("givenDateInt", givenDate);
+        
+        if (givenDateInt >= sunriseInt && givenDateInt <= sunsetInt) {
+            result.altitude = 1;
+        } else {
+            result.altitude = -1;
+        }
+        ////////////
+        
+        //result.altitude = getAltitude(H, phi, c.dec);
 
         Log.variable("azimuth", String.valueOf(result.azimuth));
         Log.variable("altitude", String.valueOf(result.altitude));

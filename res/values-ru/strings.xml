@@ -56,6 +56,12 @@
     <string name="settings_showTip_title">Показывать совет</string>
     <string name="settings_showTip_message">Показывать совет при запуске приложения</string>
     
+    <string name="settings_showSunsetAzimuth_title">Закат</string>
+    <string name="settings_showSunsetAzimuth_message">Отображать солнечный азимут заката</string>
+    
+    <string name="settings_showSunriseAzimuth_title">Рассвет</string>
+    <string name="settings_showSunriseAzimuth_message">Отображать солнечный азимут рассвета</string>
+    
     <string name="menu_item_timeZone">Часовой пояс</string>
     <string name="menu_item_rate">Оценить</string>
     <string name="menu_item_feedback">Обратная связь</string>

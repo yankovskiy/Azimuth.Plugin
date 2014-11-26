@@ -16,7 +16,6 @@
 package ru.neverdark.phototools.azimuth.utils;
 
 import ru.neverdark.phototools.azimuth.R;
-import ru.neverdark.phototools.azimuth.R.string;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -64,6 +63,30 @@ public class Settings {
         SharedPreferences sharedPref = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPref.getBoolean(context.getString(R.string.pref_tip),
+                true);
+    }
+    
+    /**
+     * Checks value for "Sunset"
+     * @param context
+     * @return true for enabled "Sunset"
+     */
+    public static boolean isSunsetShow(Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(context.getString(R.string.pref_showSunsetAzimuth),
+                true);
+    }
+    
+    /**
+     * Checks value for "Sunrise"
+     * @param context
+     * @return true for enabled "Sunrise"
+     */
+    public static boolean isSunriseShow(Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(context.getString(R.string.pref_showSunriseAzimuth),
                 true);
     }
 }

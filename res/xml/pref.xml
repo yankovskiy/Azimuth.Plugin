@@ -31,6 +31,15 @@
         android:key="@string/pref_tip"
         android:summary="@string/settings_showTip_message"
         android:title="@string/settings_showTip_title" />
-    
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_showSunriseAzimuth"
+        android:summary="@string/settings_showSunriseAzimuth_message"
+        android:title="@string/settings_showSunriseAzimuth_title" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_showSunsetAzimuth"
+        android:summary="@string/settings_showSunsetAzimuth_message"
+        android:title="@string/settings_showSunsetAzimuth_title" />
 
 </PreferenceScreen>

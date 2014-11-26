@@ -375,18 +375,23 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
             double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
                     - mMap.getProjection().getVisibleRegion().nearRight.longitude;
             size = Math.abs(size);
-            
+
             if (mAltitude > 0) {
                 PolylineOptions options = polylineDraw(mLocation, mAzimuth, size, Color.RED, 5);
                 mMap.addPolyline(options);
             }
-            
-            PolylineOptions sunsetAzimuth = polylineDraw(mLocation, mSunsetAzimuth, size,
-                    Color.BLUE, 2);
-            PolylineOptions sunriseAzimuth = polylineDraw(mLocation, mSunriseAzimuth, size,
-                    Color.GREEN, 2);
-            mMap.addPolyline(sunsetAzimuth);
-            mMap.addPolyline(sunriseAzimuth);
+
+            if (Settings.isSunsetShow(mContext)) {
+                PolylineOptions sunsetAzimuth = polylineDraw(mLocation, mSunsetAzimuth, size,
+                        Color.BLUE, 2);
+                mMap.addPolyline(sunsetAzimuth);
+            }
+
+            if (Settings.isSunriseShow(mContext)) {
+                PolylineOptions sunriseAzimuth = polylineDraw(mLocation, mSunriseAzimuth, size,
+                        Color.GREEN, 2);
+                mMap.addPolyline(sunriseAzimuth);
+            }
         } else {
             showMessage(R.string.error_zoomToSmall);
         }
@@ -637,7 +642,7 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
             break;
         case R.id.item_search:
             if (Constants.PAID == false) {
-                showErrorDialog(R.string.error_availableOnlyInPaid);
+                gotoDonate(mContext);
             }
             break;
         }
@@ -809,6 +814,18 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
     }
 
     /**
+     * Opens market detail application page for donate app
+     * 
+     * @param context
+     *            application context
+     */
+    public static void gotoDonate(Context context) {
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+        marketIntent.setData(Uri.parse("market://details?id=".concat(Constants.PAID_URL)));
+        context.startActivity(marketIntent);
+    }
+
+    /**
      * Shows error dialog
      * 
      * @param errorMessage
@@ -866,7 +883,7 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
             dialog.setSaveDialogData(mSaveDialogData);
             dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);
         } else {
-            showErrorDialog(R.string.error_availableOnlyInPaid);
+            gotoDonate(mContext);
         }
     }
 

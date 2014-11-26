@@ -35,6 +35,8 @@ public class SunCalculator {
     public class CalculationResult {
         private double azimuth;
         private double altitude;
+        private double sunsetAzimuth;
+        private double sunriseAzimuth;
 
         /**
          * Gets sun altitude
@@ -61,6 +63,22 @@ public class SunCalculator {
          */
         public double getAzimuthInDegrees() {
             return azimuth * 180 / Math.PI;
+        }
+        
+        /**
+         * Gets azimuth for sunset time
+         * @return sun azimuth for sunset time
+         */
+        public double getSunsetAzimuth() {
+            return sunsetAzimuth;
+        }
+        
+        /**
+         * Gets azimuth for sunrise time
+         * @return sun azimuth for sunrise time
+         */
+        public double getSunriseAzimuth() {
+            return sunriseAzimuth;
         }
     }
 
@@ -130,6 +148,7 @@ public class SunCalculator {
                 * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M));
     }
 
+    
     /**
      * Gets sun azimuth and altitude for specified date and location
      * 
@@ -152,6 +171,7 @@ public class SunCalculator {
         Log.variable("lw", String.valueOf(lw));
         Log.variable("phi", String.valueOf(phi));
 
+        ////
         double d = toDays(date);
         Log.variable("d", String.valueOf(d));
 
@@ -161,7 +181,8 @@ public class SunCalculator {
 
         double H = getSiderealTime(d, lw) - c.ra;
         Log.variable("H", String.valueOf(H));
-
+        /////
+        
         CalculationResult result = new CalculationResult();
         result.azimuth = getAzimuth(H, phi, c.dec) + Math.PI;
         
@@ -188,11 +209,35 @@ public class SunCalculator {
         } else {
             result.altitude = -1;
         }
+        
+        ////////////
+        int sunsetHour = Integer.valueOf(sunsets[0]);
+        int sunsetMinute = Integer.valueOf(sunsets[1]);
+        int sunriseHour = Integer.valueOf(sunrises[0]);
+        int sunriseMinute = Integer.valueOf(sunrises[1]);
+        
+        Calendar sunsetCalendar = Calendar.getInstance(date.getTimeZone());
+        sunsetCalendar.set(Calendar.HOUR_OF_DAY, sunsetHour);
+        sunsetCalendar.set(Calendar.MINUTE, sunsetMinute);
+        double dSunset = toDays(sunsetCalendar);
+        DecRa cSunset = getSunCoords(dSunset);
+        double HSunset = getSiderealTime(dSunset, lw) - cSunset.ra;
+        result.sunsetAzimuth = getAzimuth(HSunset, phi, cSunset.dec) + Math.PI;
+        
+        Calendar sunriseCalendar = Calendar.getInstance(date.getTimeZone());
+        sunriseCalendar.set(Calendar.HOUR_OF_DAY, sunriseHour);
+        sunriseCalendar.set(Calendar.MINUTE, sunriseMinute);
+        double dSunrise = toDays(sunriseCalendar);
+        DecRa cSunrise = getSunCoords(dSunrise);
+        double HSunrise = getSiderealTime(dSunrise, lw) - cSunrise.ra;
+        result.sunriseAzimuth = getAzimuth(HSunrise, phi, cSunrise.dec) + Math.PI;
         ////////////
         
         //result.altitude = getAltitude(H, phi, c.dec);
 
         Log.variable("azimuth", String.valueOf(result.azimuth));
+        Log.variable("sunsetAzimuth", String.valueOf(result.sunsetAzimuth));
+        Log.variable("sunriseAzimuth", String.valueOf(result.sunriseAzimuth));
         Log.variable("altitude", String.valueOf(result.altitude));
 
         Log.exit(start);

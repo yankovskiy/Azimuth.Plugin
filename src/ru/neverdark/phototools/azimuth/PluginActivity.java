@@ -70,14 +70,17 @@ import android.widget.Toast;
 /**
  * Main application activity
  */
-public class PluginActivity extends SherlockFragmentActivity implements
-        OnMapLongClickListener, OnCameraChangeListener {
+public class PluginActivity extends SherlockFragmentActivity implements OnMapLongClickListener,
+        OnCameraChangeListener {
+
+    private double mSunriseAzimuth;
+    private double mSunsetAzimuth;
 
     /**
      * Class implements calculation handling
      */
-    private class CalculationResultListener implements
-            AsyncCalculator.OnCalculationResultListener {
+    private class CalculationResultListener implements AsyncCalculator.OnCalculationResultListener {
+
         /*
          * (non-Javadoc)
          * 
@@ -98,9 +101,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
          * .azimuth.model.SunCalculator.CalculationResult)
          */
         @Override
-        public void onGetResultSuccess(
-                SunCalculator.CalculationResult calculationResult) {
+        public void onGetResultSuccess(SunCalculator.CalculationResult calculationResult) {
             mAzimuth = calculationResult.getAzimuth();
+            mSunsetAzimuth = calculationResult.getSunsetAzimuth();
+            mSunriseAzimuth = calculationResult.getSunriseAzimuth();
             mAltitude = calculationResult.getAltitude();
 
             if (mAltitude < 0) {
@@ -113,8 +117,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     /**
      * Class implements date and time selection handler
      */
-    private class ConfirmDateTimeListener implements
-            DateTimeDialog.OnConfirmDateTimeListener {
+    private class ConfirmDateTimeListener implements DateTimeDialog.OnConfirmDateTimeListener {
         @Override
         public void onConfirmDateTimeHandler(Calendar calendar) {
             mCalendar = calendar;
@@ -128,8 +131,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     /**
      * Class implements delete record action handler
      */
-    private class DeleteConfirmationListener implements
-            OnDeleteConfirmationListener {
+    private class DeleteConfirmationListener implements OnDeleteConfirmationListener {
         /*
          * (non-Javadoc)
          * 
@@ -157,18 +159,17 @@ public class PluginActivity extends SherlockFragmentActivity implements
         public void onGetResultSuccess(LatLng coordinates, String searchString) {
             if (coordinates != null) {
                 clearMap();
-                
+
                 mLocation = coordinates;
                 float zoom = mMap.getCameraPosition().zoom;
 
                 // move camera to saved position
-                CameraPosition currentPosition = new CameraPosition.Builder()
-                        .target(mLocation).zoom(zoom).build();
-                mMap.moveCamera(CameraUpdateFactory
-                        .newCameraPosition(currentPosition));
+                CameraPosition currentPosition = new CameraPosition.Builder().target(mLocation)
+                        .zoom(zoom).build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
             } else {
-                String errorMessage = String.format(
-                        getString(R.string.error_notFound), searchString);
+                String errorMessage = String.format(getString(R.string.error_notFound),
+                        searchString);
                 showErrorDialog(errorMessage);
             }
         }
@@ -178,8 +179,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     /**
      * Class implements clicks handler for location list
      */
-    private class LocationItemClickListener implements
-            ListView.OnItemClickListener {
+    private class LocationItemClickListener implements ListView.OnItemClickListener {
         /*
          * (non-Javadoc)
          * 
@@ -188,8 +188,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
          * .widget.AdapterView, android.view.View, int, long)
          */
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
@@ -209,7 +208,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
             Log.variable("query", query);
             mMenuItemSearch.collapseActionView();
             initSearchProcess(query);
-            
+
             return true;
         }
     }
@@ -218,8 +217,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
      * Class implements handler for processing clicking on the delete button in
      * the list
      */
-    private class RemoveClickListener implements
-            LocationAdapter.OnRemoveClickListener {
+    private class RemoveClickListener implements LocationAdapter.OnRemoveClickListener {
         /*
          * (non-Javadoc)
          * 
@@ -230,12 +228,10 @@ public class PluginActivity extends SherlockFragmentActivity implements
         @Override
         public void onRemoveClickHandler(final int position) {
             LocationRecord record = mAdapter.getItem(position);
-            DeleteConfirmationDialog dialog = DeleteConfirmationDialog
-                    .getInstance(mContext);
+            DeleteConfirmationDialog dialog = DeleteConfirmationDialog.getInstance(mContext);
             dialog.setLocationRecord(record);
             dialog.setCallback(new DeleteConfirmationListener());
-            dialog.show(getSupportFragmentManager(),
-                    DeleteConfirmationDialog.DIALOG_TAG);
+            dialog.show(getSupportFragmentManager(), DeleteConfirmationDialog.DIALOG_TAG);
         }
     }
 
@@ -243,8 +239,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
      * Class implements handler for processing the saving location information
      * into database
      */
-    private class SaveLocationListener implements
-            SaveLocationDialog.OnSaveLocationListener {
+    private class SaveLocationListener implements SaveLocationDialog.OnSaveLocationListener {
         /*
          * (non-Javadoc)
          * 
@@ -259,23 +254,18 @@ public class PluginActivity extends SherlockFragmentActivity implements
             final int actionType = data.getActionType();
             switch (actionType) {
             case SaveLocationDialog.ACTION_TYPE_NEW:
-                long id = mAdapter.createLocation(data.getLocationRecord()
-                        .getLocationName(), data.getLocationRecord()
-                        .getLatitude(),
-                        data.getLocationRecord().getLongitude(), data
-                                .getLocationRecord().getMapType(), data
-                                .getLocationRecord().getCameraZoom());
+                long id = mAdapter.createLocation(data.getLocationRecord().getLocationName(), data
+                        .getLocationRecord().getLatitude(),
+                        data.getLocationRecord().getLongitude(), data.getLocationRecord()
+                                .getMapType(), data.getLocationRecord().getCameraZoom());
                 mSaveDialogData.getLocationRecord().setId(id);
-                mSaveDialogData
-                        .setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
+                mSaveDialogData.setActionType(SaveLocationDialog.ACTION_TYPE_EDIT);
                 break;
             case SaveLocationDialog.ACTION_TYPE_EDIT:
-                mAdapter.updateLocation(data.getLocationRecord().getId(), data
-                        .getLocationRecord().getLocationName(), data
-                        .getLocationRecord().getLatitude(), data
-                        .getLocationRecord().getLongitude(), data
-                        .getLocationRecord().getMapType(), data
-                        .getLocationRecord().getCameraZoom());
+                mAdapter.updateLocation(data.getLocationRecord().getId(), data.getLocationRecord()
+                        .getLocationName(), data.getLocationRecord().getLatitude(), data
+                        .getLocationRecord().getLongitude(), data.getLocationRecord().getMapType(),
+                        data.getLocationRecord().getCameraZoom());
                 break;
             }
             mLocationList.setItemChecked(0, true);
@@ -286,8 +276,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
     /**
      * Class implements handler for processing time zone selection
      */
-    private class TimeZoneSelectionListener implements
-            OnTimeZoneSelectionListener {
+    private class TimeZoneSelectionListener implements OnTimeZoneSelectionListener {
         /*
          * (non-Javadoc)
          * 
@@ -358,8 +347,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
      */
     private void calculate() {
         boolean isInternetTimezone = Settings.isInternetTimeZone(mContext);
-        AsyncCalculator asyncCalc = new AsyncCalculator(this,
-                new CalculationResultListener());
+        AsyncCalculator asyncCalc = new AsyncCalculator(this, new CalculationResultListener());
         asyncCalc.setIsInternetTimeZone(isInternetTimezone);
         asyncCalc.setTimeZone(mTimeZone);
         asyncCalc.setLocation(mLocation);
@@ -384,23 +372,50 @@ public class PluginActivity extends SherlockFragmentActivity implements
         setMarker();
 
         if (mMap.getCameraPosition().zoom >= MINIMUM_ZOOM_SIZE) {
+            double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
+                    - mMap.getProjection().getVisibleRegion().nearRight.longitude;
+            size = Math.abs(size);
+            
             if (mAltitude > 0) {
-                double size = mMap.getProjection().getVisibleRegion().farLeft.longitude
-                        - mMap.getProjection().getVisibleRegion().nearRight.longitude;
-                size = Math.abs(size);
-
-                PolylineOptions options = new PolylineOptions();
-                options.add(mLocation);
-                options.add(SunCalculator.getDestLatLng(mLocation, mAzimuth,
-                        size));
-                options.width(5);
-                options.color(Color.RED);
-
+                PolylineOptions options = polylineDraw(mLocation, mAzimuth, size, Color.RED, 5);
                 mMap.addPolyline(options);
             }
+            
+            PolylineOptions sunsetAzimuth = polylineDraw(mLocation, mSunsetAzimuth, size,
+                    Color.BLUE, 2);
+            PolylineOptions sunriseAzimuth = polylineDraw(mLocation, mSunriseAzimuth, size,
+                    Color.GREEN, 2);
+            mMap.addPolyline(sunsetAzimuth);
+            mMap.addPolyline(sunriseAzimuth);
         } else {
             showMessage(R.string.error_zoomToSmall);
         }
+    }
+
+    /**
+     * Creates polyline object for drawing azimuth
+     * 
+     * @param location
+     *            start point
+     * @param azimuth
+     *            solar azimuth angle
+     * @param size
+     *            line length for drawing
+     * @param color
+     *            line color
+     * @param width
+     *            line width
+     * @return polyline object for drawing azimuth
+     */
+    private PolylineOptions polylineDraw(LatLng location, double azimuth, double size, int color,
+            int width) {
+        PolylineOptions options = new PolylineOptions();
+        options.add(location);
+        options.add(SunCalculator.getDestLatLng(location, azimuth, size));
+        options.width(width);
+        options.color(color);
+
+        return options;
     }
 
     /**
@@ -408,8 +423,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
      */
     private void initMap() {
         if (mMap == null) {
-            mMap = ((SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map)).getMap();
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
         }
 
         mMap.setMyLocationEnabled(true);
@@ -427,10 +442,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
                 double longitude = prefs.getFloat(LONGITUDE, 0);
                 float zoom = prefs.getFloat(CAMERA_ZOOM, 0);
                 CameraPosition currentPosition = new CameraPosition.Builder()
-                        .target(new LatLng(latitude, longitude)).zoom(zoom)
-                        .build();
-                mMap.moveCamera(CameraUpdateFactory
-                        .newCameraPosition(currentPosition));
+                        .target(new LatLng(latitude, longitude)).zoom(zoom).build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
             }
         }
     }
@@ -502,9 +515,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
 
             mDrawerTitle = getString(R.string.drawer_title);
 
-            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                    R.drawable.ic_drawer, R.string.open_drawer,
-                    R.string.close_drawer) {
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+                    R.string.open_drawer, R.string.close_drawer) {
                 @Override
                 public void onDrawerClosed(View view) {
                     supportInvalidateOptionsMenu();
@@ -543,7 +555,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         mMenuItemDateTime = menu.findItem(R.id.item_dateTime);
         mMenuItemTimeZone = menu.findItem(R.id.item_timeZone);
         mMenuItemSearch = menu.findItem(R.id.item_search);
-        
+
         if (Constants.PAID) {
             mSearchView = new SearchView(mContext);
             mSearchView.setQueryHint(getString(R.string.search_hint));
@@ -552,7 +564,7 @@ public class PluginActivity extends SherlockFragmentActivity implements
         } else {
             mMenuItemSearch.setActionView(null);
         }
-        
+
         return true;
     }
 
@@ -646,10 +658,8 @@ public class PluginActivity extends SherlockFragmentActivity implements
             Editor editor = prefs.edit();
             editor.putInt(MAP_TYPE, mMap.getMapType());
             editor.putFloat(CAMERA_ZOOM, mMap.getCameraPosition().zoom);
-            editor.putFloat(LATITUDE,
-                    (float) mMap.getCameraPosition().target.latitude);
-            editor.putFloat(LONGITUDE,
-                    (float) mMap.getCameraPosition().target.longitude);
+            editor.putFloat(LATITUDE, (float) mMap.getCameraPosition().target.latitude);
+            editor.putFloat(LONGITUDE, (float) mMap.getCameraPosition().target.longitude);
             editor.putBoolean(IS_SAVED, true);
             editor.commit();
         }
@@ -733,10 +743,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
             mLocation = new LatLng(record.getLatitude(), record.getLongitude());
 
             // move camera to saved position
-            CameraPosition currentPosition = new CameraPosition.Builder()
-                    .target(mLocation).zoom(record.getCameraZoom()).build();
-            mMap.moveCamera(CameraUpdateFactory
-                    .newCameraPosition(currentPosition));
+            CameraPosition currentPosition = new CameraPosition.Builder().target(mLocation)
+                    .zoom(record.getCameraZoom()).build();
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
 
             // sets saved zoom
             mMap.setMapType(record.getMapType());
@@ -817,11 +826,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private void showFeedback() {
         Intent mailIntent = new Intent(Intent.ACTION_SEND);
         mailIntent.setType("plain/text");
-        mailIntent.putExtra(Intent.EXTRA_EMAIL,
-                new String[] { getString(R.string.author_email) });
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.author_email) });
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        startActivity(Intent.createChooser(mailIntent,
-                getString(R.string.chooseEmailApp)));
+        startActivity(Intent.createChooser(mailIntent, getString(R.string.chooseEmailApp)));
     }
 
     /**
@@ -850,18 +857,14 @@ public class PluginActivity extends SherlockFragmentActivity implements
     private void showSaveLocationDialog() {
         if (Constants.PAID) {
             mSaveDialogData.getLocationRecord().setLatitude(mLocation.latitude);
-            mSaveDialogData.getLocationRecord().setLongitude(
-                    mLocation.longitude);
+            mSaveDialogData.getLocationRecord().setLongitude(mLocation.longitude);
             mSaveDialogData.getLocationRecord().setMapType(mMap.getMapType());
-            mSaveDialogData.getLocationRecord().setCameraZoom(
-                    mMap.getCameraPosition().zoom);
+            mSaveDialogData.getLocationRecord().setCameraZoom(mMap.getCameraPosition().zoom);
 
-            SaveLocationDialog dialog = SaveLocationDialog
-                    .getInstance(mContext);
+            SaveLocationDialog dialog = SaveLocationDialog.getInstance(mContext);
             dialog.setCallback(new SaveLocationListener());
             dialog.setSaveDialogData(mSaveDialogData);
-            dialog.show(getSupportFragmentManager(),
-                    SaveLocationDialog.DIALOG_TAG);
+            dialog.show(getSupportFragmentManager(), SaveLocationDialog.DIALOG_TAG);
         } else {
             showErrorDialog(R.string.error_availableOnlyInPaid);
         }
@@ -879,11 +882,9 @@ public class PluginActivity extends SherlockFragmentActivity implements
      * Shows dialog for time zone selection
      */
     private void showTimeZoneSelectionDialog() {
-        TimeZoneSelectionDialog dialog = TimeZoneSelectionDialog
-                .getInstance(mContext);
+        TimeZoneSelectionDialog dialog = TimeZoneSelectionDialog.getInstance(mContext);
         dialog.setCallback(new TimeZoneSelectionListener());
-        dialog.show(getSupportFragmentManager(),
-                TimeZoneSelectionDialog.DIALOG_TAG);
+        dialog.show(getSupportFragmentManager(), TimeZoneSelectionDialog.DIALOG_TAG);
     }
 
 }

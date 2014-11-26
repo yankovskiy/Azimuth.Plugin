@@ -16,8 +16,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.neverdark.phototools.azimuth"
-    android:versionCode="3"
-    android:versionName="1.2" >
+    android:versionCode="4"
+    android:versionName="1.3" >
 
     <!-- Used by the API to download map tiles from Google Maps servers. -->
     <uses-permission android:name="android.permission.INTERNET" />

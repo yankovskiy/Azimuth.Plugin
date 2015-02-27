@@ -767,9 +767,6 @@ public class PluginActivity extends SherlockFragmentActivity implements OnMapLon
     /**
      * Sets marker to the long tap position If marker already exists - remove
      * old marker and set new marker in new position
-     * 
-     * @param location
-     *            location for setting marker
      */
     private void setMarker() {
         clearMap();

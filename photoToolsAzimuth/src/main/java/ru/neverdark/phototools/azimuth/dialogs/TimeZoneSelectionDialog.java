@@ -188,9 +188,7 @@ public class TimeZoneSelectionDialog extends SherlockDialogFragment {
 
     /**
      * Constructs an adapter with TimeZone list. Sorted by TimeZone in default.
-     * 
-     * @param sortedByName
-     *            use Name for sorting the list.
+     *
      */
     private SimpleAdapter constructTimeZoneAdapter(Context context, int layoutId) {
         final String[] from = new String[] { KEY_DISPLAYNAME, KEY_GMT };

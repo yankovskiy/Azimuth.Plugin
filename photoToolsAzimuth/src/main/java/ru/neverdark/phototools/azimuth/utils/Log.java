@@ -42,7 +42,7 @@ public class Log {
     /**
      * Logs exit from function with worked time
      * 
-     * @param startTime
+     * @param enterTime
      *            time in milliseconds (enter time in function). If zero - no
      *            logging working time
      */

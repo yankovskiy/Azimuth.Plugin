@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PhotoTools-Azimuth1.iml" filepath="$PROJECT_DIR$/PhotoTools-Azimuth1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/luckycatlabs/luckycatlabs.iml" filepath="$PROJECT_DIR$/luckycatlabs/luckycatlabs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/photoToolsAzimuth/photoToolsAzimuth.iml" filepath="$PROJECT_DIR$/photoToolsAzimuth/photoToolsAzimuth.iml" />
+    </modules>
+  </component>
+</project>
+

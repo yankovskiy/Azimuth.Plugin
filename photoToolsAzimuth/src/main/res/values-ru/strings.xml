@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
       This program is free software: you can redistribute it and/or modify
       it under the terms of the GNU General Public License as published by
       the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +19,7 @@
     <string name="app_title">Азимут</string>
     <string name="app_title_free">Азимут (Free)</string>
 
-    
+
     <string name="progress_dialog_title">Расчет</string>
     <string name="progress_dialog_message">Производятся вычисления. Пожалуйста, подождите</string>
 
@@ -28,47 +27,47 @@
     <string name="mapType_terrain">Ландшафт</string>
     <string name="mapType_hybrid">Гибрид</string>
     <string name="mapType_satellite">Спутник</string>
-    
-    <string name="mapDateSelection">Выберите дату</string>
-    <string name="mapTimeSelection">Выберите время</string>
-    
+
+    <string name="mapDateSelection">ДАТА</string>
+    <string name="mapTimeSelection">ВРЕМЯ</string>
+
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Отмена</string>
-    
+
     <string name="open_drawer">Открыть</string>
     <string name="close_drawer">Закрыть</string>
-    
+
     <string name="saveLocationDialog_locationName">Название местоположения</string>
     <string name="saveLocationDialog_title">Сохранить местоположение</string>
     <string name="saveLocationDialog_message">Введите название местоположения</string>
-    
+
     <string name="deleteConfirmationDialog_title">Подтверждение удаления</string>
     <string name="deleteConfirmationDialog_message">Вы действительно желаете удалить запись \"%s\"?</string>
-    
+
     <string name="drawer_title">Выбор сохраненного местоположения</string>
-    
+
     <string name="settings_24HourMode_title">24-часовой режим</string>
     <string name="settings_24HourMode_message">Установить 24-часовой режим</string>
-    
+
     <string name="settings_internetTimeZone_title">Часовой пояс с Internet</string>
     <string name="settings_internetTimeZone_message">Получать часовой пояс с Internet-серверов</string>
-    
+
     <string name="settings_showTip_title">Показывать совет</string>
     <string name="settings_showTip_message">Показывать совет при запуске приложения</string>
-    
+
     <string name="settings_showSunsetAzimuth_title">Закат</string>
     <string name="settings_showSunsetAzimuth_message">Отображать солнечный азимут заката</string>
-    
+
     <string name="settings_showSunriseAzimuth_title">Рассвет</string>
     <string name="settings_showSunriseAzimuth_message">Отображать солнечный азимут рассвета</string>
-    
+
     <string name="menu_item_timeZone">Часовой пояс</string>
     <string name="menu_item_rate">Оценить</string>
     <string name="menu_item_feedback">Обратная связь</string>
-    <string name="menu_item_settings">Настройки</string> 
-    
+    <string name="menu_item_settings">Настройки</string>
+
     <string name="timeZoneSelectionDialog_title">Выбор часового пояса</string>
-    
+
     <string name="errorDialog_title">Ошибка</string>
     <string name="error_zoomToSmall">Масштаб слишком мал. Пожалуйста, увеличьте</string>
     <string name="error_timeZoneIsNotDefined">Часовой пояс не определен. Если проблема повторится, проверьте ваше Internet-соединение, 
@@ -77,12 +76,22 @@
     <string name="error_availableOnlyInPaid">Эта функция доступна только в полной версии</string>
     <string name="error_geoCoderNotAvailable">Не удалось определить координаты по заданному адресу. Пожалуйста, проверьте ваше Internet-соединение</string>
     <string name="error_notFound">Не найдено результатов для адреса \"%s\"</string>
-    
+
     <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>
-    
+
     <string name="startupHint">Долгое нажатие на карте для выбора места</string>
-    
+
     <string name="menu_item_search">Поиск</string>
     <string name="search_hint">Поиск по адресу</string>
+
+    <string name="error_empty_location_name">Укажите название местоположения</string>
+    <string name="remove">Удалить</string>
+    <string name="sun_time">ВРЕМЯ</string>
+    <string name="sunset_time">ЗАКАТ</string>
+    <string name="sunrise_time">РАССВЕТ</string>
+    <string name="sun_altitude">ВЫСОТА</string>
+    <string name="settings_showAltitude_title">Высота</string>
+    <string name="settings_showAltitude_message">Отображать высоту Солнца</string>
+    <string name="change_time">Сменить время</string>
 </resources>

@@ -1,113 +1,50 @@
 /*******************************************************************************
- * Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+ * Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth.model;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.luckycatlabs.sunrisesunset.dto.Location;
 
 import java.util.Calendar;
 import java.util.Locale;
 
 import ru.neverdark.phototools.azimuth.utils.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
-import com.luckycatlabs.sunrisesunset.dto.Location;
-
 /**
  * Class for calculation sun azimuth and sun altitude
  */
 public class SunCalculator {
-    
-    /**
-     * Class contains calculation result
-     */
-    public class CalculationResult {
-        private double azimuth;
-        private double altitude;
-        private double sunsetAzimuth;
-        private double sunriseAzimuth;
-
-        /**
-         * Gets sun altitude
-         * 
-         * @return sun altitude
-         */
-        public double getAltitude() {
-            return altitude;
-        }
-
-        /**
-         * Gets sun azimuth in radiant
-         * 
-         * @return sun azimuth
-         */
-        public double getAzimuth() {
-            return azimuth;
-        }
-
-        /**
-         * Gets sun azimuth in degrees
-         * 
-         * @return sun azimuth
-         */
-        public double getAzimuthInDegrees() {
-            return azimuth * 180 / Math.PI;
-        }
-        
-        /**
-         * Gets azimuth for sunset time
-         * @return sun azimuth for sunset time
-         */
-        public double getSunsetAzimuth() {
-            return sunsetAzimuth;
-        }
-        
-        /**
-         * Gets azimuth for sunrise time
-         * @return sun azimuth for sunrise time
-         */
-        public double getSunriseAzimuth() {
-            return sunriseAzimuth;
-        }
-    }
-
-    private class DecRa {
-        private double dec;
-        private double ra;
-    }
 
     private static final double rad = Math.PI / 180;
+    private static final double e = rad * 23.4397;
     private static final long dayMs = 1000 * 60 * 60 * 24;
     private static final int J1970 = 2440588;
-
     private static final int J2000 = 2451545;
-
-    private static final double e = rad * 23.4397;
 
     /**
      * Gets second point for drawing azimuth
-     * 
-     * @param location
-     *            selected location
-     * @param azimuth
-     *            sun azimuth
-     * @param distance
-     *            distance to second point (in degrees)
+     *
+     * @param location selected location
+     * @param azimuth  sun azimuth
+     * @param distance distance to second point (in degrees)
      * @return
      */
     public static LatLng getDestLatLng(LatLng location, double azimuth,
-            double distance) {
+                                       double distance) {
         double lat2 = location.latitude + distance * Math.cos(azimuth);
         double lng2 = location.longitude + distance * Math.sin(azimuth);
 
@@ -148,14 +85,11 @@ public class SunCalculator {
                 * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M));
     }
 
-    
     /**
      * Gets sun azimuth and altitude for specified date and location
-     * 
-     * @param date
-     *            date for calculation
-     * @param location
-     *            location for calculation
+     *
+     * @param date     date for calculation
+     * @param location location for calculation
      * @return object contains calculation result
      */
     public CalculationResult getPosition(Calendar date, LatLng location) {
@@ -182,40 +116,44 @@ public class SunCalculator {
         double H = getSiderealTime(d, lw) - c.ra;
         Log.variable("H", String.valueOf(H));
         /////
-        
+
         CalculationResult result = new CalculationResult();
+        result.location = location;
         result.azimuth = getAzimuth(H, phi, c.dec) + Math.PI;
-        
+
         //////////
         // workaround for fix difference between azimuth and photo tools sunset module
         Location loc = new Location(location.latitude, location.longitude);
         SunriseSunsetCalculator calc = new SunriseSunsetCalculator(loc, date.getTimeZone());
         String sunset = calc.getOfficialSunsetForDate(date);
         String sunrise = calc.getOfficialSunriseForDate(date);
+        result.sunsetTime = sunset;
+        result.sunriseTime = sunrise;
+        result.time = String.format(Locale.US, "%02d:%02d", date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
         String givenDate = String.format(Locale.US, "%02d%02d", date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
         String[] sunsets = sunset.split(":");
         String[] sunrises = sunrise.split(":");
         sunset = sunsets[0].concat(sunsets[1]);
-        sunrise= sunrises[0].concat(sunrises[1]);
+        sunrise = sunrises[0].concat(sunrises[1]);
         int sunsetInt = Integer.valueOf(sunset);
         int sunriseInt = Integer.valueOf(sunrise);
         int givenDateInt = Integer.valueOf(givenDate);
         Log.variable("sunsetInt", sunset);
         Log.variable("sunriseInt", sunrise);
         Log.variable("givenDateInt", givenDate);
-        
+
         if (givenDateInt >= sunriseInt && givenDateInt <= sunsetInt) {
-            result.altitude = 1;
+            result.altitude = getAltitude(H, phi, c.dec) * 180 / Math.PI;
         } else {
             result.altitude = -1;
         }
-        
+
         ////////////
         int sunsetHour = Integer.valueOf(sunsets[0]);
         int sunsetMinute = Integer.valueOf(sunsets[1]);
         int sunriseHour = Integer.valueOf(sunrises[0]);
         int sunriseMinute = Integer.valueOf(sunrises[1]);
-        
+
         Calendar sunsetCalendar = Calendar.getInstance(date.getTimeZone());
         sunsetCalendar.set(Calendar.HOUR_OF_DAY, sunsetHour);
         sunsetCalendar.set(Calendar.MINUTE, sunsetMinute);
@@ -223,7 +161,7 @@ public class SunCalculator {
         DecRa cSunset = getSunCoords(dSunset);
         double HSunset = getSiderealTime(dSunset, lw) - cSunset.ra;
         result.sunsetAzimuth = getAzimuth(HSunset, phi, cSunset.dec) + Math.PI;
-        
+
         Calendar sunriseCalendar = Calendar.getInstance(date.getTimeZone());
         sunriseCalendar.set(Calendar.HOUR_OF_DAY, sunriseHour);
         sunriseCalendar.set(Calendar.MINUTE, sunriseMinute);
@@ -232,7 +170,7 @@ public class SunCalculator {
         double HSunrise = getSiderealTime(dSunrise, lw) - cSunrise.ra;
         result.sunriseAzimuth = getAzimuth(HSunrise, phi, cSunrise.dec) + Math.PI;
         ////////////
-        
+
         //result.altitude = getAltitude(H, phi, c.dec);
 
         Log.variable("azimuth", String.valueOf(result.azimuth));
@@ -288,6 +226,86 @@ public class SunCalculator {
         Log.variable("first", String.valueOf(first));
         Log.variable("second", String.valueOf(second));
         return first + second;
+    }
+
+    /**
+     * Class contains calculation result
+     */
+    public class CalculationResult {
+        private double azimuth;
+        private double altitude;
+        private double sunsetAzimuth;
+        private double sunriseAzimuth;
+        private LatLng location;
+        private String time;
+        private String sunsetTime;
+        private String sunriseTime;
+
+        /**
+         * Gets sun altitude
+         *
+         * @return sun altitude
+         */
+        public double getAltitude() {
+            return altitude;
+        }
+
+        /**
+         * Gets sun azimuth in radiant
+         *
+         * @return sun azimuth
+         */
+        public double getAzimuth() {
+            return azimuth;
+        }
+
+        /**
+         * Gets sun azimuth in degrees
+         *
+         * @return sun azimuth
+         */
+        public double getAzimuthInDegrees() {
+            return azimuth * 180 / Math.PI;
+        }
+
+        /**
+         * Gets azimuth for sunset time
+         *
+         * @return sun azimuth for sunset time
+         */
+        public double getSunsetAzimuth() {
+            return sunsetAzimuth;
+        }
+
+        /**
+         * Gets azimuth for sunrise time
+         *
+         * @return sun azimuth for sunrise time
+         */
+        public double getSunriseAzimuth() {
+            return sunriseAzimuth;
+        }
+
+        public LatLng getLocation() {
+            return location;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public String getSunsetTime() {
+            return sunsetTime;
+        }
+
+        public String getSunriseTime() {
+            return sunriseTime;
+        }
+    }
+
+    private class DecRa {
+        private double dec;
+        private double ra;
     }
 
 }

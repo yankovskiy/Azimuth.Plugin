@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+  Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
       This program is free software: you can redistribute it and/or modify
       it under the terms of the GNU General Public License as published by
       the Free Software Foundation, either version 3 of the License, or
@@ -17,16 +17,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:padding="@dimen/default_padding">
 
     <EditText
         android:id="@+id/saveLocationDialog_locationName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/saveLocationDialog_locationName"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+        android:inputType="text"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:textSize="16sp"></EditText>
 
 </LinearLayout>

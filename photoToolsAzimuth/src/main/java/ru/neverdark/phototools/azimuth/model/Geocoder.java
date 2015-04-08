@@ -1,25 +1,25 @@
 /*******************************************************************************
- * Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+ * Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth.model;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,22 +35,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import ru.neverdark.phototools.azimuth.utils.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 public class Geocoder {
     private Context mContext;
 
     /**
      * Constructor
-     * 
-     * @param context
-     *            application context
+     *
+     * @param context application context
      */
     public Geocoder(Context context) {
         mContext = context;
@@ -58,9 +57,8 @@ public class Geocoder {
 
     /**
      * Gets coordinate from location name
-     * 
-     * @param searchString
-     *            user specify location name
+     *
+     * @param searchString user specify location name
      * @return coordinates for founded location or null if not found
      */
     public LatLng getFromLocation(String searchString) {
@@ -87,9 +85,8 @@ public class Geocoder {
 
     /**
      * Gets json for location
-     * 
-     * @param searchString
-     *            location for search
+     *
+     * @param searchString location for search
      * @return json for location or empty string if connection problem
      */
     private String getLocationInfo(String searchString) {
@@ -141,7 +138,7 @@ public class Geocoder {
 
     /**
      * Checks connection status
-     * 
+     *
      * @return true if device online, false in other case
      */
     public boolean isOnline() {

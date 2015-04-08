@@ -1,5 +1,5 @@
 <!--
-  Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+  Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
       This program is free software: you can redistribute it and/or modify
       it under the terms of the GNU General Public License as published by
       the Free Software Foundation, either version 3 of the License, or
@@ -13,67 +13,56 @@
       You should have received a copy of the GNU General Public License
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_search"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/menu_item_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|always" />
+    <item
+        android:id="@+id/item_saveLocation"
+        android:icon="@drawable/ic_save_white_24dp"
+        android:title="@string/saveLocationDialog_title"
+        android:visible="false"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/item_dateTime"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="@string/change_time"
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/item_map_normal"
-        android:showAsAction="never"
-        android:title="@string/mapType_map">
-    </item>
+        android:title="@string/mapType_map"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_map_terrain"
-        android:showAsAction="never"
-        android:title="@string/mapType_terrain">
-    </item>
+        android:title="@string/mapType_terrain"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_map_hybrid"
-        android:showAsAction="never"
-        android:title="@string/mapType_hybrid">
-    </item>
+        android:title="@string/mapType_hybrid"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_map_satellite"
-        android:showAsAction="never"
-        android:title="@string/mapType_satellite">
-    </item>
+        android:title="@string/mapType_satellite"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_timeZone"
-        android:showAsAction="never"
-        android:title="@string/menu_item_timeZone">
-    </item>
+        android:title="@string/menu_item_timeZone"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_settings"
-        android:showAsAction="never"
-        android:title="@string/menu_item_settings">
-    </item>
+        android:title="@string/menu_item_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_rate"
-        android:showAsAction="never"
-        android:title="@string/menu_item_rate">
-    </item>
+        android:title="@string/menu_item_rate"
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_feedback"
-        android:showAsAction="never"
-        android:title="@string/menu_item_feedback">
-    </item>
-    <item
-        android:id="@+id/item_dateTime"
-        android:icon="@drawable/ic_action_go_to_today"
-        android:showAsAction="ifRoom"
-        android:title="@string/mapDateSelection">
-    </item>
-    <item
-        android:id="@+id/item_saveLocation"
-        android:icon="@drawable/ic_action_save"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/saveLocationDialog_title"
-        android:visible="false">
-    </item>
-    <item
-        android:id="@+id/item_search"
-        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-        android:icon="@drawable/ic_action_search"
-        android:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/menu_item_search">
-    </item>
-
+        android:title="@string/menu_item_feedback"
+        app:showAsAction="never" />
 </menu>

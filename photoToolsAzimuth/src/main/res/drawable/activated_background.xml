@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
       This program is free software: you can redistribute it and/or modify
       it under the terms of the GNU General Public License as published by
       the Free Software Foundation, either version 3 of the License, or
@@ -14,9 +13,9 @@
       You should have received a copy of the GNU General Public License
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">  
-   <item android:state_activated="true" android:drawable="@color/uva_color" />
-   <item android:state_selected="true" android:drawable="@color/uva_color" />
-   <item android:state_pressed="true" android:drawable="@color/uva_color" />
-   <item android:drawable="@color/default_color" />  
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/uva_color" android:state_activated="true" />
+    <item android:drawable="@color/uva_color" android:state_selected="true" />
+    <item android:drawable="@color/uva_color" android:state_pressed="true" />
+    <item android:drawable="@color/default_color" />
 </selector>

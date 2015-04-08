@@ -1,26 +1,25 @@
 /*******************************************************************************
- * Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+ * Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth.model;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,14 +34,15 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import ru.neverdark.phototools.azimuth.utils.Constants;
 import ru.neverdark.phototools.azimuth.utils.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 /**
  * Class for gets a time zone from the Google
@@ -55,9 +55,8 @@ public class GoogleTimeZone {
 
     /**
      * Constructor
-     * 
-     * @param context
-     *            application context
+     *
+     * @param context application context
      */
     public GoogleTimeZone(Context context) {
         mContext = context;
@@ -65,7 +64,7 @@ public class GoogleTimeZone {
 
     /**
      * Gets time zone
-     * 
+     *
      * @return time zone
      */
     public TimeZone getTimeZone() {
@@ -74,7 +73,7 @@ public class GoogleTimeZone {
 
     /**
      * Checks connection status
-     * 
+     *
      * @return true if device online, false in other case
      */
     private boolean isOnline() {
@@ -89,7 +88,7 @@ public class GoogleTimeZone {
 
     /**
      * Reads TimeZone from Google Json
-     * 
+     *
      * @return TimeZone JSON from Google Json or empty if cannot determine
      */
     private String readTimeZoneJson() {
@@ -144,9 +143,9 @@ public class GoogleTimeZone {
 
     /**
      * Request time zone from google
-     * 
+     *
      * @return STATUS_SUCCESS if time zone was gets successfully, STATUS_FAIL in
-     *         other case
+     * other case
      */
     public int requestTimeZone() {
         int requestStatus = Constants.STATUS_FAIL;
@@ -181,9 +180,8 @@ public class GoogleTimeZone {
 
     /**
      * Sets calendar
-     * 
-     * @param calendar
-     *            calendar for sets
+     *
+     * @param calendar calendar for sets
      */
     public void setCalendar(Calendar calendar) {
         mCalendar = calendar;
@@ -191,9 +189,8 @@ public class GoogleTimeZone {
 
     /**
      * Sets location for determine time zone
-     * 
-     * @param location
-     *            location
+     *
+     * @param location location
      */
     public void setLocation(LatLng location) {
         mLocation = location;

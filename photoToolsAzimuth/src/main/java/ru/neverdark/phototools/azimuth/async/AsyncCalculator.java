@@ -1,56 +1,38 @@
 /*******************************************************************************
- * Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+ * Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth.async;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import ru.neverdark.phototools.azimuth.R;
 import ru.neverdark.phototools.azimuth.model.GoogleTimeZone;
 import ru.neverdark.phototools.azimuth.model.SunCalculator;
 import ru.neverdark.phototools.azimuth.utils.Constants;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 
 /**
  * Class provides an asynchronous computation azimuth
  */
 public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
-
-    /**
-     * The interface for calculation handling
-     */
-    public interface OnCalculationResultListener {
-        /**
-         * Handler for time zone not detected case
-         */
-        public void onGetResultFail();
-
-        /**
-         * Handler for successfully calculation
-         * 
-         * @param calculationResult
-         *            calculation result data
-         */
-        public void onGetResultSuccess(
-                SunCalculator.CalculationResult calculationResult);
-    }
 
     private SunCalculator.CalculationResult mCalcResult;
     private Calendar mCalendar;
@@ -58,17 +40,16 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
     private Context mContext;
     private ProgressDialog mDialog;
     private GoogleTimeZone mGoogleTimeZone;
-    private boolean mIsIternetTimeZone;;
+    private boolean mIsIternetTimeZone;
     private LatLng mLocaiton;
+    ;
     private TimeZone mTimeZone;
 
     /**
      * Constructor
-     * 
-     * @param context
-     *            application context
-     * @param callback
-     *            callback object for processing calculation result
+     *
+     * @param context  application context
+     * @param callback callback object for processing calculation result
      */
     public AsyncCalculator(Context context, OnCalculationResultListener callback) {
         mContext = context;
@@ -90,7 +71,7 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.os.AsyncTask#doInBackground(Params[])
      */
     @Override
@@ -132,7 +113,7 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
      */
     @Override
@@ -148,7 +129,7 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.os.AsyncTask#onPreExecute()
      */
     @Override
@@ -158,9 +139,8 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /**
      * Sets calendar with date for calculation
-     * 
-     * @param calendar
-     *            calendar with date for calculation
+     *
+     * @param calendar calendar with date for calculation
      */
     public void setCalendar(Calendar calendar) {
         mCalendar = calendar;
@@ -168,9 +148,8 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /**
      * Notifies AsyncCalculator to use a time zone from the Internet
-     * 
-     * @param isInternetTimezone
-     *            true for use time zone from the Internet
+     *
+     * @param isInternetTimezone true for use time zone from the Internet
      */
     public void setIsInternetTimeZone(boolean isInternetTimezone) {
         mIsIternetTimeZone = isInternetTimezone;
@@ -178,9 +157,8 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
 
     /**
      * Sets location for calculation
-     * 
-     * @param location
-     *            location for calculation
+     *
+     * @param location location for calculation
      */
     public void setLocation(LatLng location) {
         mLocaiton = location;
@@ -189,12 +167,29 @@ public class AsyncCalculator extends AsyncTask<Void, Void, Integer> {
     /**
      * Sets time zone for calculation. Must be called after notification
      * AsyncCalculator to don't use a time zone from Internet
-     * 
-     * @param timeZone
-     *            time zone calculation
+     *
+     * @param timeZone time zone calculation
      */
     public void setTimeZone(TimeZone timeZone) {
         mTimeZone = timeZone;
+    }
+
+    /**
+     * The interface for calculation handling
+     */
+    public interface OnCalculationResultListener {
+        /**
+         * Handler for time zone not detected case
+         */
+        public void onGetResultFail();
+
+        /**
+         * Handler for successfully calculation
+         *
+         * @param calculationResult calculation result data
+         */
+        public void onGetResultSuccess(
+                SunCalculator.CalculationResult calculationResult);
     }
 
 }

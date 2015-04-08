@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2014 Artem Yankovskiy (artemyankovskiy@gmail.com).
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
       This program is free software: you can redistribute it and/or modify
       it under the terms of the GNU General Public License as published by
       the Free Software Foundation, either version 3 of the License, or
@@ -15,29 +14,24 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialogConfirmCreate_linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="4dp"
-    android:background="@drawable/activated_background" >
-    
-    <TextView
-        android:id="@+id/locationRow_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" 
-        android:layout_marginLeft="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true" />
+    android:layout_height="72dp"
+    android:gravity="center_vertical">
 
-    <ImageView
-        android:id="@+id/locationRow_image_remove"
+    <TextView
+        android:id="@+id/location_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/ic_action_remove" />
+        android:layout_marginLeft="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/location_coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/location_name"
+        android:layout_marginLeft="16dp"
+        android:textSize="12sp" />
 
 </RelativeLayout>

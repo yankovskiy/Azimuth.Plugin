@@ -15,7 +15,6 @@
  *******************************************************************************/
 package ru.neverdark.phototools.azimuth.dialogs;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -98,7 +97,6 @@ public class DateTimeDialog extends UfoDialogFragment {
         mTimePicker.setIs24HourView(is24HourMode);
     }
 
-    @SuppressLint("NewApi")
     private void hideCalendar() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             mDatePicker.setCalendarViewShown(false);

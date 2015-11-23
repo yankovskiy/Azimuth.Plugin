@@ -19,10 +19,10 @@ package ru.neverdark.abs;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 
-public abstract class UfoFragmentActivity extends ActionBarActivity implements CommonApi {
+public abstract class UfoFragmentActivity extends AppCompatActivity implements CommonApi {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
 

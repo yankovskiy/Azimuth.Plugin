@@ -32,4 +32,10 @@ Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
     <color name="sunrise_color">#ffed9e</color>
     <color name="sunset_color">#ffc3ad</color>
     <color name="altitude_color">#d0e5ff</color>
+    <color name="black">#ffffff</color>
+    <color name="foreground_material_dark">#733f3f</color>
+    <color name="primary_text_material_dark">#f55252</color>
+    <color name="secondary_text_material_dark">#de1515</color>
+    <color name="secondary_text_material_light">#995e5e</color>
+    <color name="colorBackground">#661c1c</color>
 </resources>

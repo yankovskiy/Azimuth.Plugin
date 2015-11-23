@@ -15,14 +15,14 @@
  *******************************************************************************/
 package ru.neverdark.abs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.View;
 
-public abstract class UfoDialogFragment extends DialogFragment implements CommonApi {
+public abstract class UfoDialogFragment extends AppCompatDialogFragment implements CommonApi {
     private AlertDialog.Builder mAlertDialog;
     private View mView;
     private OnCallback mCallback;
@@ -60,7 +60,7 @@ public abstract class UfoDialogFragment extends DialogFragment implements Common
         mView = view;
     }
 
-    protected Context getContext() {
+    public Context getContext() {
         return mContext;
     }
 

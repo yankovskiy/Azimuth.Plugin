@@ -32,6 +32,20 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <color name="uva_color">#33b5e5</color>
-    <color name="default_color">#111</color>
+    <style name="InfoPanelTv">
+        <item name="android:textColor">@color/default_color</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="InfoPanelTv.Desc">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="InfoPanelTv.Head">
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

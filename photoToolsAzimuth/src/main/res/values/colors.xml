@@ -14,28 +14,15 @@ Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
-    <color name="list_divider">#dedbde</color>
-    <color name="material_blue_grey_500">#607d8b</color>
-    <color name="material_blue_grey_700">#455a64</color>
-    <color name="material_blue_grey_400">#78909c</color>
-    <color name="material_teal_A500">#009688</color>
-    <color name="material_grey_50">#fafafa</color>
+
     <color name="light_grey">#eaeaea</color>
-    <color name="material_grey_600">#757575</color>
-    <color name="material_grey_500">#9e9e9e</color>
-    <color name="attention_color">#ff0000</color>
     <color name="grey505050">#ff505050</color>
-    <color name="transparent">#00000000</color>
-    <color name="black80">#cc000000</color>
 
     <color name="sun_color">#ffdc9c</color>
     <color name="sunrise_color">#ffed9e</color>
     <color name="sunset_color">#ffc3ad</color>
     <color name="altitude_color">#d0e5ff</color>
-    <color name="black">#ffffff</color>
-    <color name="foreground_material_dark">#733f3f</color>
-    <color name="primary_text_material_dark">#f55252</color>
-    <color name="secondary_text_material_dark">#de1515</color>
-    <color name="secondary_text_material_light">#995e5e</color>
-    <color name="colorBackground">#661c1c</color>
+
+    <color name="uva_color">#33b5e5</color>
+    <color name="default_color">#111</color>
 </resources>

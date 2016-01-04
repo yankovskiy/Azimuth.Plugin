@@ -285,6 +285,8 @@ public class PluginActivity extends UfoFragmentActivity {
         mCalendar = Calendar.getInstance();
         mAdapter = new LocationsAdapter(mContext);
         mLocationList.setAdapter(mAdapter);
+        int title = Constants.PAID ? R.string.app_title : R.string.app_title_free;
+        setTitle(title);
     }
 
     private void gotoDonate() {

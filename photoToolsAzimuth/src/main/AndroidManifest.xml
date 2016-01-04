@@ -51,8 +51,7 @@
             android:label="@string/menu_item_settings" />
         <activity
             android:name=".PluginActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_title">
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="ru.neverdark.phototools.PLUGINS" />

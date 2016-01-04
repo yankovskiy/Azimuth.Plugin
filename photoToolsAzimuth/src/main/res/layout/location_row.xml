@@ -20,18 +20,14 @@
 
     <TextView
         android:id="@+id/location_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        style="@style/LocationRow"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/location_coordinates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/LocationRow"
         android:layout_below="@id/location_name"
-        android:layout_marginLeft="16dp"
         android:textSize="12sp" />
 
 </RelativeLayout>

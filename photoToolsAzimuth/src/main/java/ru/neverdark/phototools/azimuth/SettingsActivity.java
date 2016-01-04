@@ -16,21 +16,32 @@
 package ru.neverdark.phototools.azimuth;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.view.MenuItem;
 
 /**
  * Settings activity
  */
-public class SettingsActivity extends PreferenceActivity {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
-     */
+public class SettingsActivity extends AppCompatPreferenceActivity {
+
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.pref);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

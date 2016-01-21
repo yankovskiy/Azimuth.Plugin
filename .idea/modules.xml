@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Azimuth.Plugin.iml" filepath="$PROJECT_DIR$/Azimuth.Plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ColorPickerPreference/ColorPickerPreference.iml" filepath="$PROJECT_DIR$/ColorPickerPreference/ColorPickerPreference.iml" />
       <module fileurl="file://$PROJECT_DIR$/luckycatlabs/luckycatlabs.iml" filepath="$PROJECT_DIR$/luckycatlabs/luckycatlabs.iml" />
       <module fileurl="file://$PROJECT_DIR$/photoToolsAzimuth/photoToolsAzimuth.iml" filepath="$PROJECT_DIR$/photoToolsAzimuth/photoToolsAzimuth.iml" />
     </modules>
   </component>
 </project>
-

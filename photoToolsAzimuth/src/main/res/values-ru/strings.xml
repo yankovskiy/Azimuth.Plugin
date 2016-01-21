@@ -55,10 +55,10 @@
     <string name="settings_showTip_title">Показывать совет</string>
     <string name="settings_showTip_message">Показывать совет при запуске приложения</string>
 
-    <string name="settings_showSunsetAzimuth_title">Закат</string>
+    <string name="settings_sunset_title">Закат</string>
     <string name="settings_showSunsetAzimuth_message">Отображать солнечный азимут заката</string>
 
-    <string name="settings_showSunriseAzimuth_title">Рассвет</string>
+    <string name="settings_sunrise_title">Рассвет</string>
     <string name="settings_showSunriseAzimuth_message">Отображать солнечный азимут рассвета</string>
 
     <string name="menu_item_timeZone">Часовой пояс</string>
@@ -94,4 +94,11 @@
     <string name="settings_showAltitude_title">Высота</string>
     <string name="settings_showAltitude_message">Отображать высоту Солнца</string>
     <string name="change_time">Сменить время</string>
+    <string name="settings_sunColor_message">Цвет линии солнца</string>
+    <string name="settigns_sunriseColor_message">Цвет линии рассвета</string>
+    <string name="settings_sunsetColor_message">Цвет линии заката</string>
+    <string name="settings_sun_title">Солнце</string>
+    <string name="settings_colors_title">Цвет</string>
+    <string name="settings_display_title">Отображение</string>
+    <string name="settings_colors_title_disabled">Цвет (только платно)</string>
 </resources>

@@ -111,6 +111,30 @@ public class Settings {
         return new LatLng(latitude, longitude);
     }
 
+    public static int getSunLineColor(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(
+                context.getString(R.string.pref_sunColor),
+                context.getResources().getColor(R.color.sun_color)
+        );
+    }
+
+    public static int getSunsetLineColor(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(
+                context.getString(R.string.pref_sunsetColor),
+                context.getResources().getColor(R.color.sunset_color)
+        );
+    }
+
+    public static int getSunriseLineColor(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(
+                context.getString(R.string.pref_sunriseColor),
+                context.getResources().getColor(R.color.sunrise_color)
+        );
+    }
+
     public static float getMapCameraZoom(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getFloat(MAP_CAMERA_ZOOM, 0);

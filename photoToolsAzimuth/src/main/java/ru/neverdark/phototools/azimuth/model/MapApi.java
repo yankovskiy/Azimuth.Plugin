@@ -1,17 +1,17 @@
 /*******************************************************************************
  * Copyright (C) 2014-2015 Artem Yankovskiy (artemyankovskiy@gmail.com).
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
- *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
- *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p/>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p/>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package ru.neverdark.phototools.azimuth.model;
 
@@ -187,19 +187,35 @@ public class MapApi implements OnMapReadyCallback, GoogleMap.OnMapLongClickListe
             }
 
             if (mAltitude > 0) {
-                PolylineOptions options = polylineDraw(latLng, mAzimuth, size, mContext.getResources().getColor(R.color.sun_color), 5);
+                PolylineOptions options = polylineDraw(
+                        latLng,
+                        mAzimuth,
+                        size,
+                        Settings.getSunLineColor(mContext),
+                        5
+                );
                 mAzimuthLine = mGoogleMap.addPolyline(options);
             }
 
             if (Settings.isSunsetShow(mContext)) {
-                PolylineOptions sunsetAzimuth = polylineDraw(latLng, mSunsetAzimuth, size,
-                        mContext.getResources().getColor(R.color.sunset_color), 5);
+                PolylineOptions sunsetAzimuth = polylineDraw(
+                        latLng,
+                        mSunsetAzimuth,
+                        size,
+                        Settings.getSunsetLineColor(mContext),
+                        5
+                );
                 mSunsetAzimuthLine = mGoogleMap.addPolyline(sunsetAzimuth);
             }
 
             if (Settings.isSunriseShow(mContext)) {
-                PolylineOptions sunriseAzimuth = polylineDraw(latLng, mSunriseAzimuth, size,
-                        mContext.getResources().getColor(R.color.sunrise_color), 5);
+                PolylineOptions sunriseAzimuth = polylineDraw(
+                        latLng,
+                        mSunriseAzimuth,
+                        size,
+                        Settings.getSunriseLineColor(mContext),
+                        5
+                );
 
                 mSunriseAzimuthLine = mGoogleMap.addPolyline(sunriseAzimuth);
             }

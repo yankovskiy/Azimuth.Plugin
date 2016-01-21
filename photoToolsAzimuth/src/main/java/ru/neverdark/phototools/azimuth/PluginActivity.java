@@ -18,6 +18,7 @@ package ru.neverdark.phototools.azimuth;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -82,6 +83,14 @@ public class PluginActivity extends UfoFragmentActivity {
     private View mSunsetInfo;
     private View mSunAltitudeInfo;
     private TextView mSunAltitudeTv;
+    private TextView mSunInfoTvName;
+    private TextView mSunriseInfoTvName;
+    private TextView mSunsetInfoTvName;
+
+    private static int getContrastVersionForColor(int color) {
+        double y = (299 * Color.red(color) + 587 * Color.green(color) + 114 * Color.blue(color)) / 1000;
+        return y >= 128 ? Color.BLACK : Color.WHITE;
+    }
 
     @Override
     public void bindObjects() {
@@ -94,11 +103,14 @@ public class PluginActivity extends UfoFragmentActivity {
 
         mMapInfoCard = (CardView) findViewById(R.id.map_info_card);
         mSunInfoTv = (TextView) findViewById(R.id.map_sun_tv);
+        mSunInfoTvName = (TextView) findViewById(R.id.map_sun_tv_name);
         mSunInfo = findViewById(R.id.map_sun);
         mSunriseInfo = findViewById(R.id.map_sunrise);
         mSunsetInfo = findViewById(R.id.map_sunset);
         mSunriseInfoTv = (TextView) findViewById(R.id.map_sunrise_tv);
+        mSunriseInfoTvName = (TextView) findViewById(R.id.map_sunrise_tv_name);
         mSunsetInfoTv = (TextView) findViewById(R.id.map_sunset_tv);
+        mSunsetInfoTvName = (TextView) findViewById(R.id.map_sunset_tv_name);
         mSunAltitudeInfo = findViewById(R.id.map_altitude);
         mSunAltitudeTv = (TextView) findViewById(R.id.map_altitude_tv);
     }
@@ -176,7 +188,6 @@ public class PluginActivity extends UfoFragmentActivity {
         mMenuItemTZ.setVisible(!Settings.isInternetTimeZone(mContext));
         return super.onPrepareOptionsMenu(menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -426,6 +437,8 @@ public class PluginActivity extends UfoFragmentActivity {
 
         @Override
         public void onGetResultSuccess(SunCalculator.CalculationResult calculationResult) {
+            int color = 0;
+            int contrast = 0;
             double altitude = calculationResult.getAltitude();
             double azimuth = calculationResult.getAzimuth();
             double sunsetAzimuth = calculationResult.getSunsetAzimuth();
@@ -445,22 +458,37 @@ public class PluginActivity extends UfoFragmentActivity {
             }
 
             if (altitude >= 0) {
+                color = Settings.getSunLineColor(mContext);
+                contrast = getContrastVersionForColor(color);
+                mSunInfo.setBackgroundColor(color);
                 mSunInfo.setVisibility(View.VISIBLE);
                 mSunInfoTv.setText(calculationResult.getTime());
+                mSunInfoTv.setTextColor(contrast);
+                mSunInfoTvName.setTextColor(contrast);
             } else {
                 mSunInfo.setVisibility(View.GONE);
             }
 
             if (Settings.isSunsetShow(mContext)) {
+                color = Settings.getSunsetLineColor(mContext);
+                contrast = getContrastVersionForColor(color);
+                mSunsetInfo.setBackgroundColor(color);
                 mSunsetInfo.setVisibility(View.VISIBLE);
                 mSunsetInfoTv.setText(calculationResult.getSunsetTime());
+                mSunsetInfoTv.setTextColor(contrast);
+                mSunsetInfoTvName.setTextColor(contrast);
             } else {
                 mSunsetInfo.setVisibility(View.GONE);
             }
 
             if (Settings.isSunriseShow(mContext)) {
+                color = Settings.getSunriseLineColor(mContext);
+                contrast = getContrastVersionForColor(color);
+                mSunriseInfo.setBackgroundColor(color);
                 mSunriseInfo.setVisibility(View.VISIBLE);
                 mSunriseInfoTv.setText(calculationResult.getSunriseTime());
+                mSunriseInfoTv.setTextColor(contrast);
+                mSunriseInfoTvName.setTextColor(contrast);
             } else {
                 mSunriseInfo.setVisibility(View.GONE);
             }

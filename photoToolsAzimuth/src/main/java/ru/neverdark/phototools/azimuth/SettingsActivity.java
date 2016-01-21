@@ -15,13 +15,20 @@
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.view.MenuItem;
+
+import ru.neverdark.phototools.azimuth.utils.Common;
+import ru.neverdark.phototools.azimuth.utils.Constants;
 
 /**
  * Settings activity
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+
+    private Context mContext;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -29,8 +36,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.pref);
+        enablePaidPrefs();
+        mContext = this.getApplicationContext();
     }
 
+    private void enablePaidPrefs() {
+        if (!Constants.PAID) {
+            findPreference(getString(R.string.pref_sunColor)).setOnPreferenceClickListener(new OnlyPaidClickListener());
+            findPreference(getString(R.string.pref_sunColor)).setOnPreferenceClickListener(new OnlyPaidClickListener());
+            findPreference(getString(R.string.pref_sunsetColor)).setOnPreferenceClickListener(new OnlyPaidClickListener());
+            findPreference(getString(R.string.pref_sunriseColor)).setOnPreferenceClickListener(new OnlyPaidClickListener());
+            findPreference(getString(R.string.pref_color_title)).setTitle(R.string.settings_colors_title_disabled);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -44,4 +62,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class OnlyPaidClickListener implements Preference.OnPreferenceClickListener {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            Common.openMarketUrl(mContext, Constants.PAID_PACKAGE);
+            return false;
+        }
+    }
 }

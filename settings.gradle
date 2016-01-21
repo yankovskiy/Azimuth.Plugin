@@ -1,2 +1,2 @@
-include ':luckycatlabs'
+include ':luckycatlabs', ':ColorPickerPreference'
 include ':photoToolsAzimuth'

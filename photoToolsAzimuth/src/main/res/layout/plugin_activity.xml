@@ -54,7 +54,6 @@
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/sunrise_color"
                     android:padding="4dp">
 
                     <TextView
@@ -62,6 +61,7 @@
                         style="@style/InfoPanelTv.Head" />
 
                     <TextView
+                        android:id="@+id/map_sunrise_tv_name"
                         style="@style/InfoPanelTv.Desc"
                         android:layout_below="@+id/map_sunrise_tv"
                         android:text="@string/sunrise_time" />
@@ -81,6 +81,7 @@
                         style="@style/InfoPanelTv.Head" />
 
                     <TextView
+                        android:id="@+id/map_sun_tv_name"
                         style="@style/InfoPanelTv.Desc"
                         android:layout_below="@+id/map_sun_tv"
                         android:text="@string/sun_time" />
@@ -100,6 +101,7 @@
                         style="@style/InfoPanelTv.Head" />
 
                     <TextView
+                        android:id="@+id/map_sunset_tv_name"
                         style="@style/InfoPanelTv.Desc"
                         android:layout_below="@+id/map_sunset_tv"
                         android:text="@string/sunset_time" />

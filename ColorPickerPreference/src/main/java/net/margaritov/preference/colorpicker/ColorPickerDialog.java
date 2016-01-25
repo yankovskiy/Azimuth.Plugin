@@ -92,8 +92,6 @@ public class ColorPickerDialog
         mOrientation = getContext().getResources().getConfiguration().orientation;
         setContentView(mLayout);
 
-        setTitle(R.string.dialog_color_picker);
-
         mColorPicker = (ColorPickerView) mLayout.findViewById(R.id.color_picker_view);
         mOldColor = (ColorPickerPanelView) mLayout.findViewById(R.id.old_color_panel);
         mNewColor = (ColorPickerPanelView) mLayout.findViewById(R.id.new_color_panel);

@@ -57,9 +57,9 @@
                 <action android:name="ru.neverdark.phototools.PLUGINS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
+<!--
                 <category android:name="android.intent.category.LAUNCHER" />
-
+-->
             </intent-filter>
         </activity>
     </application>

@@ -94,4 +94,6 @@
     <string name="settings_colors_title">Цвет</string>
     <string name="settings_display_title">Отображение</string>
     <string name="settings_colors_title_disabled">Цвет (только платно)</string>
+    <string name="app_title">Азимут</string>
+    <string name="app_title_free">Азимут (Free)</string>
 </resources>

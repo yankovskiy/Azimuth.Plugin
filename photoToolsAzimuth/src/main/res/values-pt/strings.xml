@@ -77,4 +77,6 @@
     <string name="error_zoomToSmall">Ampliação pequena. Por favor aumente</string>
     <string name="error_timeZoneIsNotDefined">A hora da zona não esta definida. Se o problema persistir, verifique a conexão com a internet, ou desative as definições para obter a hora da zona através do servidor da Internet e insira-os manualmente no menu da aplicação</string>
     <string name="error_geoCoderNotAvailable">Não foi possível determinar as coordenadas de um local especifico. Por favor, verifique a conexão com a Internet</string>
+    <string name="app_title">Azimute</string>
+    <string name="app_title_free">Azimute (Qratuito)</string>
 </resources>

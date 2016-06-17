@@ -16,8 +16,8 @@
 <resources>
 
     <string name="app_name" translatable="false">Azimuth plugin</string>
-    <string name="app_title" translatable="false">Azimuth</string>
-    <string name="app_title_free" translatable="false">Azimuth (Free)</string>
+    <string name="app_title">Azimuth</string>
+    <string name="app_title_free">Azimuth (Free)</string>
 
     <string name="progress_dialog_title">Calculation</string>
     <string name="progress_dialog_message">Calculation in progress. Please wait</string>

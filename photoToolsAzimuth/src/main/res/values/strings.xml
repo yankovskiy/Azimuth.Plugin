@@ -15,9 +15,9 @@
 -->
 <resources>
 
-    <string name="app_name">Azimuth plugin</string>
-    <string name="app_title">Azimuth</string>
-    <string name="app_title_free">Azimuth (Free)</string>
+    <string name="app_name" translatable="false">Azimuth plugin</string>
+    <string name="app_title" translatable="false">Azimuth</string>
+    <string name="app_title_free" translatable="false">Azimuth (Free)</string>
 
     <string name="progress_dialog_title">Calculation</string>
     <string name="progress_dialog_message">Calculation in progress. Please wait</string>
@@ -74,7 +74,7 @@
     <string name="error_geoCoderNotAvailable">Could not determine coordinates for specific address. Please, check your Internet connection</string>
     <string name="error_notFound">No results found for address \"%s\"</string>
 
-    <string name="author_email">artemyankovskiy@gmail.com</string>
+    <string name="author_email" translatable="false">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Choose the app for sending of email</string>
 
     <string name="startupHint">Long tap on map to get new location</string>

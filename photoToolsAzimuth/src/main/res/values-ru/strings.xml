@@ -14,12 +14,6 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
-
-    <string name="app_name">Azimuth plugin</string>
-    <string name="app_title">Азимут</string>
-    <string name="app_title_free">Азимут (Free)</string>
-
-
     <string name="progress_dialog_title">Расчет</string>
     <string name="progress_dialog_message">Производятся вычисления. Пожалуйста, подождите</string>
 
@@ -77,7 +71,6 @@
     <string name="error_geoCoderNotAvailable">Не удалось определить координаты по заданному адресу. Пожалуйста, проверьте ваше Internet-соединение</string>
     <string name="error_notFound">Не найдено результатов для адреса \"%s\"</string>
 
-    <string name="author_email">artemyankovskiy@gmail.com</string>
     <string name="chooseEmailApp">Выберите приложение для отправки email</string>
 
     <string name="startupHint">Долгое нажатие на карте для выбора места</string>

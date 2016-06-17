@@ -48,6 +48,7 @@ public class ColorPickerPreference
     private float mDensity = 0;
     private boolean mAlphaSliderEnabled = false;
     private boolean mHexValueEnabled = false;
+    private String mTitle;
 
     public ColorPickerPreference(Context context) {
         super(context);
@@ -170,8 +171,19 @@ public class ColorPickerPreference
         mDensity = getContext().getResources().getDisplayMetrics().density;
         setOnPreferenceClickListener(this);
         if (attrs != null) {
-            mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
-            mHexValueEnabled = attrs.getAttributeBooleanValue(null, "hexValue", false);
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ColorPickPreference, 0, 0);
+
+            try {
+                mAlphaSliderEnabled = ta.getBoolean(R.styleable.ColorPickPreference_alphaSlider, false);
+                mHexValueEnabled = ta.getBoolean(R.styleable.ColorPickPreference_hexValue, false);
+                mTitle = ta.getString(R.styleable.ColorPickPreference_dialogTitle);
+            } finally {
+                ta.recycle();
+            }
+
+            if (mTitle == null) {
+                mTitle = context.getString(R.string.dialog_color_picker);
+            }
         }
     }
 
@@ -246,6 +258,7 @@ public class ColorPickerPreference
 
     protected void showDialog(Bundle state) {
         mDialog = new ColorPickerDialog(getContext(), mValue);
+        mDialog.setTitle(mTitle);
         mDialog.setOnColorChangedListener(this);
         if (mAlphaSliderEnabled) {
             mDialog.setAlphaSliderVisible(true);

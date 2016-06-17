@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2014-2016 Artem Yankovskiy (artemyankovskiy@gmail.com).
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+      Translation author: MegaTink07 (http://transcommu.yasesprox.com/Account/View/74287)
+  -->
+<resources>
+    <string name="chooseEmailApp">Escolhe a aplicação para enviar por Email</string>
+    <string name="close_drawer">Fechar</string>
+    <string name="deleteConfirmationDialog_message">Deseja mesmo remover o recorde \"%s\"?</string>
+    <string name="deleteConfirmationDialog_title">Confirmação para eliminar</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_ok">OK</string>
+    <string name="drawer_title">Selecionar uma localização salva</string>
+    <string name="error_availableOnlyInPaid">Esta funcionalidade esta disponível apenas na versão completa</string>
+    <string name="error_empty_location_name">Nome da localização deve ser preenchida</string>
+    <string name="error_noSun">Não existe sol à hora do local selecionado. Podes alterar o tempo e/ou local</string>
+    <string name="sunset_time">POR DO SOL</string>
+    <string name="sunrise_time">NASCER DO SOL</string>
+    <string name="sun_time">HORA</string>
+    <string name="sun_altitude">ALTURA</string>
+    <string name="settings_sunset_title">Pôr do sol</string>
+    <string name="settings_sunrise_title">Nascer do sol</string>
+    <string name="settings_sun_title">Sol</string>
+    <string name="settings_showAltitude_title">Altura</string>
+    <string name="settings_internetTimeZone_title">Hora da zona da internet</string>
+    <string name="settings_display_title">Mostrar</string>
+    <string name="change_time">Alterar a hora</string>
+    <string name="error_notFound">Não existe resultados para a localização \"%s\"</string>
+    <string name="errorDialog_title">Erro</string>
+    <string name="mapDateSelection">DATA</string>
+    <string name="mapTimeSelection">HORA</string>
+    <string name="mapType_hybrid">Hibrido</string>
+    <string name="mapType_map">Mapa</string>
+    <string name="mapType_satellite">Satélite</string>
+    <string name="mapType_terrain">Terreno</string>
+    <string name="menu_item_feedback">Resposta</string>
+    <string name="menu_item_rate">Avaliar</string>
+    <string name="menu_item_search">Procurar</string>
+    <string name="menu_item_settings">Definições</string>
+    <string name="menu_item_timeZone">Hora da zona</string>
+    <string name="open_drawer">Abrir</string>
+    <string name="progress_dialog_message">Calculo em progresso. Por favor aguarde</string>
+    <string name="progress_dialog_title">Cálculo</string>
+    <string name="remove">Remover</string>
+    <string name="saveLocationDialog_locationName">Nome da localização</string>
+    <string name="saveLocationDialog_message">Introduzir nome da localização</string>
+    <string name="saveLocationDialog_title">Salvar localização</string>
+    <string name="search_hint">Procurar por morada</string>
+    <string name="settigns_sunriseColor_message">Cor da linha do pôr do sol</string>
+    <string name="settings_24HourMode_message">Selecionar modo 24h</string>
+    <string name="settings_24HourMode_title">Modo 24h</string>
+    <string name="settings_colors_title">Cor</string>
+    <string name="settings_colors_title_disabled">Cor (funcionalidade paga)</string>
+    <string name="settings_internetTimeZone_message">Recebe a hora da zona do servidor da internet</string>
+    <string name="settings_showAltitude_message">Mostrar altitude solar</string>
+    <string name="settings_showTip_title">Mostrar dica</string>
+    <string name="settings_showTip_message">Mostrar dica ao iniciar a aplicação</string>
+    <string name="settings_showSunsetAzimuth_message">Mostrar azimute do pôr do sol</string>
+    <string name="settings_showSunriseAzimuth_message">Mostrar azimute do nascer do sol</string>
+    <string name="settings_sunColor_message">Cor da linha do sol</string>
+    <string name="settings_sunsetColor_message">Cor da linha do pôr do sol</string>
+    <string name="startupHint">Pressionar no mapa para obter uma nova localização</string>
+    <string name="timeZoneSelectionDialog_title">Selecionar a hora da zona</string>
+    <string name="error_zoomToSmall">Ampliação pequena. Por favor aumente</string>
+    <string name="error_timeZoneIsNotDefined">A hora da zona não esta definida. Se o problema persistir, verifique a conexão com a internet, ou desative as definições para obter a hora da zona através do servidor da Internet e insira-os manualmente no menu da aplicação</string>
+    <string name="error_geoCoderNotAvailable">Não foi possível determinar as coordenadas de um local especifico. Por favor, verifique a conexão com a Internet</string>
+</resources>

@@ -51,21 +51,24 @@
     <PreferenceCategory
         android:key="pref_color_title"
         android:title="@string/settings_colors_title">
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference xmlns:app="http://schemas.android.com/apk/res-auto"
             android:defaultValue="@color/sun_color"
             android:key="pref_sunColor"
             android:summary="@string/settings_sunColor_message"
-            android:title="@string/settings_sun_title" />
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/settings_sun_title"
+            app:dialogTitle="@string/settings_sun_title" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference xmlns:app="http://schemas.android.com/apk/res-auto"
             android:defaultValue="@color/sunrise_color"
             android:key="pref_sunriseColor"
             android:summary="@string/settigns_sunriseColor_message"
-            android:title="@string/settings_sunrise_title" />
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/settings_sunrise_title"
+            app:dialogTitle="@string/settings_sunrise_title" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference xmlns:app="http://schemas.android.com/apk/res-auto"
             android:defaultValue="@color/sunset_color"
             android:key="pref_sunsetColor"
             android:summary="@string/settings_sunsetColor_message"
-            android:title="@string/settings_sunset_title" />
+            android:title="@string/settings_sunset_title"
+            app:dialogTitle="@string/settings_sunset_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.pref);
         enablePaidPrefs();
-        mContext = this.getApplicationContext();
+        mContext = this;
     }
 
     private void enablePaidPrefs() {

@@ -5,10 +5,10 @@ android {
     buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "ru.neverdark.phototools.azimuth"
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 22
-        versionCode 9
-        versionName '2.2.1'
+        versionCode 10
+        versionName '2.2.2'
     }
     buildTypes {
         release {
@@ -17,6 +17,18 @@ android {
         }
     }
     productFlavors {
+        azimuthFree {
+            applicationId "ru.neverdark.azimuthfree"
+        }
+        azimuthPaid {
+            applicationId "ru.neverdark.azimuth"
+        }
+        azimuthPluginFree {
+            applicationId "ru.neverdark.phototools.azimuthfree"
+        }
+        azimuthPluginPaid {
+            applicationId "ru.neverdark.phototools.azimuth"
+        }
     }
 }
 

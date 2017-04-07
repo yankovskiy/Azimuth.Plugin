@@ -15,10 +15,11 @@
  ******************************************************************************/
 package ru.neverdark.phototools.azimuth.utils;
 
+import ru.neverdark.phototools.azimuth.BuildConfig;
+
 public class Constants {
     public final static int STATUS_SUCCESS = 0;
     public final static int STATUS_FAIL = 1;
 
-    public final static boolean PAID = true;
-    public final static String PAID_PACKAGE = "ru.neverdark.phototools.azimuth";
+    public final static boolean PAID = BuildConfig.FLAVOR.equals("azimuthPaid") || BuildConfig.FLAVOR.equals("azimuthPluginPaid");
 }

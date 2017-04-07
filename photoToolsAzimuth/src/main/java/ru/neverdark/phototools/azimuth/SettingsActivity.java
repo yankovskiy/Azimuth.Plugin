@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private class OnlyPaidClickListener implements Preference.OnPreferenceClickListener {
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            Common.openMarketUrl(mContext, Constants.PAID_PACKAGE);
+            Common.openPaidMarketUrl(mContext);
             return false;
         }
     }

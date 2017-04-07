@@ -14,8 +14,6 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
-
-    <string name="app_name" translatable="false">Azimuth plugin</string>
     <string name="app_title">Azimuth</string>
     <string name="app_title_free">Azimuth (Free)</string>
 

@@ -41,4 +41,12 @@ public class Common {
             context.startActivity(marketIntent);
         }
     }
+
+    public static void openPaidMarketUrl(Context context) {
+        if (BuildConfig.FLAVOR.equals("azimuthFree")) {
+            openMarketUrl(context, "ru.neverdark.azimuth");
+        } else if (BuildConfig.FLAVOR.equals("azimuthPluginFree")) {
+            openMarketUrl(context, "ru.neverdark.phototools.azimuth");
+        }
+    }
 }

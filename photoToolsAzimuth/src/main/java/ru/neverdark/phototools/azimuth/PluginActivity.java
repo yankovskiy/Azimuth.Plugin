@@ -301,7 +301,7 @@ public class PluginActivity extends UfoFragmentActivity {
     }
 
     private void gotoDonate() {
-        Common.openMarketUrl(mContext, Constants.PAID_PACKAGE);
+        Common.openPaidMarketUrl(mContext);
     }
 
     @Override

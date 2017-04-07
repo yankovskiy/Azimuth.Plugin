@@ -79,4 +79,5 @@
     <string name="error_geoCoderNotAvailable">Não foi possível determinar as coordenadas de um local especifico. Por favor, verifique a conexão com a Internet</string>
     <string name="app_title">Azimute</string>
     <string name="app_title_free">Azimute (Qratuito)</string>
+    <string name="reset">Receptar</string>
 </resources>

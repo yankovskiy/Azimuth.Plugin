@@ -18,11 +18,13 @@ package ru.neverdark.phototools.azimuth.dialogs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TabHost;
 import android.widget.TimePicker;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 
 import ru.neverdark.abs.CancelClickListener;
@@ -54,6 +56,7 @@ public class DateTimeDialog extends UfoDialogFragment {
 
     @Override
     public void setListeners() {
+        getAlertDialog().setNeutralButton(R.string.reset, null);
         getAlertDialog().setPositiveButton(R.string.dialog_ok, new PositiveClickListener());
         getAlertDialog().setNegativeButton(R.string.dialog_cancel, new CancelClickListener());
     }
@@ -63,9 +66,16 @@ public class DateTimeDialog extends UfoDialogFragment {
         super.createDialog();
         set24HourMode(Settings.is24HourMode(getContext()));
         hideCalendar();
-        initDateTime();
+        initDateTime(mCalendar);
 
         buildTabs();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog dialog = (AlertDialog) getDialog();
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new ResetDateTimeClickListener());
     }
 
     private void buildTabs() {
@@ -82,14 +92,18 @@ public class DateTimeDialog extends UfoDialogFragment {
         mTabHost.addTab(tabSpec);
     }
 
-    private void initDateTime() {
-        mTimePicker.setCurrentHour(mCalendar.get(Calendar.HOUR_OF_DAY));
-        mTimePicker.setCurrentMinute(mCalendar.get(Calendar.MINUTE));
-
+    private void initDateTime(Calendar calendar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mTimePicker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+            mTimePicker.setMinute(calendar.get(Calendar.MINUTE));
+        } else {
+            mTimePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+            mTimePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        }
         mDatePicker.updateDate(
-                mCalendar.get(Calendar.YEAR),
-                mCalendar.get(Calendar.MONTH),
-                mCalendar.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
     }
 
@@ -98,13 +112,11 @@ public class DateTimeDialog extends UfoDialogFragment {
     }
 
     private void hideCalendar() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
-            mDatePicker.setCalendarViewShown(false);
-        }
+        mDatePicker.setCalendarViewShown(false);
     }
 
     public interface OnPositiveClickListener {
-        public void onPositiveClick(Calendar calendar);
+        void onPositiveClick(Calendar calendar);
     }
 
     private class PositiveClickListener implements DialogInterface.OnClickListener {
@@ -116,8 +128,16 @@ public class DateTimeDialog extends UfoDialogFragment {
             int year = mDatePicker.getYear();
             int month = mDatePicker.getMonth();
             int day = mDatePicker.getDayOfMonth();
-            int hour = mTimePicker.getCurrentHour();
-            int minute = mTimePicker.getCurrentMinute();
+            int hour;
+            int minute;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                hour = mTimePicker.getHour();
+                minute = mTimePicker.getMinute();
+            } else {
+                hour = mTimePicker.getCurrentHour();
+                minute = mTimePicker.getCurrentMinute();
+            }
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, day, hour, minute);
@@ -125,6 +145,46 @@ public class DateTimeDialog extends UfoDialogFragment {
             OnPositiveClickListener callback = (OnPositiveClickListener) getCallback();
             if (callback != null) {
                 callback.onPositiveClick(calendar);
+            }
+        }
+    }
+
+    private class ResetDateTimeClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            fixValues();
+            initDateTime(Calendar.getInstance());
+        }
+
+        private void fixValues() {
+            // bug is not reproducible in APIs 24 and above
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) return;
+            try {
+                int hour, minute;
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                    hour = mTimePicker.getHour();
+                    minute = mTimePicker.getMinute();
+                } else {
+                    hour = mTimePicker.getCurrentHour();
+                    minute = mTimePicker.getCurrentMinute();
+                }
+
+                Field mDelegateField = mTimePicker.getClass().getDeclaredField("mDelegate");
+                mDelegateField.setAccessible(true);
+                Class<?> clazz;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    clazz = Class.forName("android.widget.TimePickerClockDelegate");
+                } else {
+                    clazz = Class.forName("android.widget.TimePickerSpinnerDelegate");
+                }
+                Field mInitialHourOfDayField = clazz.getDeclaredField("mInitialHourOfDay");
+                Field mInitialMinuteField = clazz.getDeclaredField("mInitialMinute");
+                mInitialHourOfDayField.setAccessible(true);
+                mInitialMinuteField.setAccessible(true);
+                mInitialHourOfDayField.setInt(mDelegateField.get(mTimePicker), hour);
+                mInitialMinuteField.setInt(mDelegateField.get(mTimePicker), minute);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

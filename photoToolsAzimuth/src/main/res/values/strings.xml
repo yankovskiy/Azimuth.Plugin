@@ -96,4 +96,5 @@
     <string name="settings_colors_title">Color</string>
     <string name="settings_display_title">Display</string>
     <string name="settings_colors_title_disabled">Color (paid only)</string>
+    <string name="reset">Reset</string>
 </resources>

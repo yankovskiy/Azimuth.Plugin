@@ -7,7 +7,7 @@ android {
         applicationId "ru.neverdark.phototools.azimuth"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 10
+        versionCode 11
         versionName '2.2.2'
     }
     buildTypes {
